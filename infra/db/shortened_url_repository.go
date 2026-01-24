@@ -4,6 +4,7 @@ import (
 	"context"
 	"log/slog"
 	"url-shortener/m/entity"
+	interfaces "url-shortener/m/interface"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -13,7 +14,7 @@ type ShortenedUrlRepository struct {
 	dbConnection *pgxpool.Pool
 }
 
-func NewShortenedUrlRepository(dbConn *pgxpool.Pool) *ShortenedUrlRepository {
+func NewShortenedUrlRepository(dbConn *pgxpool.Pool) interfaces.ShortenedUrlRepository {
 	return &ShortenedUrlRepository{
 		dbConnection: dbConn,
 	}
@@ -44,10 +45,29 @@ func (pr *ShortenedUrlRepository) Save(shortenedUrl *entity.ShortenedUrl) error 
 	return nil
 }
 
-func (pr *ShortenedUrlRepository) FindByID(id uint64) *entity.ShortenedUrl {
-	return nil
-}
+func (pr *ShortenedUrlRepository) FindBySlug(slug string) (*entity.ShortenedUrl, error) {
 
-func (pr *ShortenedUrlRepository) Update(shortenedUrlId uint64, shortenedUrlToUpdate *entity.ShortenedUrl) error {
-	return nil
+	sql := `SELECT short_slug, original_url, expires_at, user_id FROM shortened_urls WHERE short_slug = @slug
+	LIMIT 1`
+
+	var shortenedUrl entity.ShortenedUrl
+
+	err := pr.dbConnection.QueryRow(
+		context.Background(),
+		sql,
+		pgx.NamedArgs{
+			"slug": slug,
+		}).Scan(
+		&shortenedUrl.ShortSlug,
+		&shortenedUrl.OriginalUrl,
+		&shortenedUrl.ExpiresAt,
+		&shortenedUrl.UserId,
+	)
+
+	if err != nil {
+		slog.Error("failed to find shortened url by slug", "error", err)
+		return nil, err
+	}
+
+	return &shortenedUrl, nil
 }

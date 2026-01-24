@@ -5,8 +5,7 @@ import (
 )
 
 type ShortenedUrlRepository interface {
-	FindByID(id uint64) *entity.ShortenedUrl
+	FindBySlug(slug string) (*entity.ShortenedUrl, error)
 
 	Save(shortenedUrl *entity.ShortenedUrl) error
-	Update(shortenedUrlId uint64, shortenedUrlToUpdate *entity.ShortenedUrl) error
 }
