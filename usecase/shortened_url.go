@@ -24,7 +24,7 @@ func NewShortenedUrlUseCase(repo interfaces.ShortenedUrlRepository) *ShortenedUr
 	}
 }
 
-func (su *ShortenedUrlUsecase) Save(shortenedUrlDto dto.ShortenedUrlInsertDto, userId uniqueEntityId.ID) error {
+func (su *ShortenedUrlUsecase) Save(shortenedUrlDto dto.ShortenedUrlInsert, userId uniqueEntityId.ID) error {
 	shortSlug := internal.GenerateSlug(6)
 
 	expiresAt := time.Now().Add(time.Duration(shortenedUrlDto.ExpiresAt) * time.Hour * 24 * 30)
@@ -39,4 +39,8 @@ func (su *ShortenedUrlUsecase) Save(shortenedUrlDto dto.ShortenedUrlInsertDto, u
 	}
 
 	return nil
+}
+
+func (su *ShortenedUrlUsecase) FindBySlug(slug string) (*entity.ShortenedUrl, error) {
+	return su.repo.FindBySlug(slug)
 }
