@@ -4,12 +4,12 @@ import (
 	"errors"
 )
 
-type ShortenedUrlInsertDto struct {
+type ShortenedUrlInsert struct {
 	OriginalUrl string `json:"originalUrl"`
 	ExpiresAt   int    `json:"expiresAt"`
 }
 
-func (s *ShortenedUrlInsertDto) Validate() error {
+func (s *ShortenedUrlInsert) Validate() error {
 	if s.OriginalUrl == "" {
 		return errors.New("Original URL cannot be empty")
 	}
