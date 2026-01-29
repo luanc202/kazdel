@@ -14,14 +14,16 @@ type Controllers struct {
 func InitializeRoutes(controllers Controllers, c *chi.Mux) {
 
 	c.Route("/api", func(r chi.Router) {
-		r.Use(middleware.AllowContentType("application/json"))
+		r.Route("/v1", func(r chi.Router) {
+			r.Use(middleware.AllowContentType("application/json"))
 
-		r.Group(func(private chi.Router) {
-			private.Post("/shorten", controllers.ShortenedUrlController.CreateShortenedUrl)
-		})
+			r.Group(func(private chi.Router) {
+				private.Post("/shorten", controllers.ShortenedUrlController.CreateShortenedUrl)
+			})
 
-		r.Group(func(public chi.Router) {
-			public.Get("/{slug}", controllers.ShortenedUrlController.FindShortenedUrl)
+			r.Group(func(public chi.Router) {
+				public.Get("/{slug}", controllers.ShortenedUrlController.FindShortenedUrl)
+			})
 		})
 	})
 }
