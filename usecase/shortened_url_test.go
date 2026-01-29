@@ -17,14 +17,12 @@ import (
 func TestShortenedUrlUsecase_Save(t *testing.T) {
 	userId, _ := uniqueEntityId.ParseID("1")
 
-	tests := []struct {
-		name          string
+	tests := map[string]struct {
 		input         dto.ShortenedUrlInsert
 		setupMock     func(m *mocks.ShortenedUrlRepository)
 		expectedError error
 	}{
-		{
-			name: "Success",
+		"Success": {
 			input: dto.ShortenedUrlInsert{
 				OriginalUrl: "http://example.com",
 				ExpiresAt:   30,
@@ -36,8 +34,7 @@ func TestShortenedUrlUsecase_Save(t *testing.T) {
 			},
 			expectedError: nil,
 		},
-		{
-			name: "Repository Error",
+		"Repository Error": {
 			input: dto.ShortenedUrlInsert{
 				OriginalUrl: "http://example.com",
 				ExpiresAt:   30,
@@ -49,8 +46,8 @@ func TestShortenedUrlUsecase_Save(t *testing.T) {
 		},
 	}
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
 			mockRepo := new(mocks.ShortenedUrlRepository)
 			if tt.setupMock != nil {
 				tt.setupMock(mockRepo)
@@ -78,15 +75,13 @@ func TestShortenedUrlUsecase_FindBySlug(t *testing.T) {
 		ExpiresAt:   time.Now().Add(24 * time.Hour),
 	}
 
-	tests := []struct {
-		name           string
+	tests := map[string]struct {
 		slug           string
 		setupMock      func(m *mocks.ShortenedUrlRepository)
 		expectedResult *entity.ShortenedUrl
 		expectedError  error
 	}{
-		{
-			name: "Success",
+		"Success": {
 			slug: "abc123",
 			setupMock: func(m *mocks.ShortenedUrlRepository) {
 				m.On("FindBySlug", "abc123").Return(expectedUrl, nil)
@@ -94,8 +89,7 @@ func TestShortenedUrlUsecase_FindBySlug(t *testing.T) {
 			expectedResult: expectedUrl,
 			expectedError:  nil,
 		},
-		{
-			name: "Not Found",
+		"Not Found": {
 			slug: "unknown",
 			setupMock: func(m *mocks.ShortenedUrlRepository) {
 				m.On("FindBySlug", "unknown").Return(nil, errors.New("not found"))
@@ -105,8 +99,8 @@ func TestShortenedUrlUsecase_FindBySlug(t *testing.T) {
 		},
 	}
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
 			mockRepo := new(mocks.ShortenedUrlRepository)
 			if tt.setupMock != nil {
 				tt.setupMock(mockRepo)
