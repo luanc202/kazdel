@@ -3,7 +3,6 @@ package usecase
 import (
 	"fmt"
 	"log/slog"
-	"time"
 	"url-shortener/m/entity"
 	"url-shortener/m/entity/dto"
 	"url-shortener/m/infra/config"
@@ -27,7 +26,7 @@ func NewShortenedUrlUseCase(repo interfaces.ShortenedUrlRepository) *ShortenedUr
 func (su *ShortenedUrlUsecase) Save(shortenedUrlDto dto.ShortenedUrlInsert, userId uniqueEntityId.ID) error {
 	shortSlug := internal.GenerateSlug(6)
 
-	expiresAt := time.Now().Add(time.Duration(shortenedUrlDto.ExpiresAt) * time.Hour * 24 * 30)
+	expiresAt := shortenedUrlDto.ExpiresAt
 
 	shortenedUrl := entity.NewShortenedUrl(shortSlug, shortenedUrlDto.OriginalUrl, expiresAt, userId)
 
