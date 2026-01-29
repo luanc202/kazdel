@@ -1,0 +1,29 @@
+# Exclude local data directories
+data/
+data-teste/
+cache/
+tmp/
+
+# Exclude git
+.git/
+.husky/
+.github/
+
+# Exclude IDE settings
+.vscode/
+.idea/
+
+# Exclude environment files
+.env
+.env.example
+
+# Exclude helper files
+docker-compose.yml
+compose.yml
+*.yaml
+*.yml
+*.md
+.gitignore
+Makefile
+Dockerfile
+README.md
