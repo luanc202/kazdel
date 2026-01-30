@@ -9,11 +9,25 @@ import (
 func main() {
 
 	upFlag := flag.Bool("up", false, "Run migrations UP")
+	downFlag := flag.Bool("down", false, "Run migrations DOWN")
 	flag.Parse()
 
 	if *upFlag {
 		fmt.Println("Running Migrations UP...")
-		migration.Up()
+		if err := migration.Up(); err != nil {
+			fmt.Printf("Error running migrations UP: %v\n", err)
+			return
+		}
+		fmt.Println("Migrations executed!")
+		return
+	}
+
+	if *downFlag {
+		fmt.Println("Running Migrations DOWN...")
+		if err := migration.Down(); err != nil {
+			fmt.Printf("Error running migrations DOWN: %v\n", err)
+			return
+		}
 		fmt.Println("Migrations executed!")
 		return
 	}
@@ -28,14 +42,20 @@ func main() {
 
 	if number == "1" {
 		fmt.Println("Running Migrations UP...")
-		migration.Up()
+		if err := migration.Up(); err != nil {
+			fmt.Printf("Error running migrations UP: %v\n", err)
+			return
+		}
 		fmt.Println("Migrations executed!")
 		return
 	}
 
 	if number == "2" {
 		fmt.Println("Running Migrations DOWN...")
-		migration.Down()
+		if err := migration.Down(); err != nil {
+			fmt.Printf("Error running migrations DOWN: %v\n", err)
+			return
+		}
 		fmt.Println("Migrations executed!")
 		return
 	}
@@ -48,7 +68,10 @@ func main() {
 			fmt.Println("Error while reading the values", err)
 		}
 		fmt.Println("Creating a new migration...")
-		migration.Create(name)
+		if err := migration.Create(name); err != nil {
+			fmt.Printf("Error creating migration: %v\n", err)
+			return
+		}
 		fmt.Println("Migration created!")
 	}
 
