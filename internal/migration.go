@@ -1,13 +1,18 @@
 package internal
 
 import (
+	"database/sql"
 	"fmt"
+	"log"
 	"os"
 	"time"
+	"url-shortener/m/infra/config"
 
 	"github.com/golang-migrate/migrate/v4"
+	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
+	_ "github.com/jackc/pgx/v5"
 )
 
 const (
@@ -16,13 +21,38 @@ const (
 
 func Up() error {
 
-	m, err := migrate.New(migrationsDir, os.Getenv("DATABASE_URL"))
+	env, err := config.LoadEnv("../")
+	if err != nil {
+		log.Fatalf("Failed to load .env file: %v\n", err)
+	}
+	fmt.Println(env.DBUrl_Migration)
+	db, err := sql.Open("postgres", env.DBUrl_Migration)
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v\n", err)
+	}
+	defer func() {
+		if err := db.Close(); err != nil {
+			log.Fatalf("Failed to close database: %v\n", err)
+		}
+	}()
+
+	driver, err := postgres.WithInstance(db, &postgres.Config{
+		MigrationsTable: "schema_migrations",
+	})
+	if err != nil {
+		return fmt.Errorf("failed to create postgres driver: %v", err)
+	}
+	migration, err := migrate.NewWithDatabaseInstance(
+		migrationsDir,
+		"pgxv5",
+		driver,
+	)
+
 	if err != nil {
 		return fmt.Errorf("failed to initialize migration: %v", err)
 	}
-	defer m.Close()
 
-	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
+	if err := migration.Up(); err != nil && err != migrate.ErrNoChange {
 		return fmt.Errorf("failed to run up migrations: %v", err)
 	}
 	return nil
@@ -30,13 +60,39 @@ func Up() error {
 
 func Down() error {
 
-	m, err := migrate.New(migrationsDir, os.Getenv("DATABASE_URL"))
+	env, err := config.LoadEnv("../")
+	if err != nil {
+		log.Fatalf("Failed to load .env file: %v\n", err)
+	}
+
+	db, err := sql.Open("postgres", env.DBUrl_Migration)
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v\n", err)
+	}
+	defer func() {
+		if err := db.Close(); err != nil {
+			log.Fatalf("Failed to close database: %v\n", err)
+		}
+	}()
+
+	driver, err := postgres.WithInstance(db, &postgres.Config{
+		MigrationsTable: "schema_migrations",
+	})
+	if err != nil {
+		return fmt.Errorf("failed to create postgres driver: %v", err)
+	}
+	migration, err := migrate.NewWithDatabaseInstance(
+		migrationsDir,
+		"postgres",
+		driver,
+	)
+
 	if err != nil {
 		return fmt.Errorf("failed to initialize migration: %v", err)
 	}
-	defer m.Close()
+	defer migration.Close()
 
-	if err := m.Down(); err != nil && err != migrate.ErrNoChange {
+	if err := migration.Down(); err != nil && err != migrate.ErrNoChange {
 		return fmt.Errorf("failed to run down migrations: %v", err)
 	}
 	return nil
