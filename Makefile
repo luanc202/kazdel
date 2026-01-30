@@ -17,4 +17,10 @@ migration:
 	go run cmd/main.go
 
 migration-up:
-	go run cmd/main.go -up 
+	go run cmd/main.go -up
+
+migration-up-force:
+	go run cmd/main.go -up -force
+
+migration-down:
+	go run cmd/main.go -down
