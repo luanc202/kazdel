@@ -17,7 +17,7 @@ services:
     hostname: api
     working_dir: /app
     environment:
-      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_URL=postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}?sslmode=disable
       - PORT=${PORT}
       - ENVIRONMENT=${ENVIRONMENT}
       - MIGRATIONS_PATH=${MIGRATIONS_PATH}
@@ -35,10 +35,31 @@ services:
     networks:
       - shorturl-dev
 
+  api-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    profiles:
+      - production
+    environment:
+      - DATABASE_URL
+      - PORT
+      - ENVIRONMENT
+      - MIGRATIONS_PATH
+      - JWT_SECRET
+    depends_on:
+      cache:
+        condition: service_started
+      db:
+        condition: service_started
+    networks:
+      - shorturl-dev
+
   db: &db
     image: postgres:18.1-alpine
     profiles:
       - development
+      - production
     environment:
       - POSTGRES_DB=${DB_DATABASE}
       - POSTGRES_USER=${DB_USER}
@@ -60,6 +81,7 @@ services:
     image: redis:7.2.4-alpine
     profiles:
       - development
+      - production
     hostname: shorturl-cache
     restart: always
     environment:
