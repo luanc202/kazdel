@@ -23,18 +23,18 @@ func NewShortenedUrlRepository(dbConn *pgxpool.Pool) interfaces.ShortenedUrlRepo
 func (pr *ShortenedUrlRepository) Save(shortenedUrl *entity.ShortenedUrl) error {
 
 	sql := `INSERT INTO shortened_urls
-	(short_slug, original_url, expires_at, user_id)
+	(short_slug, long_url, expires_at, user_id)
 	VALUES
-	(@shortSlug, @originalUrl, @expiresAt, @userId)`
+	(@shortSlug, @longUrl, @expiresAt, @userId)`
 
 	_, err := pr.dbConnection.Exec(
 		context.Background(),
 		sql,
 		pgx.NamedArgs{
-			"shortSlug":   shortenedUrl.ShortSlug,
-			"originalUrl": shortenedUrl.OriginalUrl,
-			"expiresAt":   shortenedUrl.ExpiresAt,
-			"userId":      shortenedUrl.UserId,
+			"shortSlug": shortenedUrl.ShortSlug,
+			"longUrl":   shortenedUrl.LongUrl,
+			"expiresAt": shortenedUrl.ExpiresAt,
+			"userId":    shortenedUrl.UserId,
 		})
 
 	if err != nil {
@@ -47,7 +47,7 @@ func (pr *ShortenedUrlRepository) Save(shortenedUrl *entity.ShortenedUrl) error 
 
 func (pr *ShortenedUrlRepository) FindBySlug(slug string) (*entity.ShortenedUrl, error) {
 
-	sql := `SELECT short_slug, original_url, expires_at, user_id FROM shortened_urls WHERE short_slug = @slug
+	sql := `SELECT short_slug, long_url, expires_at, user_id FROM shortened_urls WHERE short_slug = @slug
 	LIMIT 1`
 
 	var shortenedUrl entity.ShortenedUrl
@@ -59,7 +59,7 @@ func (pr *ShortenedUrlRepository) FindBySlug(slug string) (*entity.ShortenedUrl,
 			"slug": slug,
 		}).Scan(
 		&shortenedUrl.ShortSlug,
-		&shortenedUrl.OriginalUrl,
+		&shortenedUrl.LongUrl,
 		&shortenedUrl.ExpiresAt,
 		&shortenedUrl.UserId,
 	)

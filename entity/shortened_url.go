@@ -6,20 +6,20 @@ import (
 )
 
 type ShortenedUrl struct {
-	ID          uint64
-	ShortSlug   string
-	OriginalUrl string
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
-	ExpiresAt   time.Time
-	UserId      uniqueEntityId.ID
+	ID        uint64
+	ShortSlug string
+	LongUrl   string
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	ExpiresAt time.Time
+	UserId    uniqueEntityId.ID
 }
 
-func NewShortenedUrl(shortSlug, originalUrl string, expiresAt time.Time, userId uniqueEntityId.ID) *ShortenedUrl {
+func NewShortenedUrl(shortSlug, longUrl string, expiresAt time.Time, userId uniqueEntityId.ID) *ShortenedUrl {
 	return &ShortenedUrl{
-		ShortSlug:   shortSlug,
-		OriginalUrl: originalUrl,
-		ExpiresAt:   expiresAt,
-		UserId:      userId,
+		ShortSlug: shortSlug,
+		LongUrl:   longUrl,
+		ExpiresAt: expiresAt,
+		UserId:    userId,
 	}
 }
