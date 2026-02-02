@@ -31,7 +31,7 @@ func (cntrl *ShortenedUrlController) FindShortenedUrl(w http.ResponseWriter, r *
 		return
 	}
 
-	if err := json.NewEncoder(w).Encode(dto.NewShortenedUrlView(shortenedUrl.ShortSlug, shortenedUrl.OriginalUrl)); err != nil {
+	if err := json.NewEncoder(w).Encode(dto.NewShortenedUrlView(shortenedUrl.ShortSlug, shortenedUrl.LongUrl)); err != nil {
 		http.Error(w, "Failed to encode shortened url", http.StatusInternalServerError)
 		return
 	}

@@ -29,7 +29,7 @@ func TestShortenedUrlUsecase_Save(t *testing.T) {
 			},
 			setupMock: func(m *mocks.ShortenedUrlRepository) {
 				m.On("Save", mock.MatchedBy(func(u *entity.ShortenedUrl) bool {
-					return u.OriginalUrl == "http://example.com" && u.UserId == userId
+					return u.LongUrl == "http://example.com" && u.UserId == userId
 				})).Return(nil)
 			},
 			expectedError: nil,
@@ -69,10 +69,10 @@ func TestShortenedUrlUsecase_Save(t *testing.T) {
 
 func TestShortenedUrlUsecase_FindBySlug(t *testing.T) {
 	expectedUrl := &entity.ShortenedUrl{
-		ShortSlug:   "abc123",
-		OriginalUrl: "http://example.com",
-		CreatedAt:   time.Now(),
-		ExpiresAt:   time.Now().Add(24 * time.Hour),
+		ShortSlug: "abc123",
+		LongUrl:   "http://example.com",
+		CreatedAt: time.Now(),
+		ExpiresAt: time.Now().Add(24 * time.Hour),
 	}
 
 	tests := map[string]struct {
