@@ -27,7 +27,7 @@ func (cntrl *ShortenedUrlController) FindShortenedUrl(w http.ResponseWriter, r *
 
 	shortenedUrl, err := cntrl.Usecase.FindBySlug(slug)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Shortened URL not found", http.StatusNotFound)
 		return
 	}
 
