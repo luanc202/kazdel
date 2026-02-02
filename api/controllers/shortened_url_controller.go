@@ -64,7 +64,9 @@ func (cntrl *ShortenedUrlController) CreateShortenedUrl(w http.ResponseWriter, r
 		fmt.Printf("Invalid request: could not validate shortened url data from request body %s", err.Error())
 
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(err)
+		json.NewEncoder(w).Encode(errors.ErrInvalidBody{
+			Description: err.Error(),
+		})
 		return
 	}
 
@@ -73,10 +75,10 @@ func (cntrl *ShortenedUrlController) CreateShortenedUrl(w http.ResponseWriter, r
 	if err != nil {
 		fmt.Printf("Error in usecase: %s", err.Error())
 
-		err := err.Error()
-
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(err)
+		json.NewEncoder(w).Encode(errors.ErrInvalidBody{
+			Description: err.Error(),
+		})
 		return
 	}
 
