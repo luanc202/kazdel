@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"url-shortener/m/entity"
 	interfaces "url-shortener/m/interface"
+	"url-shortener/m/internal/uniqueEntityId"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -70,4 +71,41 @@ func (pr *ShortenedUrlRepository) FindBySlug(slug string) (*entity.ShortenedUrl,
 	}
 
 	return &shortenedUrl, nil
+}
+
+func (pr *ShortenedUrlRepository) FindByUserId(userId uniqueEntityId.ID) ([]*entity.ShortenedUrl, error) {
+	sql := `SELECT short_slug, long_url, expires_at, user_id FROM shortened_urls WHERE user_id = @userId`
+
+	rows, err := pr.dbConnection.Query(
+		context.Background(),
+		sql,
+		pgx.NamedArgs{
+			"userId": userId,
+		},
+	)
+
+	if err != nil {
+		slog.Error("failed to find shortened urls by user id", "error", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	var shortenedUrls []*entity.ShortenedUrl
+
+	for rows.Next() {
+		var shortenedUrl entity.ShortenedUrl
+		err := rows.Scan(
+			&shortenedUrl.ShortSlug,
+			&shortenedUrl.LongUrl,
+			&shortenedUrl.ExpiresAt,
+			&shortenedUrl.UserId,
+		)
+		if err != nil {
+			slog.Error("failed to scan shortened url", "error", err)
+			return nil, err
+		}
+		shortenedUrls = append(shortenedUrls, &shortenedUrl)
+	}
+
+	return shortenedUrls, nil
 }
