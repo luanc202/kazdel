@@ -43,3 +43,7 @@ func (su *ShortenedUrlUsecase) Save(shortenedUrlDto dto.ShortenedUrlInsert, user
 func (su *ShortenedUrlUsecase) FindBySlug(slug string) (*entity.ShortenedUrl, error) {
 	return su.repo.FindBySlug(slug)
 }
+
+func (su *ShortenedUrlUsecase) ListByUser(userId uniqueEntityId.ID) ([]*entity.ShortenedUrl, error) {
+	return su.repo.FindByUserId(userId)
+}
