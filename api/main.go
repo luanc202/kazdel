@@ -25,13 +25,17 @@ func main() {
 	dbConn := config.GetDbConnection()
 
 	shortenedURLsRepo := db.NewShortenedUrlRepository(dbConn)
+	userRepo := db.NewUserRepository(dbConn)
 
 	shortenedURLUseCase := usecase.NewShortenedUrlUseCase(shortenedURLsRepo)
+	authUseCase := usecase.NewAuthUseCase(userRepo, env.JWT_SECRET)
 
 	shortenedURLController := controllers.NewShortenedUrlController(shortenedURLUseCase)
+	authController := controllers.NewAuthController(authUseCase)
 
 	controllers := routes.Controllers{
 		ShortenedUrlController: shortenedURLController,
+		AuthController:         authController,
 	}
 
 	router := routes.InitializeRouter(controllers)
