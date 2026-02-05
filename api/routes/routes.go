@@ -23,12 +23,12 @@ func InitializeRoutes(controllers Controllers, c *chi.Mux) {
 			r.Group(func(auth chi.Router) {
 				auth.Post("/auth/signup", controllers.AuthController.Signup)
 				auth.Post("/auth/login", controllers.AuthController.Login)
-				auth.Post("/auth/logout", controllers.AuthController.Logout)
 			})
 
 			// Protected Routes
 			r.Group(func(private chi.Router) {
 				private.Use(authMiddleware.AuthMiddleware())
+				private.Post("/auth/logout", controllers.AuthController.Logout)
 				private.Post("/shorten", controllers.ShortenedUrlController.CreateShortenedUrl)
 				private.Get("/urls", controllers.ShortenedUrlController.ListUserUrls)
 			})
