@@ -71,7 +71,7 @@ services:
       cache:
         condition: service_started
     volumes:
-      - ./psql_data:/var/lib/postgresql
+      - ~/.docker/postgres:/var/lib/postgresql
     env_file:
       - .env
     networks:
@@ -90,7 +90,7 @@ services:
       - "${REDIS_PORT}:${REDIS_PORT}"
     command: redis-server --save "" --requirepass ${REDIS_PASSWORD}
     volumes:
-      - ./cache:/data
+      - ~/.docker/redis:/data
     env_file:
       - .env
     networks:
@@ -131,7 +131,7 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - ./cache:/data-teste
+      - ~/.docker/redis-test:/data-teste
     env_file:
       - .env.example
     networks:
@@ -152,7 +152,7 @@ services:
       timeout: 10s
       retries: 3
     volumes:
-      - ./data-teste:/var/lib/postgresql/data
+      - ~/.docker/postgres-test:/var/lib/postgresql/data
     env_file:
       - .env.example
     networks:
