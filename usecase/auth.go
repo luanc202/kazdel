@@ -4,18 +4,18 @@ import (
 	"fmt"
 	"time"
 	"url-shortener/m/entity"
-	"url-shortener/m/infra/db"
+	interfaces "url-shortener/m/interface"
 
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type AuthUseCase struct {
-	Repo      *db.UserRepository
+	Repo      interfaces.UserRepository
 	JwtSecret string
 }
 
-func NewAuthUseCase(repo *db.UserRepository, jwtSecret string) *AuthUseCase {
+func NewAuthUseCase(repo interfaces.UserRepository, jwtSecret string) *AuthUseCase {
 	return &AuthUseCase{
 		Repo:      repo,
 		JwtSecret: jwtSecret,
