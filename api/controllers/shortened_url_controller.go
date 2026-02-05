@@ -40,6 +40,19 @@ func (cntrl *ShortenedUrlController) FindShortenedUrl(w http.ResponseWriter, r *
 	w.WriteHeader(http.StatusOK)
 }
 
+func (cntrl *ShortenedUrlController) RedirectToLongUrl(w http.ResponseWriter, r *http.Request) {
+	slug := chi.URLParam(r, "slug")
+
+	shortenedUrl, err := cntrl.Usecase.FindBySlug(slug)
+	if err != nil {
+		http.Error(w, "Shortened URL not found", http.StatusNotFound)
+		return
+	}
+
+	http.Redirect(w, r, shortenedUrl.LongUrl, http.StatusFound)
+
+}
+
 func (cntrl *ShortenedUrlController) CreateShortenedUrl(w http.ResponseWriter, r *http.Request) {
 	var shortenedUrlInsert dto.ShortenedUrlInsert
 	// user ID should be extracted from the token
