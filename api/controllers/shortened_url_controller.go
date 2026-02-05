@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"url-shortener/m/api/errors"
+	authMiddleware "url-shortener/m/api/middleware"
 	"url-shortener/m/entity/dto"
 	"url-shortener/m/internal/uniqueEntityId"
 	"url-shortener/m/usecase"
@@ -43,9 +44,6 @@ func (cntrl *ShortenedUrlController) CreateShortenedUrl(w http.ResponseWriter, r
 	var shortenedUrlInsert dto.ShortenedUrlInsert
 	// user ID should be extracted from the token
 	// no authentication for now
-	var userID uniqueEntityId.ID
-	userID, _ = uniqueEntityId.ParseID("1")
-
 	err := json.NewDecoder(r.Body).Decode(&shortenedUrlInsert)
 	defer r.Body.Close()
 
@@ -70,7 +68,15 @@ func (cntrl *ShortenedUrlController) CreateShortenedUrl(w http.ResponseWriter, r
 		return
 	}
 
-	err = cntrl.Usecase.Save(shortenedUrlInsert, userID)
+	userIdStr := r.Context().Value(authMiddleware.UserIDKey).(string)
+	userId, err := uniqueEntityId.ParseID(userIdStr)
+	if err != nil {
+		fmt.Printf("Invalid user ID: %s", err.Error())
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	err = cntrl.Usecase.Save(shortenedUrlInsert, userId)
 
 	if err != nil {
 		fmt.Printf("Error in usecase: %s", err.Error())
@@ -83,4 +89,31 @@ func (cntrl *ShortenedUrlController) CreateShortenedUrl(w http.ResponseWriter, r
 	}
 
 	w.WriteHeader(http.StatusCreated)
+}
+
+func (cntrl *ShortenedUrlController) ListUserUrls(w http.ResponseWriter, r *http.Request) {
+	userIdStr := r.Context().Value(authMiddleware.UserIDKey).(string)
+	userId, err := uniqueEntityId.ParseID(userIdStr)
+	if err != nil {
+		fmt.Printf("Invalid user ID: %s", err.Error())
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	urls, err := cntrl.Usecase.ListByUser(userId)
+	if err != nil {
+		http.Error(w, "Failed to list URLs", http.StatusInternalServerError)
+		return
+	}
+
+	var response []dto.ShortenedUrlView
+	for _, u := range urls {
+		response = append(response, *dto.NewShortenedUrlView(u.ShortSlug, u.LongUrl))
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		return
+	}
 }
