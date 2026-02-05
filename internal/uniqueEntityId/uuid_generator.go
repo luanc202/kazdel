@@ -5,7 +5,8 @@ import "github.com/google/uuid"
 type ID = uuid.UUID
 
 func NewID() ID {
-	return ID(uuid.New())
+	id, _ := uuid.NewV7()
+	return ID(id)
 }
 
 func ParseID(id string) (ID, error) {
