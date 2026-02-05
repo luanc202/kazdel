@@ -32,7 +32,7 @@ func (cntrl *ShortenedUrlController) FindShortenedUrl(w http.ResponseWriter, r *
 		return
 	}
 
-	if err := json.NewEncoder(w).Encode(dto.NewShortenedUrlView(shortenedUrl.ShortSlug, shortenedUrl.LongUrl)); err != nil {
+	if err := json.NewEncoder(w).Encode(dto.NewShortenedUrlView(shortenedUrl.ShortSlug, shortenedUrl.LongUrl, shortenedUrl.ExpiresAt.Format("2006-01-02 15:04:05"))); err != nil {
 		http.Error(w, "Failed to encode shortened url", http.StatusInternalServerError)
 		return
 	}
@@ -94,6 +94,7 @@ func (cntrl *ShortenedUrlController) CreateShortenedUrl(w http.ResponseWriter, r
 func (cntrl *ShortenedUrlController) ListUserUrls(w http.ResponseWriter, r *http.Request) {
 	userIdStr := r.Context().Value(authMiddleware.UserIDKey).(string)
 	userId, err := uniqueEntityId.ParseID(userIdStr)
+
 	if err != nil {
 		fmt.Printf("Invalid user ID: %s", err.Error())
 		w.WriteHeader(http.StatusUnauthorized)
@@ -106,9 +107,14 @@ func (cntrl *ShortenedUrlController) ListUserUrls(w http.ResponseWriter, r *http
 		return
 	}
 
+	if len(urls) == 0 {
+		http.Error(w, "No URLs found", http.StatusOK)
+		return
+	}
+
 	var response []dto.ShortenedUrlView
 	for _, u := range urls {
-		response = append(response, *dto.NewShortenedUrlView(u.ShortSlug, u.LongUrl))
+		response = append(response, *dto.NewShortenedUrlView(u.ShortSlug, u.LongUrl, u.ExpiresAt.Format("2006-01-02 15:04:05")))
 	}
 
 	w.Header().Set("Content-Type", "application/json")
