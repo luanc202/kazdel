@@ -4,6 +4,7 @@ package mocks
 
 import (
 	entity "url-shortener/m/entity"
+	"url-shortener/m/internal/uniqueEntityId"
 
 	mock "github.com/stretchr/testify/mock"
 )
@@ -36,6 +37,29 @@ func (_m *ShortenedUrlRepository) FindBySlug(slug string) (*entity.ShortenedUrl,
 
 	if rf, ok := ret.Get(1).(func(string) error); ok {
 		r1 = rf(slug)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// FindByUserId provides a mock function with given fields: userId
+func (_m *ShortenedUrlRepository) FindByUserId(userId uniqueEntityId.ID) ([]*entity.ShortenedUrl, error) {
+	ret := _m.Called(userId)
+
+	var r0 []*entity.ShortenedUrl
+	if rf, ok := ret.Get(0).(func(uniqueEntityId.ID) []*entity.ShortenedUrl); ok {
+		r0 = rf(userId)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]*entity.ShortenedUrl)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(uniqueEntityId.ID) error); ok {
+		r1 = rf(userId)
 	} else {
 		r1 = ret.Error(1)
 	}
