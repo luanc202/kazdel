@@ -32,11 +32,8 @@ func InitializeRoutes(controllers Controllers, c *chi.Mux) {
 				private.Post("/shorten", controllers.ShortenedUrlController.CreateShortenedUrl)
 				private.Get("/urls", controllers.ShortenedUrlController.ListUserUrls)
 			})
-
-			// Public Routes
-			r.Group(func(public chi.Router) {
-				public.Get("/{slug}", controllers.ShortenedUrlController.RedirectToLongUrl)
-			})
 		})
 	})
+
+	c.Get("/{slug}", controllers.ShortenedUrlController.RedirectToLongUrl)
 }
