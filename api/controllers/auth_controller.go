@@ -68,7 +68,7 @@ func (c *AuthController) Login(w http.ResponseWriter, r *http.Request) {
 	})
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"token": token}) // Optional: return token in body too
+
 }
 
 func (c *AuthController) Logout(w http.ResponseWriter, r *http.Request) {
