@@ -72,6 +72,12 @@ func (c *AuthController) Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *AuthController) Logout(w http.ResponseWriter, r *http.Request) {
+	// Get token from cookie
+	cookie, err := r.Cookie("auth_token")
+	if err == nil {
+		c.AuthUseCase.Logout(cookie.Value)
+	}
+
 	// Clear the cookie
 	http.SetCookie(w, &http.Cookie{
 		Name:     "auth_token",
