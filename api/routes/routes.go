@@ -27,7 +27,7 @@ func InitializeRoutes(controllers Controllers, c *chi.Mux) {
 
 			// Protected Routes
 			r.Group(func(private chi.Router) {
-				private.Use(authMiddleware.AuthMiddleware())
+				private.Use(authMiddleware.AuthMiddleware(controllers.AuthController.AuthUseCase))
 				private.Post("/auth/logout", controllers.AuthController.Logout)
 				private.Post("/shorten", controllers.ShortenedUrlController.CreateShortenedUrl)
 				private.Get("/urls", controllers.ShortenedUrlController.ListUserUrls)

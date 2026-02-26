@@ -5,25 +5,25 @@ import (
 	"time"
 	"url-shortener/m/entity"
 	interfaces "url-shortener/m/interface"
+	"url-shortener/m/internal/uniqueEntityId"
 
-	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type AuthUseCase struct {
-	Repo      interfaces.UserRepository
-	JwtSecret string
+	UserRepo    interfaces.UserRepository
+	SessionRepo interfaces.SessionRepository
 }
 
-func NewAuthUseCase(repo interfaces.UserRepository, jwtSecret string) *AuthUseCase {
+func NewAuthUseCase(userRepo interfaces.UserRepository, sessionRepo interfaces.SessionRepository) *AuthUseCase {
 	return &AuthUseCase{
-		Repo:      repo,
-		JwtSecret: jwtSecret,
+		UserRepo:    userRepo,
+		SessionRepo: sessionRepo,
 	}
 }
 
 func (uc *AuthUseCase) Signup(name, email, password string) error {
-	existingUser, _ := uc.Repo.FindByEmail(email)
+	existingUser, _ := uc.UserRepo.FindByEmail(email)
 	if existingUser != nil {
 		return fmt.Errorf("email already registered")
 	}
@@ -35,7 +35,7 @@ func (uc *AuthUseCase) Signup(name, email, password string) error {
 
 	user := entity.NewUser(name, email, string(hashedPassword))
 
-	err = uc.Repo.Save(user)
+	err = uc.UserRepo.Save(user)
 	if err != nil {
 		return fmt.Errorf("failed to create user: %w", err)
 	}
@@ -44,7 +44,7 @@ func (uc *AuthUseCase) Signup(name, email, password string) error {
 }
 
 func (uc *AuthUseCase) Login(email, password string) (string, error) {
-	user, err := uc.Repo.FindByEmail(email)
+	user, err := uc.UserRepo.FindByEmail(email)
 	if err != nil {
 		return "", fmt.Errorf("invalid credentials")
 	}
@@ -54,20 +54,43 @@ func (uc *AuthUseCase) Login(email, password string) (string, error) {
 		return "", fmt.Errorf("invalid credentials")
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": user.ID.String(),
-		"exp": time.Now().Add(time.Hour * 24 * 7).Unix(),
-	})
+	// Generate a session token (using UUID for simplicity and uniqueness)
+	token := uniqueEntityId.NewID().String()
+	expiresAt := time.Now().Add(24 * time.Hour)
 
-	tokenString, err := token.SignedString([]byte(uc.JwtSecret))
+	session := entity.NewSession(user.ID, token, expiresAt)
+
+	err = uc.SessionRepo.Create(session)
 	if err != nil {
-		return "", fmt.Errorf("failed to generate token: %w", err)
+		return "", fmt.Errorf("failed to create session: %w", err)
 	}
 
-	return tokenString, nil
+	return token, nil
+}
+
+func (uc *AuthUseCase) Logout(token string) error {
+	return uc.SessionRepo.DeleteByToken(token)
+}
+
+func (uc *AuthUseCase) ValidateSession(token string) (string, error) {
+	session, err := uc.SessionRepo.FindByToken(token)
+	if err != nil {
+		return "", err
+	}
+	if session == nil {
+		return "", fmt.Errorf("session not found")
+	}
+
+	if session.ExpiresAt.Before(time.Now()) {
+		uc.SessionRepo.DeleteByToken(token) // Clean up expired session
+		return "", fmt.Errorf("session expired")
+	}
+
+	return session.UserID.String(), nil
 }
 
 func (uc *AuthUseCase) GetUserByID(id string) (*entity.User, error) {
-	// This might be needed later for user details, for now we just verify token validity in middleware
+	// Not strictly needed for auth flow but good to keep
+	// ... implementation if needed or remove ...
 	return nil, nil
 }
