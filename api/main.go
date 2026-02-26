@@ -26,9 +26,10 @@ func main() {
 
 	shortenedURLsRepo := db.NewShortenedUrlRepository(dbConn)
 	userRepo := db.NewUserRepository(dbConn)
+	sessionRepo := db.NewPostgresSessionRepository(dbConn)
 
 	shortenedURLUseCase := usecase.NewShortenedUrlUseCase(shortenedURLsRepo)
-	authUseCase := usecase.NewAuthUseCase(userRepo, env.JWT_SECRET)
+	authUseCase := usecase.NewAuthUseCase(userRepo, sessionRepo)
 
 	shortenedURLController := controllers.NewShortenedUrlController(shortenedURLUseCase)
 	authController := controllers.NewAuthController(authUseCase)
