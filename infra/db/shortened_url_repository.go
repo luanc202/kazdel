@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"errors"
 	"log/slog"
 	"url-shortener/m/entity"
 	interfaces "url-shortener/m/interface"
@@ -108,4 +109,28 @@ func (pr *ShortenedUrlRepository) FindByUserId(userId uniqueEntityId.ID) ([]*ent
 	}
 
 	return shortenedUrls, nil
+}
+
+func (pr *ShortenedUrlRepository) Delete(id uint64, userId uniqueEntityId.ID) error {
+
+	sql := `DELETE FROM shortened_urls WHERE id = @id AND user_id = @userId`
+
+	result, err := pr.dbConnection.Exec(
+		context.Background(),
+		sql,
+		pgx.NamedArgs{
+			"id":     id,
+			"userId": userId,
+		})
+
+	if err != nil {
+		slog.Error("failed to delete shortened url from database", "error", err)
+		return err
+	}
+
+	if result.RowsAffected() == 0 {
+		return errors.New("shortened url not found")
+	}
+
+	return nil
 }

@@ -31,6 +31,7 @@ func InitializeRoutes(controllers Controllers, c *chi.Mux) {
 				private.Post("/auth/logout", controllers.AuthController.Logout)
 				private.Post("/shorten", controllers.ShortenedUrlController.CreateShortenedUrl)
 				private.Get("/urls", controllers.ShortenedUrlController.ListUserUrls)
+				private.Delete("/urls/{id}", controllers.ShortenedUrlController.DeleteShortenedUrl)
 			})
 		})
 	})

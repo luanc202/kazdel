@@ -47,3 +47,7 @@ func (su *ShortenedUrlUsecase) FindBySlug(slug string) (*entity.ShortenedUrl, er
 func (su *ShortenedUrlUsecase) ListByUser(userId uniqueEntityId.ID) ([]*entity.ShortenedUrl, error) {
 	return su.repo.FindByUserId(userId)
 }
+
+func (su *ShortenedUrlUsecase) Delete(id uint64, userId uniqueEntityId.ID) error {
+	return su.repo.Delete(id, userId)
+}

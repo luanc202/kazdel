@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 	"url-shortener/m/api/errors"
 	authMiddleware "url-shortener/m/api/middleware"
 	"url-shortener/m/entity/dto"
@@ -135,4 +136,32 @@ func (cntrl *ShortenedUrlController) ListUserUrls(w http.ResponseWriter, r *http
 		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
 		return
 	}
+}
+
+func (cntrl *ShortenedUrlController) DeleteShortenedUrl(w http.ResponseWriter, r *http.Request) {
+	idStr := chi.URLParam(r, "id")
+	userIdStr := r.Context().Value(authMiddleware.UserIDKey).(string)
+	userId, err := uniqueEntityId.ParseID(userIdStr)
+	if err != nil {
+		fmt.Printf("Invalid user ID: %s", err.Error())
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	id, err := strconv.ParseUint(idStr, 10, 64)
+	if err != nil {
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		return
+	}
+
+	err = cntrl.Usecase.Delete(id, userId)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(errors.ErrInvalidBody{
+			Description: err.Error(),
+		})
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
 }
