@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 	"time"
-	"url-shortener/m/infra/config"
+	"url-shortener/m/pkg/infra/config"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"

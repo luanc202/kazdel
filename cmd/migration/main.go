@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	migration "url-shortener/m/internal"
+	migration "url-shortener/m/pkg/internal"
 )
 
 func main() {

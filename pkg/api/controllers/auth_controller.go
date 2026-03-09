@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"time"
-	"url-shortener/m/usecase"
+	"url-shortener/m/pkg/usecase"
 )
 
 type AuthController struct {

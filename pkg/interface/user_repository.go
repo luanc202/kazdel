@@ -1,6 +1,6 @@
 package interfaces
 
-import "url-shortener/m/entity"
+import "url-shortener/m/pkg/entity"
 
 type UserRepository interface {
 	Save(user *entity.User) error

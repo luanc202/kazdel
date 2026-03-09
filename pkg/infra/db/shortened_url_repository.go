@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 	"log/slog"
-	"url-shortener/m/entity"
-	interfaces "url-shortener/m/interface"
-	"url-shortener/m/internal/uniqueEntityId"
+	"url-shortener/m/pkg/entity"
+	interfaces "url-shortener/m/pkg/interface"
+	"url-shortener/m/pkg/uniqueEntityId"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"

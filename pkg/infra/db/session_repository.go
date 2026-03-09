@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 	"time"
-	"url-shortener/m/entity"
-	"url-shortener/m/internal/uniqueEntityId"
+	"url-shortener/m/pkg/entity"
+	"url-shortener/m/pkg/uniqueEntityId"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"

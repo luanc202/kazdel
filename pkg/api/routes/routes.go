@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"url-shortener/m/api/controllers"
-	authMiddleware "url-shortener/m/api/middleware"
+	"url-shortener/m/pkg/api/controllers"
+	authMiddleware "url-shortener/m/pkg/api/middleware"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"

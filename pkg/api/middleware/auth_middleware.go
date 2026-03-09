@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 	"strings"
-	"url-shortener/m/usecase"
+	"url-shortener/m/pkg/usecase"
 )
 
 type contextKey string

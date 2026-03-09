@@ -2,7 +2,7 @@ package entity
 
 import (
 	"time"
-	"url-shortener/m/internal/uniqueEntityId"
+	"url-shortener/m/pkg/uniqueEntityId"
 )
 
 type User struct {

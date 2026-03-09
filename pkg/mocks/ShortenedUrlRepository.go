@@ -3,8 +3,8 @@
 package mocks
 
 import (
-	entity "url-shortener/m/entity"
-	"url-shortener/m/internal/uniqueEntityId"
+	entity "url-shortener/m/pkg/entity"
+	"url-shortener/m/pkg/uniqueEntityId"
 
 	mock "github.com/stretchr/testify/mock"
 )
@@ -78,6 +78,20 @@ func (_m *ShortenedUrlRepository) Save(shortenedUrl *entity.ShortenedUrl) error 
 	var r0 error
 	if rf, ok := ret.Get(0).(func(*entity.ShortenedUrl) error); ok {
 		r0 = rf(shortenedUrl)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// Delete provides a mock function with given fields: id, userId
+func (_m *ShortenedUrlRepository) Delete(id uint64, userId uniqueEntityId.ID) error {
+	ret := _m.Called(id, userId)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(uint64, uniqueEntityId.ID) error); ok {
+		r0 = rf(id, userId)
 	} else {
 		r0 = ret.Error(0)
 	}

@@ -1,4 +1,4 @@
-package internal
+package slug
 
 import (
 	"math/rand"

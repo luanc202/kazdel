@@ -1,8 +1,8 @@
 package interfaces
 
 import (
-	"url-shortener/m/entity"
-	"url-shortener/m/internal/uniqueEntityId"
+	"url-shortener/m/pkg/entity"
+	"url-shortener/m/pkg/uniqueEntityId"
 )
 
 type ShortenedUrlRepository interface {
