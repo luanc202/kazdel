@@ -3,12 +3,12 @@ package usecase
 import (
 	"fmt"
 	"log/slog"
-	"url-shortener/m/pkg/entity"
-	"url-shortener/m/pkg/entity/dto"
-	"url-shortener/m/pkg/infra/config"
-	interfaces "url-shortener/m/pkg/interface"
-	"url-shortener/m/pkg/slug"
-	"url-shortener/m/pkg/uniqueEntityId"
+	"kazdel/pkg/entity"
+	"kazdel/pkg/entity/dto"
+	"kazdel/pkg/infra/config"
+	interfaces "kazdel/pkg/interface"
+	"kazdel/pkg/slug"
+	"kazdel/pkg/uniqueEntityId"
 )
 
 type ShortenedUrlUsecase struct {

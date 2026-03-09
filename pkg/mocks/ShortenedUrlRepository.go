@@ -3,8 +3,8 @@
 package mocks
 
 import (
-	entity "url-shortener/m/pkg/entity"
-	"url-shortener/m/pkg/uniqueEntityId"
+	entity "kazdel/pkg/entity"
+	"kazdel/pkg/uniqueEntityId"
 
 	mock "github.com/stretchr/testify/mock"
 )

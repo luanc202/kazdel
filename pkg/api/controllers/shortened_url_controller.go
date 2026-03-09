@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"url-shortener/m/pkg/api/errors"
-	authMiddleware "url-shortener/m/pkg/api/middleware"
-	"url-shortener/m/pkg/entity/dto"
-	"url-shortener/m/pkg/uniqueEntityId"
-	"url-shortener/m/pkg/usecase"
+	"kazdel/pkg/api/errors"
+	authMiddleware "kazdel/pkg/api/middleware"
+	"kazdel/pkg/entity/dto"
+	"kazdel/pkg/uniqueEntityId"
+	"kazdel/pkg/usecase"
 
 	"github.com/go-chi/chi/v5"
 )

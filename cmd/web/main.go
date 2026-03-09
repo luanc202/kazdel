@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
-	"url-shortener/m/pkg/api/controllers"
-	"url-shortener/m/pkg/api/routes"
-	"url-shortener/m/pkg/infra/config"
-	"url-shortener/m/pkg/infra/db"
-	"url-shortener/m/pkg/usecase"
+	"kazdel/pkg/api/controllers"
+	"kazdel/pkg/api/routes"
+	"kazdel/pkg/infra/config"
+	"kazdel/pkg/infra/db"
+	"kazdel/pkg/usecase"
 )
 
 func main() {

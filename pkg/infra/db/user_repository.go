@@ -3,9 +3,9 @@ package db
 import (
 	"context"
 	"fmt"
-	"url-shortener/m/pkg/entity"
-	interfaces "url-shortener/m/pkg/interface"
-	"url-shortener/m/pkg/uniqueEntityId"
+	"kazdel/pkg/entity"
+	interfaces "kazdel/pkg/interface"
+	"kazdel/pkg/uniqueEntityId"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"

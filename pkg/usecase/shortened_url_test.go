@@ -8,10 +8,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 
-	"url-shortener/m/pkg/entity"
-	"url-shortener/m/pkg/entity/dto"
-	"url-shortener/m/pkg/uniqueEntityId"
-	"url-shortener/m/pkg/mocks"
+	"kazdel/pkg/entity"
+	"kazdel/pkg/entity/dto"
+	"kazdel/pkg/uniqueEntityId"
+	"kazdel/pkg/mocks"
 )
 
 func TestShortenedUrlUsecase_Save(t *testing.T) {

@@ -2,8 +2,8 @@ package routes
 
 import (
 	"net/http"
-	"url-shortener/m/pkg/api/controllers"
-	authMiddleware "url-shortener/m/pkg/api/middleware"
+	"kazdel/pkg/api/controllers"
+	authMiddleware "kazdel/pkg/api/middleware"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"

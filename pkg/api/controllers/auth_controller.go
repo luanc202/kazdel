@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"time"
-	"url-shortener/m/pkg/usecase"
+	"kazdel/pkg/usecase"
 )
 
 type AuthController struct {

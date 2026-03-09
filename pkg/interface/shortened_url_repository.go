@@ -1,8 +1,8 @@
 package interfaces
 
 import (
-	"url-shortener/m/pkg/entity"
-	"url-shortener/m/pkg/uniqueEntityId"
+	"kazdel/pkg/entity"
+	"kazdel/pkg/uniqueEntityId"
 )
 
 type ShortenedUrlRepository interface {

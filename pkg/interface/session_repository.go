@@ -1,6 +1,6 @@
 package interfaces
 
-import "url-shortener/m/pkg/entity"
+import "kazdel/pkg/entity"
 
 type SessionRepository interface {
 	Create(session *entity.Session) error

@@ -3,9 +3,9 @@ package usecase
 import (
 	"fmt"
 	"time"
-	"url-shortener/m/pkg/entity"
-	interfaces "url-shortener/m/pkg/interface"
-	"url-shortener/m/pkg/uniqueEntityId"
+	"kazdel/pkg/entity"
+	interfaces "kazdel/pkg/interface"
+	"kazdel/pkg/uniqueEntityId"
 
 	"golang.org/x/crypto/bcrypt"
 )

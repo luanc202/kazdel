@@ -2,7 +2,7 @@ package entity
 
 import (
 	"time"
-	"url-shortener/m/pkg/uniqueEntityId"
+	"kazdel/pkg/uniqueEntityId"
 )
 
 type Session struct {

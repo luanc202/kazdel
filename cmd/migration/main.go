@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	migration "url-shortener/m/pkg/migration"
+	migration "kazdel/pkg/migration"
 )
 
 func main() {
