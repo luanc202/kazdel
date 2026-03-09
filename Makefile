@@ -8,19 +8,19 @@ prod:
 	docker compose --profile integration-tests up --build
 
 run:
-	go run ./api/main.go
+	go run cmd/web/main.go
 
 test:
 	go test ./...
 
 migration:
-	go run cmd/main.go
+	go run cmd/migration/main.go
 
 migration-up:
-	go run cmd/main.go -up
+	go run cmd/migration/main.go -up
 
 migration-up-force:
-	go run cmd/main.go -up -force
+	go run cmd/migration/main.go -up -force
 
 migration-down:
-	go run cmd/main.go -down
+	go run cmd/migration/main.go -down
