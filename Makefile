@@ -24,3 +24,6 @@ migration-up-force:
 
 migration-down:
 	go run cmd/migration/main.go -down
+
+ui-build:
+	cd pkg/ui && bun run build
