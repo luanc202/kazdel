@@ -1,0 +1,25 @@
+{
+  "name": "ui",
+  "private": true,
+  "scripts": {
+    "build:css": "postcss main.css -o static/main.css",
+    "build:js": "bun build ./main.ts --outfile=static/bundle.js --minify",
+    "build": "bun run build:css && bun run build:js"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "module": "index.ts",
+  "type": "module",
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.2.1",
+    "daisyui": "^5.5.19",
+    "htmx.org": "^2.0.8",
+    "postcss": "^8.5.8",
+    "postcss-cli": "^11.0.1",
+    "tailwindcss": "^4.2.1"
+  }
+}

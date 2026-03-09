@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"net/http"
 	"url-shortener/m/pkg/api/controllers"
 	authMiddleware "url-shortener/m/pkg/api/middleware"
 
@@ -14,6 +15,9 @@ type Controllers struct {
 }
 
 func InitializeRoutes(controllers Controllers, c *chi.Mux) {
+
+	// Serve static files (HTMX, CSS, etc.)
+	c.Handle("/static/*", http.StripPrefix("/static/", http.FileServer(http.Dir("pkg/ui/static"))))
 
 	c.Route("/api", func(r chi.Router) {
 		r.Route("/v1", func(r chi.Router) {
