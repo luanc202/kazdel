@@ -24,9 +24,18 @@ func LoadEnv(path string) (*envconfig, error) {
 	viper.SetConfigFile(".env")
 	viper.AutomaticEnv()
 
+	// Explicitly bind the OS environment variables to the keys expected by mapstructure
+	viper.BindEnv("DATABASE_URL")
+	viper.BindEnv("MIGRATION_DATABASE_URL")
+	viper.BindEnv("PORT")
+	viper.BindEnv("ENVIRONMENT")
+	viper.BindEnv("MIGRATIONS_PATH")
+	viper.BindEnv("JWT_SECRET")
+
 	err := viper.ReadInConfig()
 	if err != nil {
-		panic(err)
+		// Ignore error since the .env file might not exist,
+		// and we will rely on OS environment variables.
 	}
 
 	err = viper.Unmarshal(&env)
