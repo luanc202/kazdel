@@ -19,6 +19,19 @@ func InitConfigs() error {
 	var err error
 	env := GetEnvConfig()
 
+	var handler slog.Handler
+	if env.ENV == "DEVELOPMENT" {
+		handler = slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+			Level: slog.LevelDebug,
+		})
+	} else {
+		handler = slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+			Level: slog.LevelInfo,
+		})
+	}
+	logger = slog.New(handler)
+	slog.SetDefault(logger)
+
 	dbpool, err = pgxpool.New(context.Background(), env.DBUrl)
 
 	if err != nil {
@@ -34,6 +47,8 @@ func GetDbConnection() *pgxpool.Pool {
 }
 
 func GetLogger(scope string) *slog.Logger {
-	logger = slog.Default()
-	return logger
+	if logger == nil {
+		return slog.Default().With(slog.String("scope", scope))
+	}
+	return logger.With(slog.String("scope", scope))
 }
