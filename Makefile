@@ -2,16 +2,19 @@ title := "add_needed_care"
 include .env
 
 .PHONY: dev prod run test migration migration-up migration-up-force migration-down
-dev:
-	ui-build
+dev: ui-build
 	docker compose --profile development --env-file .env up --build
 
-prod:
-	ui-build
+dev-down:
+	docker compose --profile development --env-file .env down
+
+prod: ui-build
 	docker compose --profile integration-tests up --build
 
-run:
-	ui-build
+prod-down:
+	docker compose --profile integration-tests down
+
+run: ui-build
 	go run cmd/web/main.go
 
 test:
