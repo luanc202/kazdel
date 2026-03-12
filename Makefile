@@ -33,7 +33,10 @@ migration-down:
 	go run cmd/migration/main.go -down
 
 ui-build:
+	templ generate ./pkg/ui
 	cd pkg/ui && bun run build
 
-build:
-	go build -o bin/url-shortener cmd/web/main.go
+build: ui-build
+	mkdir -p bin/app/static/
+	cp pkg/ui/static/* bin/app/static/
+	go build -o bin/app cmd/web/main.go
