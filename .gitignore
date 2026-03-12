@@ -136,3 +136,5 @@ dist
 
 # temporary dir
 tmp
+
+bin/*
