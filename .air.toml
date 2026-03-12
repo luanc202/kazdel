@@ -2,7 +2,7 @@ root = "."
 tmp_dir = "tmp"
 
 [build]
-cmd = "go build -o ./tmp/main ./api/main.go"
+cmd = "go build -o ./tmp/main ./cmd/web/main.go"
 bin = "./tmp/main"
 exclude_dir = ["tmp", ".husky", ".github"]
 exclude_regex = ["_test\\.go"]
