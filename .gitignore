@@ -137,4 +137,4 @@ dist
 # temporary dir
 tmp
 
-bin/*
+bin/
