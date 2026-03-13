@@ -1,2 +1,95 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: kazdel-dark, kazdel-light;
+}
+
+@plugin "daisyui/theme" {
+  name: "kazdel-dark";
+  default: true;
+  prefersdark: true;
+  color-scheme: "dark";
+  --color-base-100: #1A1A1B;
+  --color-base-200: #2b2b2d;
+  --color-base-300: #3C3F41;
+  --color-base-content: #B0B0B0;
+  --color-primary: #D45500;
+  --color-primary-content: #1A1A1B;
+  --color-secondary: #FF2D00;
+  --color-secondary-content: #ffffff;
+  --color-accent: #D45500;
+  --color-accent-content: #ffffff;
+  --color-neutral: #3C3F41;
+  --color-neutral-content: #B0B0B0;
+  --color-error: #FF2D00;
+  --color-error-content: #ffffff;
+  --radius-selector: 0.25rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+}
+
+@plugin "daisyui/theme" {
+  name: "kazdel-light";
+  default: false;
+  prefersdark: false;
+  color-scheme: "light";
+  --color-base-100: #f4f4f5;
+  --color-base-200: #e4e4e7;
+  --color-base-300: #3C3F41;
+  --color-base-content: #1A1A1B;
+  --color-primary: #D45500;
+  --color-primary-content: #ffffff;
+  --color-secondary: #FF2D00;
+  --color-secondary-content: #ffffff;
+  --color-accent: #D45500;
+  --color-accent-content: #ffffff;
+  --color-neutral: #1A1A1B;
+  --color-neutral-content: #B0B0B0;
+  --color-error: #FF2D00;
+  --color-error-content: #ffffff;
+  --radius-selector: 0.25rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+}
+
+@theme {
+  --font-sans: "Roboto", sans-serif;
+  --font-orbitron: "Orbitron", sans-serif;
+}
+
+@layer base {
+  body {
+    position: relative;
+    background-color: var(--color-base-100);
+    color: var(--color-base-content);
+  }
+  
+  h1, h2, h3, h4, h5, h6, .brand-font {
+    font-family: var(--font-orbitron, "Orbitron", sans-serif);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  /* Texture: subtle noise overlay on the body */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 9999;
+  }
+}
+
+@layer components {
+  /* Glow Effects for primary buttons with Arts Overload red */
+  .btn-primary {
+    transition: all 0.3s ease-in-out;
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 10px rgba(255, 45, 0, 0.6), 0 0 20px rgba(255, 45, 0, 0.4);
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+    color: var(--color-secondary-content);
+  }
+}
