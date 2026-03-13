@@ -2,9 +2,10 @@ package controllers
 
 import (
 	"encoding/json"
+	"kazdel/pkg/constants"
+	"kazdel/pkg/usecase"
 	"net/http"
 	"time"
-	"kazdel/pkg/usecase"
 )
 
 type AuthController struct {
@@ -58,7 +59,7 @@ func (c *AuthController) Login(w http.ResponseWriter, r *http.Request) {
 
 	// Set HttpOnly cookie
 	http.SetCookie(w, &http.Cookie{
-		Name:     "auth_token",
+		Name:     constants.SessionCookieName,
 		Value:    token,
 		Expires:  time.Now().Add(24 * time.Hour),
 		HttpOnly: true,
@@ -73,14 +74,14 @@ func (c *AuthController) Login(w http.ResponseWriter, r *http.Request) {
 
 func (c *AuthController) Logout(w http.ResponseWriter, r *http.Request) {
 	// Get token from cookie
-	cookie, err := r.Cookie("auth_token")
+	cookie, err := r.Cookie(constants.SessionCookieName)
 	if err == nil {
 		c.AuthUseCase.Logout(cookie.Value)
 	}
 
 	// Clear the cookie
 	http.SetCookie(w, &http.Cookie{
-		Name:     "auth_token",
+		Name:     constants.SessionCookieName,
 		Value:    "",
 		Expires:  time.Now().Add(-1 * time.Hour), // Past time to delete
 		HttpOnly: true,

@@ -2,9 +2,10 @@ package middleware
 
 import (
 	"context"
+	"kazdel/pkg/constants"
+	"kazdel/pkg/usecase"
 	"net/http"
 	"strings"
-	"kazdel/pkg/usecase"
 )
 
 type contextKey string
@@ -16,7 +17,7 @@ func AuthMiddleware(authUseCase *usecase.AuthUseCase) func(http.Handler) http.Ha
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 			// Try to get token from cookie
-			cookie, err := r.Cookie("auth_token")
+			cookie, err := r.Cookie(constants.SessionCookieName)
 			var tokenString string
 
 			if err == nil {
