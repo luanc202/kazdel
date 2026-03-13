@@ -3,6 +3,7 @@ module kazdel
 go 1.25.6
 
 require (
+	github.com/a-h/templ v0.3.1001
 	github.com/go-chi/chi/v5 v5.1.0
 	github.com/go-chi/httplog/v3 v3.3.0
 	github.com/go-chi/traceid v0.3.0
@@ -16,7 +17,6 @@ require (
 )
 
 require (
-	github.com/a-h/templ v0.3.1001 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
