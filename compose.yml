@@ -25,6 +25,7 @@ services:
       - "${PORT}:${PORT}"
     volumes:
       - ./:/app
+      - ./pkg/ui/static:/app/pkg/ui/static
     depends_on:
       cache:
         condition: service_started
