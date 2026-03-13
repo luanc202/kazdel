@@ -163,6 +163,9 @@
   }
 }
 @layer utilities {
+  .visible {
+    visibility: visible;
+  }
   .select {
     @layer daisyui.l1.l2.l3 {
       border: var(--border) solid #0000;
