@@ -2,9 +2,12 @@ package routes
 
 import (
 	"net/http"
+	"strings"
+
 	"kazdel/pkg/api/controllers"
 	authMiddleware "kazdel/pkg/api/middleware"
 	"kazdel/pkg/handlers"
+	"kazdel/pkg/infra/config"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -18,7 +21,13 @@ type Controllers struct {
 func InitializeRoutes(controllers Controllers, webHandlers handlers.Handlers, c *chi.Mux) {
 
 	// Serve static files (HTMX, CSS, etc.)
-	c.Handle("/static/*", http.StripPrefix("/static/", http.FileServer(http.Dir("pkg/ui/static"))))
+	c.Handle("/static/*", http.StripPrefix("/static/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		env := config.GetEnvConfig()
+		if env != nil && strings.ToLower(env.ENV) != "production" {
+			w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+		}
+		http.FileServer(http.Dir("pkg/ui/static")).ServeHTTP(w, r)
+	})))
 
 	// Web UI Routes (Templ + HTMX)
 	c.Group(func(web chi.Router) {
@@ -34,7 +43,7 @@ func InitializeRoutes(controllers Controllers, webHandlers handlers.Handlers, c 
 		// Protected web routes
 		web.Group(func(protectedWeb chi.Router) {
 			protectedWeb.Use(authMiddleware.AuthMiddleware(controllers.AuthController.AuthUseCase))
-			
+
 			protectedWeb.Get("/dashboard", webHandlers.ShortenedUrl.ShowDashboard)
 			protectedWeb.Post("/shorten", webHandlers.ShortenedUrl.HandleCreateUrl)
 			protectedWeb.Delete("/urls/{id}", webHandlers.ShortenedUrl.HandleDeleteUrl)
