@@ -76,6 +76,10 @@
     letter-spacing: 0.05em;
   }
 
+  .hero-header-left-margin {
+    margin-left: calc(1.02/3 * -100%);
+  }
+
   /* Texture: subtle noise overlay on the body */
   body::before {
     content: "";
