@@ -29,3 +29,4 @@ Dockerfile
 README.md
 bin/
 artifacts/
+.artifacts/

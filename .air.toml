@@ -4,7 +4,7 @@ tmp_dir = "tmp"
 [build]
 cmd = "go build -o ./tmp/main ./cmd/web/main.go"
 bin = "./tmp/main"
-exclude_dir = ["tmp", ".husky", ".github", "pkg/ui/node_modules", "bin", "artifacts"]
+exclude_dir = ["tmp", ".husky", ".github", "pkg/ui/node_modules", "bin", "artifacts", ".artifacts"]
 exclude_regex = ["_test\\.go"]
 exclude_unchanged = true
 include_ext = ["go", "tpl", "tmpl", "html", "css", "js"]
