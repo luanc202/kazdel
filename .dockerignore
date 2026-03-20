@@ -27,3 +27,5 @@ compose.yml
 Makefile
 Dockerfile
 README.md
+bin/
+artifacts/
