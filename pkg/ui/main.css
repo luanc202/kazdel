@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./static/fonts.css";
 
 @plugin "daisyui" {
   themes: kazdel-dark, kazdel-light;
@@ -26,6 +27,7 @@
   --radius-selector: 0.25rem;
   --radius-field: 0.25rem;
   --radius-box: 0.5rem;
+  --hero-bg-color: #141414;
 }
 
 @plugin "daisyui/theme" {
@@ -55,12 +57,14 @@
 @theme {
   --font-sans: "Roboto", sans-serif;
   --font-orbitron: "Orbitron", sans-serif;
+  --font-franklin: "Libre Franklin", sans-serif;
+  --font-inter: "Inter", sans-serif;
 }
 
 @layer base {
   body {
     position: relative;
-    background-color: var(--color-base-100);
+    background-color: var(--hero-bg-color);
     color: var(--color-base-content);
   }
 
@@ -71,7 +75,13 @@
   h5,
   h6,
   .brand-font {
-    font-family: var(--font-orbitron, "Orbitron", sans-serif);
+    font-family: var(--font-inter, "Inter", sans-serif);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .sub-brand-font {
+    font-family: var(--font-inter, "Inter", sans-serif);
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
@@ -100,6 +110,9 @@
   /* Glow Effects for primary buttons with Arts Overload red */
   .btn-primary {
     transition: all 0.3s ease-in-out;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: var(--font-franklin, sans-serif);
   }
 
   .btn-primary:hover {
@@ -108,4 +121,120 @@
     border-color: var(--color-secondary);
     color: var(--color-secondary-content);
   }
+
+  .button-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 4rem;
+    background: var(--color-base-100);
+  }
+
+  /* Base Brutalist Button Style */
+  .btn {
+    background: transparent;
+    border: 4px solid var(--color-base-300);
+    color: var(--color-base-content);
+    padding: 1rem 2rem;
+    font-family: 'Courier New', monospace;
+    font-weight: 900;
+    text-transform: uppercase;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.15s ease-in-out;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: fit-content;
+  }
+
+  .btn-meta {
+    font-size: 0.6rem;
+    color: var(--color-base-300);
+    margin-bottom: 0.2rem;
+  }
+
+  /* 1. Standard Hover: Heavy Border & Shift */
+  .btn-standard:hover {
+    background: var(--color-base-300);
+    border-color: var(--color-base-content);
+    color: var(--color-base-100);
+    transform: translate(-4px, -4px);
+    box-shadow: 6px 6px 0px var(--color-accent);
+  }
+
+  /* 2. Activated State: Originium Glow */
+  .btn-activated {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .btn-activated:hover {
+    background: var(--color-accent);
+    color: white;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px var(--color-accent);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+  }
+
+  /* 3. Tactical: Angular Cut-out (Chamfered) */
+  .btn-tactical {
+    background: var(--color-accent);
+    color: white;
+    border: none;
+    clip-path: polygon(0 0, 90% 0, 100% 30%, 100% 100%, 10% 100%, 0 70%);
+    padding: 1.5rem 3rem;
+  }
+
+  .btn-tactical:hover {
+    filter: brightness(1.2);
+    transform: scale(1.05);
+  }
+
+  /* 4. Ghost Button: Minimalist */
+  .btn-ghost {
+    border: 1px solid var(--color-base-300);
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .btn-ghost:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  /* 5. Solid 3D Button: Used in Hero sections */
+  .btn-solid-3d {
+    @apply relative font-inter cursor-pointer z-10 block bg-base-100 text-white px-8 py-4 font-bold text-xl border-2 border-white transition-all duration-150 shadow-3d shadow-white uppercase;
+  }
+
+  .btn-solid-3d:hover {
+    @apply bg-white text-black shadow-3d-hover -translate-x-[4px] -translate-y-[4px];
+  }
+
+  .btn-solid-3d:active {
+    @apply bg-white text-black shadow-3d-active translate-x-[4px] translate-y-[4px];
+  }
+}
+
+@utility shadow-3d {
+  box-shadow: 1px 1px 0px 0px var(--tw-shadow-color, currentColor),
+    2px 2px 0px 0px var(--tw-shadow-color, currentColor),
+    3px 3px 0px 0px var(--tw-shadow-color, currentColor),
+    4px 4px 0px 0px var(--tw-shadow-color, currentColor);
+}
+
+@utility shadow-3d-hover {
+  box-shadow: 1px 1px 0px 0px var(--tw-shadow-color, currentColor),
+    2px 2px 0px 0px var(--tw-shadow-color, currentColor),
+    3px 3px 0px 0px var(--tw-shadow-color, currentColor),
+    4px 4px 0px 0px var(--tw-shadow-color, currentColor),
+    5px 5px 0px 0px var(--tw-shadow-color, currentColor),
+    6px 6px 0px 0px var(--tw-shadow-color, currentColor),
+    7px 7px 0px 0px var(--tw-shadow-color, currentColor),
+    8px 8px 0px 0px var(--tw-shadow-color, currentColor);
+}
+
+@utility shadow-3d-active {
+  box-shadow: 0px 0px 0px 0px var(--tw-shadow-color, currentColor);
 }
