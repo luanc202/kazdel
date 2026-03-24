@@ -8,6 +8,8 @@ package components
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+import "kazdel/pkg/ui/icons"
+
 func LandingFooter() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -29,7 +31,15 @@ func LandingFooter() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"absolute bottom-8 left-8 text-white/30 font-mono text-xs tracking-widest uppercase\">V.0.0.1 // PROTOCOL: KAZDEL_SHORT</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"absolute bottom-8 left-8 text-white/30 font-mono text-xs tracking-widest uppercase\">V.0.0.1 // PROTOCOL: KAZDEL_SHORT</div><div class=\"absolute bottom-2 right-2 text-white/30 font-mono text-xs tracking-widest uppercase flex items-center gap-2\">made with <span class=\"text-red-500\">❤</span> by  <a href=\"https://github.com/luanc202\" class=\"flex items-center gap-2\">luan ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = icons.GitHubIcon(18).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</a></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
