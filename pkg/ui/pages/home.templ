@@ -29,8 +29,8 @@ templ Home() {
 					<h1 id="hero-title" class="text-6xl sm:text-9xl xl:text-[15rem] font-black text-accent-content brand-font drop-shadow-md tracking-tighter leading-none">KAZDEL</h1>
 					<p id="hero-subtitle" class="text-2xl sm:text-2xl lg:text-3xl xl:text-5xl font-black sub-brand-font text-accent-content/90 mt-4 tracking-tighter leading-none">HOME OF YOUR SHORT LINKS.</p>
 					<div class="flex flex-col sm:flex-row gap-6 mt-12">
-						<button class="btn-solid-3d">LOG IN</button>
-						<button class="btn-solid-3d">CREATE ACCOUNT</button>
+						<a hx-get="/login" hx-target="#main-body" hx-push-url="true"><button class="btn-solid-3d">LOG IN</button></a>
+						<a hx-get="/signup" hx-target="#main-body" hx-push-url="true"><button class="btn-solid-3d">CREATE ACCOUNT</button></a>
 					</div>
 				</div>
 			</div>
