@@ -1,14 +1,12 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log/slog"
 	"net/http"
 
 	"kazdel/pkg/api/controllers"
 	"kazdel/pkg/api/routes"
-	"kazdel/pkg/handlers"
 	"kazdel/pkg/infra/config"
 	"kazdel/pkg/infra/db"
 	"kazdel/pkg/usecase"
@@ -42,13 +40,7 @@ func main() {
 		AuthController:         authController,
 	}
 
-	webHandlers := handlers.Handlers{
-		Home:         handlers.NewHomePageHandler(context.Background(), nil, nil), // Dummy for now, actual implementation likely needs http context injected dynamically or refactoring
-		Auth:         handlers.NewAuthHandler(authUseCase),
-		ShortenedUrl: handlers.NewShortenedUrlHandler(shortenedURLUseCase),
-	}
-
-	router := routes.InitializeRouter(apiControllers, webHandlers)
+	router := routes.InitializeRouter(apiControllers)
 
 	slog.Info(fmt.Sprintf("Server started on port: %v", env.PORT))
 	slog.Error(http.ListenAndServe(":"+env.PORT, router).Error())

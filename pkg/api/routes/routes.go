@@ -6,9 +6,10 @@ import (
 
 	"kazdel/pkg/api/controllers"
 	authMiddleware "kazdel/pkg/api/middleware"
-	"kazdel/pkg/handlers"
 	"kazdel/pkg/infra/config"
+	"kazdel/pkg/ui/pages"
 
+	"github.com/a-h/templ"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
@@ -18,7 +19,7 @@ type Controllers struct {
 	AuthController         *controllers.AuthController
 }
 
-func InitializeRoutes(controllers Controllers, webHandlers handlers.Handlers, c *chi.Mux) {
+func InitializeRoutes(controllers Controllers, c *chi.Mux) {
 
 	// Serve static files (HTMX, CSS, etc.)
 	c.Handle("/static/*", http.StripPrefix("/static/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -32,21 +33,17 @@ func InitializeRoutes(controllers Controllers, webHandlers handlers.Handlers, c 
 	// Web UI Routes (Templ + HTMX)
 	c.Group(func(web chi.Router) {
 		// Public web routes
-		web.Get("/", webHandlers.Home.ServeHTTP)
-		web.Get("/login", webHandlers.Auth.ShowLoginPage)
-		web.Get("/signup", webHandlers.Auth.ShowSignupPage)
-
-		web.Post("/login", webHandlers.Auth.HandleLogin)
-		web.Post("/signup", webHandlers.Auth.HandleSignup)
-		web.Post("/logout", webHandlers.Auth.HandleLogout)
+		web.Get("/", templ.Handler(pages.Home()).ServeHTTP)
+		web.Get("/login", templ.Handler(pages.SignUp()).ServeHTTP)
+		web.Get("/signup", templ.Handler(pages.SignUp()).ServeHTTP)
 
 		// Protected web routes
 		web.Group(func(protectedWeb chi.Router) {
 			protectedWeb.Use(authMiddleware.AuthMiddleware(controllers.AuthController.AuthUseCase))
 
-			protectedWeb.Get("/dashboard", webHandlers.ShortenedUrl.ShowDashboard)
-			protectedWeb.Post("/shorten", webHandlers.ShortenedUrl.HandleCreateUrl)
-			protectedWeb.Delete("/urls/{id}", webHandlers.ShortenedUrl.HandleDeleteUrl)
+			// protectedWeb.Get("/dashboard", webHandlers.ShortenedUrl.ShowDashboard)
+			// protectedWeb.Post("/shorten", webHandlers.ShortenedUrl.HandleCreateUrl)
+			// protectedWeb.Delete("/urls/{id}", webHandlers.ShortenedUrl.HandleDeleteUrl)
 		})
 	})
 
