@@ -10,7 +10,11 @@ document.addEventListener('htmx:load', function (evt) {
     const buttons = document.querySelectorAll(".btn-solid-3d");
     const title = document.getElementById("hero-title");
     const subtitle = document.getElementById("hero-subtitle");
+    const signupForm = document.getElementById("signup-form-div");
+    const signupFormFooter = document.getElementById("signup-form-footer");
 
+
+    // Landing page animations
     if (buttons.length > 0) {
         animate(
             ".btn-solid-3d",
@@ -31,6 +35,23 @@ document.addEventListener('htmx:load', function (evt) {
         animate(
             subtitle,
             { opacity: [0, 1], x: [-20, 0] },
+            { duration: 0.8, delay: 0.4 }
+        );
+    }
+
+    // Signup page animations
+    if (signupForm) {
+        animate(
+            signupForm,
+            { opacity: [0, 1], y: [20, 0] },
+            { duration: 0.8 }
+        );
+    }
+
+    if (signupFormFooter) {
+        animate(
+            signupFormFooter,
+            { opacity: [0, 1], y: [20, 0] },
             { duration: 0.8, delay: 0.4 }
         );
     }
