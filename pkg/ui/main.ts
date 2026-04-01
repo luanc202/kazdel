@@ -1,5 +1,8 @@
 import "htmx.org";
 import { animate, hover, press } from "motion";
+import { themeChange } from 'theme-change'
+
+themeChange()
 
 document.addEventListener('htmx:load', function (evt) {
     console.log("HTMX loaded new content");
@@ -59,3 +62,4 @@ document.addEventListener('htmx:load', function (evt) {
     // 2. Interactive Animations (Hover and Press/Tap) are now managed
     // via pure CSS in main.css to keep the box-shadow base totally anchored.
 });
+

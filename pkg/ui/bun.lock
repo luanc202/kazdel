@@ -12,6 +12,7 @@
         "postcss": "^8.5.8",
         "postcss-cli": "^11.0.1",
         "tailwindcss": "^4.2.1",
+        "theme-change": "^2.5.0",
       },
       "devDependencies": {
         "@types/bun": "latest",
@@ -203,6 +204,8 @@
     "tailwindcss": ["tailwindcss@4.2.1", "", {}, "sha512-/tBrSQ36vCleJkAOsy9kbNTgaxvGbyOamC30PRePTQe/o1MFwEKHQk4Cn7BNGaPtjp+PuUrByJehM1hgxfq4sw=="],
 
     "tapable": ["tapable@2.3.0", "", {}, "sha512-g9ljZiwki/LfxmQADO3dEY1CbpmXT5Hm2fJ+QaGKwSXUylMybePR7/67YW7jOrrvjEgL1Fmz5kzyAjWVWLlucg=="],
+
+    "theme-change": ["theme-change@2.5.0", "", {}, "sha512-B/UdsgdHAGhSKHTAQnxg/etN0RaMDpehuJmZIjLMDVJ6DGIliRHGD6pODi1CXLQAN9GV0GSyB3G6yCuK05PkPQ=="],
 
     "thenby": ["thenby@1.3.4", "", {}, "sha512-89Gi5raiWA3QZ4b2ePcEwswC3me9JIg+ToSgtE0JWeCynLnLxNr/f9G+xfo9K+Oj4AFdom8YNJjibIARTJmapQ=="],
 
