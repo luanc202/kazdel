@@ -1,5 +1,7 @@
 package components
 
+import "kazdel/pkg/ui/icons"
+
 templ Base() {
 	<html data-theme="kazdel-dark">
 		<head>
@@ -11,6 +13,12 @@ templ Base() {
 			<script src="/static/bundle.js"></script>
 		</head>
 		<body id="main-body">
+			<!-- Theme Controller Toggle -->
+			<label id="theme-toggler-label" hx-preserve="true" class="swap swap-rotate fixed top-4 right-4 z-100 btn btn-circle btn-ghost">
+				<input data-toggle-theme="kazdel-dark,kazdel-light" data-act-class="ACTIVECLASS" type="checkbox" class="theme-controller" id="theme-toggle"/>
+				@icons.SunIcon("swap-off fill-current w-8 h-8")
+				@icons.MoonIcon("swap-on fill-current w-8 h-8")
+			</label>
 			{ children... }
 		</body>
 	</html>
