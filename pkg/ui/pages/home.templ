@@ -4,7 +4,7 @@ import "kazdel/pkg/ui/components"
 
 templ Home() {
 	@components.Base() {
-		<div class="min-h-screen bg-hero-bg-color flex flex-col w-full items-center justify-center p-6 relative overflow-hidden lg:px-24">
+		<div class="min-h-screen bg-base-100 flex flex-col w-full items-center justify-center p-6 relative overflow-hidden lg:px-24">
 			<div class="flex flex-col -left-1 md:flex-row items-center justify-center md:justify-start w-full z-10">
 				<div class="absolute left-0 top-1/2 -translate-y-1/2 opacity-10 pointer-events-none select-none">
 					<svg
@@ -26,8 +26,8 @@ templ Home() {
 					</svg>
 				</div>
 				<div class="z-10 flex flex-col items-start max-w-4xl w-full sm:ml-48">
-					<h1 id="hero-title" class="text-6xl sm:text-9xl xl:text-[15rem] font-black text-accent-content brand-font drop-shadow-md tracking-tighter leading-none">KAZDEL</h1>
-					<p id="hero-subtitle" class="text-2xl sm:text-2xl lg:text-3xl xl:text-5xl font-black sub-brand-font text-accent-content/90 mt-4 tracking-tighter leading-none">HOME OF YOUR SHORT LINKS.</p>
+					<h1 id="hero-title" class="text-6xl sm:text-9xl xl:text-[15rem] font-black text-base-content dark:text-accent-content brand-font drop-shadow-md tracking-tighter leading-none">KAZDEL</h1>
+					<p id="hero-subtitle" class="text-2xl sm:text-2xl lg:text-3xl xl:text-5xl font-black sub-brand-font text-base-content/90 dark:text-accent-content/90 mt-4 tracking-tighter leading-none">HOME OF YOUR SHORT LINKS.</p>
 					<div class="flex flex-col sm:flex-row gap-6 mt-12">
 						<a hx-get="/login" hx-target="#main-body" hx-push-url="true"><button class="btn-solid-3d">LOG IN</button></a>
 						<a hx-get="/signup" hx-target="#main-body" hx-push-url="true"><button class="btn-solid-3d">CREATE ACCOUNT</button></a>
