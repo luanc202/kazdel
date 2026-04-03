@@ -5,12 +5,6 @@ import (
 	"kazdel/pkg/ui/icons"
 )
 
-type SignupInputFormParams struct {
-	Email              string
-	Password           string
-	PasswordValidation string
-}
-
 templ SignUp() {
 	@components.Base() {
 		<div class="min-h-screen bg-base-100 text-base-content flex items-center justify-center p-6 font-sans">
@@ -42,6 +36,24 @@ templ SignUpForm() {
 	<form
 		class="space-y-6"
 	>
+		<div>
+			<label class="block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2">
+				Username
+			</label>
+			<input
+				type="text"
+				placeholder="[USERNAME]"
+				class="peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success"
+				minlength="4"
+				maxlength="20"
+				pattern="[a-zA-Z0-9_.]+"
+				title="Must contain at least 4 characters and at most 20 characters, including uppercase, lowercase, numbers, underscore and dot"
+				required
+			/>
+			<p class="mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block">
+				Must contain at least 4 characters and at most 20 characters, including uppercase, lowercase, numbers, underscore and dot.
+			</p>
+		</div>
 		<div>
 			<label class="block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2">
 				Email Address
