@@ -44,12 +44,12 @@ templ SignUpForm() {
 				type="text"
 				placeholder="[NAME]"
 				class="peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success"
-				minlength="3"
+				minlength="1"
 				maxlength="20"
 				required
 			/>
 			<p class="mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block">
-				Must contain at least 3 characters and at most 20 characters.
+				Must contain at least 1 characters and at most 20 characters.
 			</p>
 		</div>
 		<div>
