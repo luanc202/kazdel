@@ -3,9 +3,12 @@ package controllers
 import (
 	"encoding/json"
 	"kazdel/pkg/constants"
+	"kazdel/pkg/entity/dto"
 	"kazdel/pkg/usecase"
 	"net/http"
 	"time"
+
+	"github.com/go-playground/form"
 )
 
 type AuthController struct {
@@ -18,25 +21,33 @@ func NewAuthController(authUseCase *usecase.AuthUseCase) *AuthController {
 	}
 }
 
-type SignupRequest struct {
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
 type LoginRequest struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
+var decoder *form.Decoder
+
 func (c *AuthController) Signup(w http.ResponseWriter, r *http.Request) {
-	var req SignupRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
+	var dto dto.SignUpRequest
+	decoder = form.NewDecoder()
+
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "Failed to parse form data", http.StatusBadRequest)
 		return
 	}
 
-	if err := c.AuthUseCase.Signup(req.Name, req.Email, req.Password); err != nil {
+	if err := decoder.Decode(&dto, r.Form); err != nil {
+		http.Error(w, "Invalid request form", http.StatusBadRequest)
+		return
+	}
+
+	if err := dto.Validate(); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	if err := c.AuthUseCase.Signup(dto.Name, dto.Username, dto.Email, dto.Password); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
