@@ -23,31 +23,41 @@ func NewAuthUseCase(userRepo interfaces.UserRepository, sessionRepo interfaces.S
 	}
 }
 
-func (uc *AuthUseCase) Signup(name, username, email, password string) error {
+func (uc *AuthUseCase) Signup(name, username, email, password string) (string, error) {
 	exists, _ := uc.UserRepo.ExistsByEmail(email)
 	if exists {
-		return fmt.Errorf("email already registered")
+		return "", fmt.Errorf("email already registered")
 	}
 
 	exists, _ = uc.UserRepo.ExistsByUsername(username)
 	if exists {
-		return fmt.Errorf("username already registered")
+		return "", fmt.Errorf("username already registered")
 	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		slog.Error("failed to hash password", "error", err)
-		return fmt.Errorf("failed to create user")
+		return "", fmt.Errorf("failed to create user")
 	}
 
 	user := entity.NewUser(name, username, entity.RoleUser, email, string(hashedPassword))
 
 	err = uc.UserRepo.Save(user)
 	if err != nil {
-		return fmt.Errorf("failed to create user: %w", err)
+		return "", fmt.Errorf("failed to create user: %w", err)
 	}
 
-	return nil
+	token := uniqueEntityId.NewID().String()
+	expiresAt := time.Now().Add(24 * time.Hour)
+
+	session := entity.NewSession(user.ID, token, expiresAt)
+
+	err = uc.SessionRepo.Create(session)
+	if err != nil {
+		return "", fmt.Errorf("failed to create session: %w", err)
+	}
+
+	return token, nil
 }
 
 func (uc *AuthUseCase) Login(email, password string) (string, error) {
