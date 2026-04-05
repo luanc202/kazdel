@@ -40,7 +40,7 @@ func (uc *AuthUseCase) Signup(name, username, email, password string) error {
 		return fmt.Errorf("failed to create user")
 	}
 
-	user := entity.NewUser(name, username, email, string(hashedPassword))
+	user := entity.NewUser(name, username, entity.RoleUser, email, string(hashedPassword))
 
 	err = uc.UserRepo.Save(user)
 	if err != nil {
