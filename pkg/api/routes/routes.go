@@ -34,14 +34,14 @@ func InitializeRoutes(controllers Controllers, c *chi.Mux) {
 	c.Group(func(web chi.Router) {
 		// Public web routes
 		web.Get("/", templ.Handler(pages.Home()).ServeHTTP)
-		web.Get("/login", templ.Handler(pages.SignUp()).ServeHTTP)
+		web.Get("/login", templ.Handler(pages.Login()).ServeHTTP)
 		web.Get("/signup", templ.Handler(pages.SignUp()).ServeHTTP)
 
 		// Protected web routes
 		web.Group(func(protectedWeb chi.Router) {
 			protectedWeb.Use(authMiddleware.AuthMiddleware(controllers.AuthController.AuthUseCase))
 
-			// protectedWeb.Get("/dashboard", webHandlers.ShortenedUrl.ShowDashboard)
+			protectedWeb.Get("/dashboard", templ.Handler(pages.Dashboard()).ServeHTTP)
 			// protectedWeb.Post("/shorten", webHandlers.ShortenedUrl.HandleCreateUrl)
 			// protectedWeb.Delete("/urls/{id}", webHandlers.ShortenedUrl.HandleDeleteUrl)
 		})
