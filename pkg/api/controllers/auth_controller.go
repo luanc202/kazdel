@@ -47,9 +47,11 @@ func (c *AuthController) Signup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := c.AuthUseCase.Signup(dto.Name, dto.Username, dto.Email, dto.Password); err != nil {
+	if token, err := c.AuthUseCase.Signup(dto.Name, dto.Username, dto.Email, dto.Password); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
+	} else {
+		setSessionCookie(w, token, time.Now().Add(24*time.Hour))
 	}
 
 	w.WriteHeader(http.StatusCreated)
@@ -69,15 +71,7 @@ func (c *AuthController) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Set HttpOnly cookie
-	http.SetCookie(w, &http.Cookie{
-		Name:     constants.SessionCookieName,
-		Value:    token,
-		Expires:  time.Now().Add(24 * time.Hour),
-		HttpOnly: true,
-		Secure:   false, // Set to true in production with HTTPS
-		SameSite: http.SameSiteStrictMode,
-		Path:     "/",
-	})
+	setSessionCookie(w, token, time.Now().Add(24*time.Hour))
 
 	w.WriteHeader(http.StatusOK)
 
@@ -91,15 +85,19 @@ func (c *AuthController) Logout(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Clear the cookie
+	setSessionCookie(w, "", time.Now().Add(-1*time.Hour))
+
+	w.WriteHeader(http.StatusOK)
+}
+
+func setSessionCookie(w http.ResponseWriter, token string, expires time.Time) {
 	http.SetCookie(w, &http.Cookie{
 		Name:     constants.SessionCookieName,
-		Value:    "",
-		Expires:  time.Now().Add(-1 * time.Hour), // Past time to delete
+		Value:    token,
+		Expires:  expires,
 		HttpOnly: true,
-		Secure:   false,
+		Secure:   false, // Set to true in production with HTTPS
 		SameSite: http.SameSiteStrictMode,
 		Path:     "/",
 	})
-
-	w.WriteHeader(http.StatusOK)
 }
