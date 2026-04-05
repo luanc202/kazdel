@@ -2,10 +2,11 @@ package usecase
 
 import (
 	"fmt"
-	"time"
 	"kazdel/pkg/entity"
 	interfaces "kazdel/pkg/interface"
 	"kazdel/pkg/uniqueEntityId"
+	"log/slog"
+	"time"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -22,18 +23,24 @@ func NewAuthUseCase(userRepo interfaces.UserRepository, sessionRepo interfaces.S
 	}
 }
 
-func (uc *AuthUseCase) Signup(name, email, password string) error {
-	existingUser, _ := uc.UserRepo.FindByEmail(email)
-	if existingUser != nil {
+func (uc *AuthUseCase) Signup(name, username, email, password string) error {
+	exists, _ := uc.UserRepo.ExistsByEmail(email)
+	if exists {
 		return fmt.Errorf("email already registered")
+	}
+
+	exists, _ = uc.UserRepo.ExistsByUsername(username)
+	if exists {
+		return fmt.Errorf("username already registered")
 	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
-		return fmt.Errorf("failed to hash password: %w", err)
+		slog.Error("failed to hash password", "error", err)
+		return fmt.Errorf("failed to create user")
 	}
 
-	user := entity.NewUser(name, email, string(hashedPassword))
+	user := entity.NewUser(name, username, email, string(hashedPassword))
 
 	err = uc.UserRepo.Save(user)
 	if err != nil {
