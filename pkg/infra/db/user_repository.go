@@ -20,7 +20,7 @@ func NewUserRepository(dbConnection *pgxpool.Pool) interfaces.UserRepository {
 }
 
 func (ur *UserRepository) Save(user *entity.User) error {
-	sql := `INSERT INTO users (id, name, email, password_hash, created_at, updated_at) VALUES (@id, @name, @email, @password_hash, @created_at, @updated_at)`
+	sql := `INSERT INTO users (id, name, username, role, email, password_hash, created_at, updated_at) VALUES (@id, @name, @username, @role, @email, @password_hash, @created_at, @updated_at)`
 
 	_, err := ur.dbConnection.Exec(
 		context.Background(),
@@ -28,6 +28,8 @@ func (ur *UserRepository) Save(user *entity.User) error {
 		pgx.NamedArgs{
 			"id":            user.ID,
 			"name":          user.Name,
+			"username":      user.Username,
+			"role":          user.Role,
 			"email":         user.Email,
 			"password_hash": user.PasswordHash,
 			"created_at":    user.CreatedAt,
@@ -43,7 +45,7 @@ func (ur *UserRepository) Save(user *entity.User) error {
 }
 
 func (ur *UserRepository) FindByEmail(email string) (*entity.User, error) {
-	sql := `SELECT id, name, email, password_hash, created_at, updated_at FROM users WHERE email = @email LIMIT 1`
+	sql := `SELECT id, name, username, role, email, password_hash, created_at, updated_at FROM users WHERE email = @email LIMIT 1`
 
 	var user entity.User
 	var idStr string
@@ -57,6 +59,8 @@ func (ur *UserRepository) FindByEmail(email string) (*entity.User, error) {
 	).Scan(
 		&idStr,
 		&user.Name,
+		&user.Username,
+		&user.Role,
 		&user.Email,
 		&user.PasswordHash,
 		&user.CreatedAt,
@@ -80,7 +84,7 @@ func (ur *UserRepository) FindByEmail(email string) (*entity.User, error) {
 }
 
 func (ur *UserRepository) FindByUsername(username string) (*entity.User, error) {
-	sql := `SELECT id, name, username, email, password_hash, created_at, updated_at FROM users WHERE username = @username LIMIT 1`
+	sql := `SELECT id, name, username, role, email, password_hash, created_at, updated_at FROM users WHERE username = @username LIMIT 1`
 
 	var user entity.User
 	var idStr string
@@ -95,6 +99,7 @@ func (ur *UserRepository) FindByUsername(username string) (*entity.User, error) 
 		&idStr,
 		&user.Name,
 		&user.Username,
+		&user.Role,
 		&user.Email,
 		&user.PasswordHash,
 		&user.CreatedAt,
