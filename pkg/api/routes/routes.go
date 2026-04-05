@@ -50,7 +50,7 @@ func InitializeRoutes(controllers Controllers, c *chi.Mux) {
 	// JSON API Routes
 	c.Route("/api", func(r chi.Router) {
 		r.Route("/v1", func(r chi.Router) {
-			r.Use(middleware.AllowContentType("application/json"))
+			r.Use(middleware.AllowContentType("application/x-www-form-urlencoded"))
 
 			// Auth API Routes
 			r.Group(func(auth chi.Router) {
