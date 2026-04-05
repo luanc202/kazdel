@@ -35,6 +35,8 @@ templ SignUp() {
 templ SignUpForm() {
 	<form
 		class="space-y-6"
+		hx-post="/api/v1/auth/signup"
+		hx-swap="outerHTML"
 	>
 		<div>
 			<label class="block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2">
@@ -42,6 +44,7 @@ templ SignUpForm() {
 			</label>
 			<input
 				type="text"
+				name="name"
 				placeholder="[NAME]"
 				class="peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success"
 				minlength="1"
@@ -58,6 +61,7 @@ templ SignUpForm() {
 			</label>
 			<input
 				type="text"
+				name="username"
 				placeholder="[USERNAME]"
 				class="peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success"
 				minlength="4"
@@ -76,6 +80,7 @@ templ SignUpForm() {
 			</label>
 			<input
 				type="email"
+				name="email"
 				placeholder="[EMAIL_ADDRESS]"
 				class="peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success"
 				required
@@ -90,6 +95,7 @@ templ SignUpForm() {
 			</label>
 			<input
 				id="password"
+				name="password"
 				type="password"
 				placeholder="••••••••"
 				minlength="8"
