@@ -55,6 +55,7 @@ func (c *AuthController) Signup(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
 
 func (c *AuthController) Login(w http.ResponseWriter, r *http.Request) {
@@ -74,7 +75,7 @@ func (c *AuthController) Login(w http.ResponseWriter, r *http.Request) {
 	setSessionCookie(w, token, time.Now().Add(24*time.Hour))
 
 	w.WriteHeader(http.StatusOK)
-
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
 
 func (c *AuthController) Logout(w http.ResponseWriter, r *http.Request) {
