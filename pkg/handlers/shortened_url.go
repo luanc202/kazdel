@@ -73,8 +73,9 @@ func (h *ShortenedUrlHandler) HandleCreateUrl(w http.ResponseWriter, r *http.Req
 	}
 
 	insertDto := dto.ShortenedUrlInsert{
-		OriginalUrl: originalUrl,
-		ExpiresAt:   expiresAt,
+		OriginalUrl:     originalUrl,
+		ExpiresAt:       expiresAt.Format("2006-01-02T15:04"),
+		ParsedExpiresAt: expiresAt,
 	}
 
 	if err := insertDto.Validate(); err != nil {

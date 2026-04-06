@@ -7,11 +7,12 @@ import (
 )
 
 type ShortenedUrlInsert struct {
-	OriginalUrl string    `json:"originalUrl"`
-	ExpiresAt   time.Time `json:"expiresAt"`
+	OriginalUrl     string    `form:"originalUrl"`
+	ExpiresAt       string    `form:"expiresAt"`
+	ParsedExpiresAt time.Time `form:"-"`
 }
 
-func NewShortenedUrlInsert(originalUrl string, expiresAt time.Time) *ShortenedUrlInsert {
+func NewShortenedUrlInsert(originalUrl string, expiresAt string) *ShortenedUrlInsert {
 	return &ShortenedUrlInsert{
 		OriginalUrl: originalUrl,
 		ExpiresAt:   expiresAt,
@@ -28,11 +29,18 @@ func (s *ShortenedUrlInsert) Validate() error {
 		return errors.New("Origin URL must be a valid HTTP or HTTPS URL")
 	}
 
-	if s.ExpiresAt.IsZero() {
+	if s.ExpiresAt == "" {
 		return errors.New("Expiration date cannot be empty")
 	}
 
-	if s.ExpiresAt.Compare(time.Now()) < 0 {
+	// HTML datetime-local format: YYYY-MM-DDThh:mm
+	parsedTime, err := time.Parse("2006-01-02T15:04", s.ExpiresAt)
+	if err != nil {
+		return errors.New("Expiration date must be a valid date and time")
+	}
+	s.ParsedExpiresAt = parsedTime
+
+	if s.ParsedExpiresAt.Compare(time.Now()) < 0 {
 		return errors.New("Expiration date cannot be in the past")
 	}
 

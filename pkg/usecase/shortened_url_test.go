@@ -24,8 +24,9 @@ func TestShortenedUrlUsecase_Save(t *testing.T) {
 	}{
 		"Success": {
 			input: dto.ShortenedUrlInsert{
-				OriginalUrl: "http://example.com",
-				ExpiresAt:   time.Now().Add(30 * time.Minute),
+				OriginalUrl:     "http://example.com",
+				ExpiresAt:       time.Now().Add(30 * time.Minute).Format("2006-01-02T15:04"),
+				ParsedExpiresAt: time.Now().Add(30 * time.Minute),
 			},
 			setupMock: func(m *mocks.ShortenedUrlRepository) {
 				m.On("Save", mock.MatchedBy(func(u *entity.ShortenedUrl) bool {
@@ -36,8 +37,9 @@ func TestShortenedUrlUsecase_Save(t *testing.T) {
 		},
 		"Repository Error": {
 			input: dto.ShortenedUrlInsert{
-				OriginalUrl: "http://example.com",
-				ExpiresAt:   time.Now().Add(30 * time.Minute),
+				OriginalUrl:     "http://example.com",
+				ExpiresAt:       time.Now().Add(30 * time.Minute).Format("2006-01-02T15:04"),
+				ParsedExpiresAt: time.Now().Add(30 * time.Minute),
 			},
 			setupMock: func(m *mocks.ShortenedUrlRepository) {
 				m.On("Save", mock.AnythingOfType("*entity.ShortenedUrl")).Return(errors.New("db error"))

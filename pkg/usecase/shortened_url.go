@@ -26,7 +26,7 @@ func NewShortenedUrlUseCase(repo interfaces.ShortenedUrlRepository) *ShortenedUr
 func (su *ShortenedUrlUsecase) Save(shortenedUrlDto dto.ShortenedUrlInsert, userId uniqueEntityId.ID) error {
 	shortSlug := slug.GenerateSlug(6)
 
-	expiresAt := shortenedUrlDto.ExpiresAt
+	expiresAt := shortenedUrlDto.ParsedExpiresAt
 
 	shortenedUrl := entity.NewShortenedUrl(shortSlug, shortenedUrlDto.OriginalUrl, expiresAt, userId)
 

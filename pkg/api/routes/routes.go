@@ -41,9 +41,9 @@ func InitializeRoutes(controllers Controllers, c *chi.Mux) {
 		web.Group(func(protectedWeb chi.Router) {
 			protectedWeb.Use(authMiddleware.AuthMiddleware(controllers.AuthController.AuthUseCase))
 
-			protectedWeb.Get("/dashboard", templ.Handler(pages.Dashboard(nil)).ServeHTTP)
-			// protectedWeb.Post("/shorten", webHandlers.ShortenedUrl.HandleCreateUrl)
-			// protectedWeb.Delete("/urls/{id}", webHandlers.ShortenedUrl.HandleDeleteUrl)
+			protectedWeb.Get("/dashboard", controllers.ShortenedUrlController.ServeDashboardPage)
+			protectedWeb.Post("/dashboard/urls/shorten", controllers.ShortenedUrlController.CreateShortenedUrl)
+			protectedWeb.Delete("/dashboard/urls/{slug}", controllers.ShortenedUrlController.DeleteShortenedUrl)
 		})
 	})
 
@@ -61,10 +61,9 @@ func InitializeRoutes(controllers Controllers, c *chi.Mux) {
 			// Protected API Routes
 			r.Group(func(private chi.Router) {
 				private.Use(authMiddleware.AuthMiddleware(controllers.AuthController.AuthUseCase))
+				// We allow standard GET for logout matching the anchor tag on dashboard
+				private.Get("/auth/logout", controllers.AuthController.Logout)
 				private.Post("/auth/logout", controllers.AuthController.Logout)
-				private.Post("/shorten", controllers.ShortenedUrlController.CreateShortenedUrl)
-				private.Get("/urls", controllers.ShortenedUrlController.ListUserUrls)
-				private.Delete("/urls/{id}", controllers.ShortenedUrlController.DeleteShortenedUrl)
 			})
 		})
 	})
