@@ -26,25 +26,26 @@ func NewAuthUseCase(userRepo interfaces.UserRepository, sessionRepo interfaces.S
 func (uc *AuthUseCase) Signup(name, username, email, password string) (string, error) {
 	exists, _ := uc.UserRepo.ExistsByEmail(email)
 	if exists {
-		return "", fmt.Errorf("email already registered")
+		return "", fmt.Errorf("Email already registered")
 	}
 
 	exists, _ = uc.UserRepo.ExistsByUsername(username)
 	if exists {
-		return "", fmt.Errorf("username already registered")
+		return "", fmt.Errorf("Username already registered")
 	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
-		slog.Error("failed to hash password", "error", err)
-		return "", fmt.Errorf("failed to create user")
+		slog.Error("Failed to hash password", "error", err)
+		return "", fmt.Errorf("Failed to create user")
 	}
 
 	user := entity.NewUser(name, username, entity.RoleUser, email, string(hashedPassword))
 
 	err = uc.UserRepo.Save(user)
 	if err != nil {
-		return "", fmt.Errorf("failed to create user: %w", err)
+		slog.Error("Failed to save user", "error", err)
+		return "", fmt.Errorf("Failed to create user")
 	}
 
 	token := uniqueEntityId.NewID().String()
@@ -54,7 +55,7 @@ func (uc *AuthUseCase) Signup(name, username, email, password string) (string, e
 
 	err = uc.SessionRepo.Create(session)
 	if err != nil {
-		return "", fmt.Errorf("failed to create session: %w", err)
+		return "", fmt.Errorf("Failed to create session: %w", err)
 	}
 
 	return token, nil
@@ -63,12 +64,12 @@ func (uc *AuthUseCase) Signup(name, username, email, password string) (string, e
 func (uc *AuthUseCase) Login(username, password string) (string, error) {
 	user, err := uc.UserRepo.FindByUsername(username)
 	if err != nil {
-		return "", fmt.Errorf("invalid credentials")
+		return "", fmt.Errorf("Invalid credentials")
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password))
 	if err != nil {
-		return "", fmt.Errorf("invalid credentials")
+		return "", fmt.Errorf("Invalid credentials")
 	}
 
 	// Generate a session token (using UUID for simplicity and uniqueness)
@@ -79,7 +80,8 @@ func (uc *AuthUseCase) Login(username, password string) (string, error) {
 
 	err = uc.SessionRepo.Create(session)
 	if err != nil {
-		return "", fmt.Errorf("failed to create session: %w", err)
+		slog.Error("Failed to create session", "error", err)
+		return "", fmt.Errorf("Failed to create session")
 	}
 
 	return token, nil
@@ -95,12 +97,12 @@ func (uc *AuthUseCase) ValidateSession(token string) (string, error) {
 		return "", err
 	}
 	if session == nil {
-		return "", fmt.Errorf("session not found")
+		return "", fmt.Errorf("Session not found")
 	}
 
 	if session.ExpiresAt.Before(time.Now()) {
 		uc.SessionRepo.DeleteByToken(token) // Clean up expired session
-		return "", fmt.Errorf("session expired")
+		return "", fmt.Errorf("Session expired")
 	}
 
 	return session.UserID.String(), nil
