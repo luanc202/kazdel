@@ -54,8 +54,8 @@ func (c *AuthController) Signup(w http.ResponseWriter, r *http.Request) {
 		setSessionCookie(w, token, time.Now().Add(24*time.Hour))
 	}
 
-	w.WriteHeader(http.StatusCreated)
-	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+	w.Header().Set("HX-Redirect", "/dashboard")
+	w.WriteHeader(http.StatusOK)
 }
 
 func (c *AuthController) Login(w http.ResponseWriter, r *http.Request) {
@@ -86,7 +86,8 @@ func (c *AuthController) Login(w http.ResponseWriter, r *http.Request) {
 	// Set HttpOnly cookie
 	setSessionCookie(w, token, time.Now().Add(24*time.Hour))
 
-	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+	w.Header().Set("HX-Redirect", "/dashboard")
+	w.WriteHeader(http.StatusOK)
 }
 
 func (c *AuthController) Logout(w http.ResponseWriter, r *http.Request) {
