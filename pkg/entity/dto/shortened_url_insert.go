@@ -11,6 +11,13 @@ type ShortenedUrlInsert struct {
 	ExpiresAt   time.Time `json:"expiresAt"`
 }
 
+func NewShortenedUrlInsert(originalUrl string, expiresAt time.Time) *ShortenedUrlInsert {
+	return &ShortenedUrlInsert{
+		OriginalUrl: originalUrl,
+		ExpiresAt:   expiresAt,
+	}
+}
+
 func (s *ShortenedUrlInsert) Validate() error {
 	if s.OriginalUrl == "" {
 		return errors.New("Origin URL cannot be empty")
