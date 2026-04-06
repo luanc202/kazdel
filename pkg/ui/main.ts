@@ -1,11 +1,21 @@
 import "htmx.org";
 import { animate, hover, press } from "motion";
 import { themeChange } from 'theme-change'
+import Alpine from 'alpinejs';
+
+declare global {
+    interface Window {
+        Alpine: typeof Alpine;
+    }
+}
 
 themeChange()
 
 document.addEventListener('htmx:load', function (evt) {
     console.log("HTMX loaded new content");
+    window.Alpine = Alpine;
+
+    Alpine.start()
 
     // 1. Initial Entrance Animation 
     // This replaces `initial={{ opacity: 0, y: 20 }}` and `animate={{ opacity: 1, y: 0 }}`
