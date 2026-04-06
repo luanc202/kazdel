@@ -26,6 +26,15 @@ templ SignUp() {
 						INITIALIZE ACCOUNT
 					</h2>
 					@SignUpForm("", "", "", "")
+					<div
+						id="signup-form-footer"
+						class="mt-8 text-center text-sm text-base-content/70"
+					>
+						Already registered?
+						<a href="/login" class="text-base-content hover:underline">
+							Log in
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -144,13 +153,4 @@ templ SignUpForm(errMessage string, name string, username string, email string) 
 			</button>
 		</div>
 	</form>
-	<div
-		id="signup-form-footer"
-		class="mt-8 text-center text-sm text-base-content/70"
-	>
-		Already registered?
-		<a href="/login" class="text-base-content hover:underline">
-			Log in
-		</a>
-	</div>
 }
