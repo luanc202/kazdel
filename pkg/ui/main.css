@@ -228,6 +228,18 @@
   .btn-action-3d:active {
     @apply bg-base-content text-base-100 shadow-3d-active translate-x-[4px] translate-y-[4px];
   }
+
+  .btn-danger-3d {
+    @apply relative font-inter cursor-pointer z-10 block bg-accent text-accent-content px-8 py-4 font-bold text-xl border-2 border-accent transition-all duration-150 shadow-3d shadow-accent uppercase;
+  }
+
+  .btn-danger-3d:hover {
+    @apply bg-accent-content text-accent shadow-3d-hover -translate-x-[4px] -translate-y-[4px];
+  }
+
+  .btn-danger-3d:active {
+    @apply bg-accent-content text-accent shadow-3d-active translate-x-[4px] translate-y-[4px];
+  }
 }
 
 @utility shadow-3d {
