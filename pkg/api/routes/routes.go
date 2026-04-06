@@ -41,7 +41,7 @@ func InitializeRoutes(controllers Controllers, c *chi.Mux) {
 		web.Group(func(protectedWeb chi.Router) {
 			protectedWeb.Use(authMiddleware.AuthMiddleware(controllers.AuthController.AuthUseCase))
 
-			protectedWeb.Get("/dashboard", templ.Handler(pages.Dashboard()).ServeHTTP)
+			protectedWeb.Get("/dashboard", templ.Handler(pages.Dashboard(nil)).ServeHTTP)
 			// protectedWeb.Post("/shorten", webHandlers.ShortenedUrl.HandleCreateUrl)
 			// protectedWeb.Delete("/urls/{id}", webHandlers.ShortenedUrl.HandleDeleteUrl)
 		})
