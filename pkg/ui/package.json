@@ -16,6 +16,8 @@
   "type": "module",
   "dependencies": {
     "@tailwindcss/postcss": "^4.2.2",
+    "@types/alpinejs": "^3.13.11",
+    "alpinejs": "^3.15.11",
     "daisyui": "^5.5.19",
     "htmx.org": "^2.0.8",
     "motion": "^12.38.0",
