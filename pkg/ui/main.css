@@ -206,15 +206,27 @@
 
   /* 5. Solid 3D Button: Used in Hero sections */
   .btn-solid-3d {
-    @apply relative font-inter cursor-pointer z-10 block bg-base-100 dark:bg-base-100 text-black dark:text-secondary-content px-8 py-4 font-bold text-xl border-2 border-base-content dark:border-secondary-content transition-all duration-150 shadow-3d shadow-base-content dark:shadow-secondary-content uppercase;
+    @apply relative font-inter cursor-pointer z-10 block bg-base-100 text-base-content px-8 py-4 font-bold text-xl border-2 border-base-content transition-all duration-150 shadow-3d shadow-base-content uppercase;
   }
 
   .btn-solid-3d:hover {
-    @apply bg-base-content dark:bg-secondary-content text-base-100 dark:text-black shadow-3d-hover -translate-x-[4px] -translate-y-[4px];
+    @apply bg-base-content text-base-100 shadow-3d-hover -translate-x-[4px] -translate-y-[4px];
   }
 
   .btn-solid-3d:active {
-    @apply bg-base-content dark:bg-secondary-content text-base-100 dark:text-black shadow-3d-active translate-x-[4px] translate-y-[4px];
+    @apply bg-base-content text-base-100 shadow-3d-active translate-x-[4px] translate-y-[4px];
+  }
+
+  .btn-action-3d {
+    @apply relative font-inter cursor-pointer z-10 block bg-base-200 text-base-content px-8 py-4 font-bold text-xl border-2 border-base-content transition-all duration-150 shadow-3d shadow-base-content uppercase;
+  }
+
+  .btn-action-3d:hover {
+    @apply bg-base-content text-base-100 shadow-3d-hover -translate-x-[4px] -translate-y-[4px];
+  }
+
+  .btn-action-3d:active {
+    @apply bg-base-content text-base-100 shadow-3d-active translate-x-[4px] translate-y-[4px];
   }
 }
 
