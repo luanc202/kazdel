@@ -58,7 +58,7 @@ func SignUp() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = SignUpForm().Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = SignUpForm("", "", "", "").Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -76,7 +76,7 @@ func SignUp() templ.Component {
 	})
 }
 
-func SignUpForm() templ.Component {
+func SignUpForm(errMessage string, name string, username string, email string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -97,7 +97,69 @@ func SignUpForm() templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<form class=\"space-y-6\" hx-post=\"/api/v1/auth/signup\" hx-swap=\"outerHTML\"><div><label class=\"block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2\">Name</label> <input type=\"text\" name=\"name\" placeholder=\"[NAME]\" class=\"peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success\" minlength=\"1\" maxlength=\"20\" required><p class=\"mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block\">Must contain at least 1 characters and at most 20 characters.</p></div><div><label class=\"block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2\">Username</label> <input type=\"text\" name=\"username\" placeholder=\"[USERNAME]\" class=\"peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success\" minlength=\"4\" maxlength=\"20\" pattern=\"[a-zA-Z0-9_.]+\" title=\"Must contain at least 4 characters and at most 20 characters, including uppercase, lowercase, numbers, underscore and dot\" required><p class=\"mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block\">Must contain at least 4 characters and at most 20 characters, including uppercase, lowercase, numbers, underscore and dot.</p></div><div><label class=\"block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2\">Email Address</label> <input type=\"email\" name=\"email\" placeholder=\"[EMAIL_ADDRESS]\" class=\"peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success\" required><p class=\"mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block\">Please enter a valid email address.</p></div><div><label class=\"block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2\">Password</label> <input id=\"password\" name=\"password\" type=\"password\" placeholder=\"••••••••\" minlength=\"8\" pattern=\"(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}\" title=\"Must contain at least 8 characters, including uppercase, lowercase, numbers and special characters\" class=\"peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success\" required oninput=\"document.getElementById('confirm-password').setCustomValidity(this.value != document.getElementById('confirm-password').value ? 'Passwords do not match' : '')\"><p class=\"mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block\">Must contain at least 8 characters, including uppercase, lowercase, number, and special character.</p></div><div><label class=\"block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2\">Confirm Password</label> <input id=\"confirm-password\" type=\"password\" placeholder=\"••••••••\" class=\"peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success\" required oninput=\"this.setCustomValidity(this.value != document.getElementById('password').value ? 'Passwords do not match' : '')\"><p class=\"mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block\">Passwords do not match.</p></div><div class=\"relative group mt-4\"><button type=\"submit\" class=\"w-full relative z-10 btn-solid-3d\">SIGN UP</button></div></form><div id=\"signup-form-footer\" class=\"mt-8 text-center text-sm text-base-content/70\">Already registered? <a href=\"/login\" class=\"text-base-content hover:underline\">Log in</a></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<form class=\"space-y-6\" hx-post=\"/api/v1/auth/signup\" hx-swap=\"outerHTML\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if errMessage != "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<div class=\"alert alert-error text-sm py-2 px-4 border border-error/20 bg-error/10 text-error rounded-none\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var4 string
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(errMessage)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/signup.templ`, Line: 43, Col: 16}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<div><label class=\"block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2\">Name</label> <input type=\"text\" name=\"name\" value=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var5 string
+		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(name)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/signup.templ`, Line: 53, Col: 16}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" placeholder=\"[NAME]\" class=\"peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success\" minlength=\"1\" maxlength=\"20\" required><p class=\"mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block\">Must contain at least 1 characters and at most 20 characters.</p></div><div><label class=\"block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2\">Username</label> <input type=\"text\" name=\"username\" value=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var6 string
+		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(username)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/signup.templ`, Line: 71, Col: 20}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" placeholder=\"[USERNAME]\" class=\"peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success\" minlength=\"4\" maxlength=\"20\" pattern=\"[a-zA-Z0-9_.]+\" title=\"Must contain at least 4 characters and at most 20 characters, including uppercase, lowercase, numbers, underscore and dot\" required><p class=\"mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block\">Must contain at least 4 characters and at most 20 characters, including uppercase, lowercase, numbers, underscore and dot.</p></div><div><label class=\"block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2\">Email Address</label> <input type=\"email\" name=\"email\" value=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var7 string
+		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(email)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/signup.templ`, Line: 91, Col: 17}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" placeholder=\"[EMAIL_ADDRESS]\" class=\"peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success\" required><p class=\"mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block\">Please enter a valid email address.</p></div><div><label class=\"block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2\">Password</label> <input id=\"password\" name=\"password\" type=\"password\" placeholder=\"••••••••\" minlength=\"8\" pattern=\"(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}\" title=\"Must contain at least 8 characters, including uppercase, lowercase, numbers and special characters\" class=\"peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success\" required oninput=\"document.getElementById('confirm-password').setCustomValidity(this.value != document.getElementById('confirm-password').value ? 'Passwords do not match' : '')\"><p class=\"mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block\">Must contain at least 8 characters, including uppercase, lowercase, number, and special character.</p></div><div><label class=\"block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2\">Confirm Password</label> <input id=\"confirm-password\" type=\"password\" placeholder=\"••••••••\" class=\"peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success\" required oninput=\"this.setCustomValidity(this.value != document.getElementById('password').value ? 'Passwords do not match' : '')\"><p class=\"mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block\">Passwords do not match.</p></div><div class=\"relative group mt-4\"><button type=\"submit\" class=\"w-full relative z-10 btn-solid-3d\">SIGN UP</button></div></form><div id=\"signup-form-footer\" class=\"mt-8 text-center text-sm text-base-content/70\">Already registered? <a href=\"/login\" class=\"text-base-content hover:underline\">Log in</a></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

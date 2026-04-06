@@ -1,0 +1,101 @@
+package pages
+
+import (
+	"kazdel/pkg/ui/components"
+	"kazdel/pkg/ui/icons"
+)
+
+templ Login() {
+	@components.Base() {
+		<div class="min-h-screen bg-base-100 text-base-content flex items-center justify-center p-6 font-sans">
+			<div class="max-w-md w-full">
+				<a
+					hx-get="/"
+					hx-target="body"
+					hx-push-url="true"
+					class="cursor-pointer inline-flex items-center gap-2 text-base-content/50 hover:text-base-content transition-colors mb-8 font-bold tracking-widest text-xs uppercase"
+				>
+					@icons.ArrowLeftIcon(24)
+					Back to Base
+				</a>
+				<div
+					id="signup-form-div"
+					class="bg-base-200 border border-base-content/10 p-10 shadow-[8px_8px_0px_0px_var(--color-base-content)]"
+				>
+					<h2 class="text-4xl font-bold tracking-tighter mb-8 uppercase">
+						Access Protocol
+					</h2>
+					@LoginForm("", "")
+					<div
+						id="signup-form-footer"
+						class="mt-8 text-center text-sm text-base-content/70"
+					>
+						New user?
+						<a href="/signup" class="text-base-content hover:underline">
+							Create an account
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+}
+
+templ LoginForm(errMessage string, username string) {
+	<form
+		class="space-y-6"
+		hx-post="/api/v1/auth/login"
+		hx-swap="outerHTML"
+	>
+		if errMessage != "" {
+			<div class="alert alert-error text-sm py-2 px-4 border border-error/20 bg-error/10 text-error rounded-none">
+				{ errMessage }
+			</div>
+		}
+		<div>
+			<label class="block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2">
+				Username
+			</label>
+			<input
+				type="text"
+				name="username"
+				value={ username }
+				placeholder="[USERNAME]"
+				class="peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success"
+				required
+			/>
+			<p class="mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block">
+				Please enter a valid username.
+			</p>
+		</div>
+		<div>
+			<label class="block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2">
+				Password
+			</label>
+			<input
+				id="password"
+				name="password"
+				type="password"
+				placeholder="••••••••"
+				minlength="8"
+				pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}"
+				title="Must contain at least 8 characters, including uppercase, lowercase, numbers and special characters"
+				class="peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success"
+				required
+			/>
+			<p class="mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block">
+				Must contain at least 8 characters, including uppercase, lowercase, number, and special character.
+			</p>
+		</div>
+		<div
+			class="relative group mt-4"
+		>
+			<button
+				type="submit"
+				class="w-full relative z-10 btn-solid-3d"
+			>
+				LOG IN
+			</button>
+		</div>
+	</form>
+}

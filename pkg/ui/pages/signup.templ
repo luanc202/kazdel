@@ -25,19 +25,24 @@ templ SignUp() {
 					<h2 class="text-4xl font-bold tracking-tighter mb-8 uppercase">
 						INITIALIZE ACCOUNT
 					</h2>
-					@SignUpForm()
+					@SignUpForm("", "", "", "")
 				</div>
 			</div>
 		</div>
 	}
 }
 
-templ SignUpForm() {
+templ SignUpForm(errMessage string, name string, username string, email string) {
 	<form
 		class="space-y-6"
 		hx-post="/api/v1/auth/signup"
 		hx-swap="outerHTML"
 	>
+		if errMessage != "" {
+			<div class="alert alert-error text-sm py-2 px-4 border border-error/20 bg-error/10 text-error rounded-none">
+				{ errMessage }
+			</div>
+		}
 		<div>
 			<label class="block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2">
 				Name
@@ -45,6 +50,7 @@ templ SignUpForm() {
 			<input
 				type="text"
 				name="name"
+				value={ name }
 				placeholder="[NAME]"
 				class="peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success"
 				minlength="1"
@@ -62,6 +68,7 @@ templ SignUpForm() {
 			<input
 				type="text"
 				name="username"
+				value={ username }
 				placeholder="[USERNAME]"
 				class="peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success"
 				minlength="4"
@@ -81,6 +88,7 @@ templ SignUpForm() {
 			<input
 				type="email"
 				name="email"
+				value={ email }
 				placeholder="[EMAIL_ADDRESS]"
 				class="peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success"
 				required

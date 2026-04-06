@@ -3,6 +3,7 @@ package controllers
 import (
 	"kazdel/pkg/constants"
 	"kazdel/pkg/entity/dto"
+	"kazdel/pkg/ui/pages"
 	"kazdel/pkg/usecase"
 	"net/http"
 	"time"
@@ -32,22 +33,22 @@ func (c *AuthController) Signup(w http.ResponseWriter, r *http.Request) {
 	decoder = form.NewDecoder()
 
 	if err := r.ParseForm(); err != nil {
-		http.Error(w, "Failed to parse form data", http.StatusBadRequest)
+		pages.SignUpForm("Failed to parse form data", "", "", "").Render(r.Context(), w)
 		return
 	}
 
 	if err := decoder.Decode(&dto, r.Form); err != nil {
-		http.Error(w, "Invalid request form", http.StatusBadRequest)
+		pages.SignUpForm("Invalid request form", dto.Name, dto.Username, dto.Email).Render(r.Context(), w)
 		return
 	}
 
 	if err := dto.Validate(); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		pages.SignUpForm(err.Error(), dto.Name, dto.Username, dto.Email).Render(r.Context(), w)
 		return
 	}
 
 	if token, err := c.AuthUseCase.Signup(dto.Name, dto.Username, dto.Email, dto.Password); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		pages.SignUpForm(err.Error(), dto.Name, dto.Username, dto.Email).Render(r.Context(), w)
 		return
 	} else {
 		setSessionCookie(w, token, time.Now().Add(24*time.Hour))
@@ -62,23 +63,23 @@ func (c *AuthController) Login(w http.ResponseWriter, r *http.Request) {
 	decoder = form.NewDecoder()
 
 	if err := r.ParseForm(); err != nil {
-		http.Error(w, "Failed to parse form data", http.StatusBadRequest)
+		pages.LoginForm("Failed to parse form data", "").Render(r.Context(), w)
 		return
 	}
 
 	if err := decoder.Decode(&req, r.Form); err != nil {
-		http.Error(w, "Invalid request form", http.StatusBadRequest)
+		pages.LoginForm("Invalid request form", req.Username).Render(r.Context(), w)
 		return
 	}
 
 	if err := req.Validate(); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		pages.LoginForm(err.Error(), req.Username).Render(r.Context(), w)
 		return
 	}
 
 	token, err := c.AuthUseCase.Login(req.Username, req.Password)
 	if err != nil {
-		http.Error(w, "Invalid credentials", http.StatusUnauthorized)
+		pages.LoginForm("Invalid credentials", req.Username).Render(r.Context(), w)
 		return
 	}
 
