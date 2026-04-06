@@ -60,8 +60,8 @@ func (uc *AuthUseCase) Signup(name, username, email, password string) (string, e
 	return token, nil
 }
 
-func (uc *AuthUseCase) Login(email, password string) (string, error) {
-	user, err := uc.UserRepo.FindByEmail(email)
+func (uc *AuthUseCase) Login(username, password string) (string, error) {
+	user, err := uc.UserRepo.FindByUsername(username)
 	if err != nil {
 		return "", fmt.Errorf("invalid credentials")
 	}

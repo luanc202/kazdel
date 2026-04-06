@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"encoding/json"
 	"kazdel/pkg/constants"
 	"kazdel/pkg/entity/dto"
 	"kazdel/pkg/usecase"
@@ -59,13 +58,25 @@ func (c *AuthController) Signup(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *AuthController) Login(w http.ResponseWriter, r *http.Request) {
-	var req LoginRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
+	var req dto.LoginRequest
+	decoder = form.NewDecoder()
+
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "Failed to parse form data", http.StatusBadRequest)
 		return
 	}
 
-	token, err := c.AuthUseCase.Login(req.Email, req.Password)
+	if err := decoder.Decode(&req, r.Form); err != nil {
+		http.Error(w, "Invalid request form", http.StatusBadRequest)
+		return
+	}
+
+	if err := req.Validate(); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	token, err := c.AuthUseCase.Login(req.Username, req.Password)
 	if err != nil {
 		http.Error(w, "Invalid credentials", http.StatusUnauthorized)
 		return
@@ -74,7 +85,6 @@ func (c *AuthController) Login(w http.ResponseWriter, r *http.Request) {
 	// Set HttpOnly cookie
 	setSessionCookie(w, token, time.Now().Add(24*time.Hour))
 
-	w.WriteHeader(http.StatusOK)
 	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
 
