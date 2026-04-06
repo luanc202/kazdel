@@ -3,10 +3,10 @@ package db
 import (
 	"context"
 	"errors"
-	"log/slog"
 	"kazdel/pkg/entity"
 	interfaces "kazdel/pkg/interface"
 	"kazdel/pkg/uniqueEntityId"
+	"log/slog"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -49,7 +49,7 @@ func (pr *ShortenedUrlRepository) Save(shortenedUrl *entity.ShortenedUrl) error 
 
 func (pr *ShortenedUrlRepository) FindBySlug(slug string) (*entity.ShortenedUrl, error) {
 
-	sql := `SELECT short_slug, long_url, expires_at, user_id FROM shortened_urls WHERE short_slug = @slug
+	sql := `SELECT id, short_slug, long_url, expires_at, user_id FROM shortened_urls WHERE short_slug = @slug
 	LIMIT 1`
 
 	var shortenedUrl entity.ShortenedUrl
@@ -60,6 +60,7 @@ func (pr *ShortenedUrlRepository) FindBySlug(slug string) (*entity.ShortenedUrl,
 		pgx.NamedArgs{
 			"slug": slug,
 		}).Scan(
+		&shortenedUrl.ID,
 		&shortenedUrl.ShortSlug,
 		&shortenedUrl.LongUrl,
 		&shortenedUrl.ExpiresAt,
@@ -114,7 +115,7 @@ func (pr *ShortenedUrlRepository) FindByUserId(userId uniqueEntityId.ID) ([]*ent
 func (pr *ShortenedUrlRepository) Delete(id uint64, userId uniqueEntityId.ID) error {
 
 	sql := `DELETE FROM shortened_urls WHERE id = @id AND user_id = @userId`
-
+	slog.Info("Deleting shortened url", "id", id, "userId", userId)
 	result, err := pr.dbConnection.Exec(
 		context.Background(),
 		sql,
