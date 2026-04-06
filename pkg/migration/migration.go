@@ -3,10 +3,10 @@ package internal
 import (
 	"database/sql"
 	"fmt"
+	"kazdel/pkg/infra/config"
 	"log"
 	"os"
 	"time"
-	"kazdel/pkg/infra/config"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
