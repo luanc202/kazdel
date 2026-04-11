@@ -21,11 +21,6 @@ func NewAuthController(authUseCase *usecase.AuthUseCase) *AuthController {
 	}
 }
 
-type LoginRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
 var decoder *form.Decoder
 
 func (c *AuthController) Signup(w http.ResponseWriter, r *http.Request) {
