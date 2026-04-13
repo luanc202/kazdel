@@ -134,7 +134,9 @@ templ Dashboard(urls []dto.ShortenedUrlView) {
 						<p class="text-base-content/50 text-sm font-mono mt-1">USER_SESSION: ACTIVE</p>
 					</div>
 					<a
-						href="/api/v1/auth/logout"
+						hx-post="/api/v1/auth/logout"
+						hx-target="body"
+						hx-swap="innerHTML"
 						class="text-base-content/50 hover:text-base-content transition-colors uppercase text-xs font-bold tracking-widest"
 					>
 						Logout

@@ -95,6 +95,7 @@ func (c *AuthController) Logout(w http.ResponseWriter, r *http.Request) {
 	// Clear the cookie
 	setSessionCookie(w, "", time.Now().Add(-1*time.Hour))
 
+	w.Header().Set("HX-Redirect", "/login")
 	w.WriteHeader(http.StatusOK)
 }
 
