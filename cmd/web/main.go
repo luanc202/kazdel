@@ -5,8 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 
-	"kazdel/pkg/api/controllers"
-	"kazdel/pkg/api/routes"
+	"kazdel/pkg/handlers"
 	"kazdel/pkg/infra/config"
 	"kazdel/pkg/infra/db"
 	"kazdel/pkg/usecase"
@@ -25,22 +24,26 @@ func main() {
 
 	dbConn := config.GetDbConnection()
 
+	// Create repositories
 	shortenedURLsRepo := db.NewShortenedUrlRepository(dbConn)
 	userRepo := db.NewUserRepository(dbConn)
 	sessionRepo := db.NewPostgresSessionRepository(dbConn)
 
+	// Create use cases
 	shortenedURLUseCase := usecase.NewShortenedUrlUseCase(shortenedURLsRepo)
 	authUseCase := usecase.NewAuthUseCase(userRepo, sessionRepo)
 
-	shortenedURLController := controllers.NewShortenedUrlController(shortenedURLUseCase)
-	authController := controllers.NewAuthController(authUseCase)
-
-	apiControllers := routes.Controllers{
-		ShortenedUrlController: shortenedURLController,
-		AuthController:         authController,
+	// Create handler dependencies
+	deps := &handlers.Dependencies{
+		ShortenedUrlUseCase: shortenedURLUseCase,
+		AuthUseCase:         authUseCase,
 	}
 
-	router := routes.InitializeRouter(apiControllers)
+	// Build router (handlers auto-register via init())
+	router, err := handlers.BuildRouter(deps)
+	if err != nil {
+		panic(fmt.Sprintf("failed to build router: %v", err))
+	}
 
 	slog.Info(fmt.Sprintf("Server started on port: %v", env.PORT))
 	slog.Error(http.ListenAndServe(":"+env.PORT, router).Error())

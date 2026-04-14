@@ -3,119 +3,190 @@ package handlers
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 	"time"
 
-	authMiddleware "kazdel/pkg/api/middleware"
+	appctx "kazdel/pkg/context"
 	"kazdel/pkg/entity/dto"
+	"kazdel/pkg/middleware"
+	"kazdel/pkg/ui/pages"
 	"kazdel/pkg/uniqueEntityId"
 	"kazdel/pkg/usecase"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-playground/form"
 )
 
-type ShortenedUrlHandler struct {
-	Usecase *usecase.ShortenedUrlUsecase
+// ShortenedUrl handles URL shortening HTTP routes.
+type ShortenedUrl struct {
+	usecase     *usecase.ShortenedUrlUsecase
+	authUseCase *usecase.AuthUseCase
 }
 
-func NewShortenedUrlHandler(usecase *usecase.ShortenedUrlUsecase) *ShortenedUrlHandler {
-	return &ShortenedUrlHandler{
-		Usecase: usecase,
+func init() {
+	Register(new(ShortenedUrl))
+}
+
+func (h *ShortenedUrl) Init(deps *Dependencies) error {
+	h.usecase = deps.ShortenedUrlUseCase
+	h.authUseCase = deps.AuthUseCase
+	return nil
+}
+
+func (h *ShortenedUrl) Routes(r chi.Router) {
+	// Protected dashboard routes
+	r.Group(func(protectedWeb chi.Router) {
+		protectedWeb.Use(middleware.AuthMiddleware(h.authUseCase))
+
+		protectedWeb.Get("/dashboard", h.DashboardPage)
+		protectedWeb.Post("/dashboard/urls/shorten", h.CreateUrl)
+		protectedWeb.Delete("/dashboard/urls/{slug}", h.DeleteUrl)
+	})
+
+	// Public redirect route for short links (must be registered last to avoid
+	// catching other routes)
+	r.Get("/{slug}", h.RedirectToLongUrl)
+}
+
+// RedirectToLongUrl handles GET /{slug}
+// @Summary Redirect to the original long URL
+// @Param slug path string true "Short URL slug"
+// @Success 302 "Redirect to original URL"
+// @Failure 404 "Shortened URL not found"
+// @Router /{slug} [get]
+func (h *ShortenedUrl) RedirectToLongUrl(w http.ResponseWriter, r *http.Request) {
+	slug := chi.URLParam(r, "slug")
+
+	shortenedUrl, err := h.usecase.FindBySlug(slug)
+	if err != nil {
+		http.Error(w, "Shortened URL not found", http.StatusNotFound)
+		return
 	}
+
+	http.Redirect(w, r, shortenedUrl.LongUrl, http.StatusFound)
 }
 
-// ShowDashboard renders the dashboard page with user's URLs
-func (h *ShortenedUrlHandler) ShowDashboard(w http.ResponseWriter, r *http.Request) {
-	userIdStr := r.Context().Value(authMiddleware.UserIDKey).(string)
+// DashboardPage handles GET /dashboard
+// @Summary Render the dashboard page with the user's URLs
+// @Success 200 "Dashboard HTML page"
+// @Failure 401 "Unauthorized"
+// @Failure 500 "Internal server error"
+// @Router /dashboard [get]
+func (h *ShortenedUrl) DashboardPage(w http.ResponseWriter, r *http.Request) {
+	userIdStr, ok := appctx.GetAuthUser(r)
+	if !ok {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
 	userId, err := uniqueEntityId.ParseID(userIdStr)
 	if err != nil {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
 
-	urls, err := h.Usecase.ListByUser(userId)
+	urls, err := h.usecase.ListByUser(userId)
 	if err != nil {
-		http.Error(w, "Failed to list URLs", http.StatusInternalServerError)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	// TODO: Render templ dashboard page passing urls
-	w.Write([]byte(fmt.Sprintf("Dashboard Page - You have %d URLs", len(urls))))
+	var response []dto.ShortenedUrlView
+	for _, u := range urls {
+		response = append(response, *dto.NewShortenedUrlView(u.ShortSlug, u.LongUrl, u.ExpiresAt.Format("2006-01-02 15:04:05")))
+	}
+
+	pages.Dashboard(response).Render(r.Context(), w)
 }
 
-// HandleCreateUrl processes create URL form via HTMX
-func (h *ShortenedUrlHandler) HandleCreateUrl(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
-	if err != nil {
-		http.Error(w, "Invalid form data", http.StatusBadRequest)
+// CreateUrl handles POST /dashboard/urls/shorten
+// @Summary Create a new shortened URL
+// @Accept application/x-www-form-urlencoded
+// @Produce text/html
+// @Param originalUrl formData string true "Original URL to shorten"
+// @Param expiresAt formData string true "Expiration date (YYYY-MM-DDThh:mm)"
+// @Success 200 "Redirect to dashboard via HX-Redirect"
+// @Failure 400 "Validation error"
+// @Failure 401 "Unauthorized"
+// @Router /dashboard/urls/shorten [post]
+func (h *ShortenedUrl) CreateUrl(w http.ResponseWriter, r *http.Request) {
+	userIdStr, ok := appctx.GetAuthUser(r)
+	if !ok {
+		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
-	userIdStr := r.Context().Value(authMiddleware.UserIDKey).(string)
 	userId, err := uniqueEntityId.ParseID(userIdStr)
 	if err != nil {
-		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
-	originalUrl := r.FormValue("original_url")
-	expiresAtStr := r.FormValue("expires_at") // Expected format: 2006-01-02T15:04
-
-	var expiresAt time.Time
-	if expiresAtStr != "" {
-		parsedTime, err := time.Parse("2006-01-02T15:04", expiresAtStr)
-		if err == nil {
-			expiresAt = parsedTime
-		}
-	} else {
-		// Provide a default expiration of 7 days if not set
-		expiresAt = time.Now().AddDate(0, 0, 7)
-	}
-
-	insertDto := dto.ShortenedUrlInsert{
-		OriginalUrl:     originalUrl,
-		ExpiresAt:       expiresAt.Format("2006-01-02T15:04"),
-		ParsedExpiresAt: expiresAt,
-	}
-
-	if err := insertDto.Validate(); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	err = h.Usecase.Save(insertDto, userId)
+	err = r.ParseForm()
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		pages.CreateUrlForm("Invalid form submission", "", time.Now().AddDate(0, 0, 7).Format("2006-01-02T15:04")).Render(r.Context(), w)
 		return
 	}
 
-	// Tell HTMX to refresh the page to show the new URL in the list
-	w.Header().Set("HX-Refresh", "true")
-	w.WriteHeader(http.StatusCreated)
+	var shortenedUrlInsert dto.ShortenedUrlInsert
+	decoder := form.NewDecoder()
+	if err := decoder.Decode(&shortenedUrlInsert, r.Form); err != nil {
+		originalUrl := r.FormValue("originalUrl")
+		expiresAt := r.FormValue("expiresAt")
+		pages.CreateUrlForm("Form decoding error", originalUrl, expiresAt).Render(r.Context(), w)
+		return
+	}
+
+	err = shortenedUrlInsert.Validate()
+	if err != nil {
+		pages.CreateUrlForm(err.Error(), shortenedUrlInsert.OriginalUrl, shortenedUrlInsert.ExpiresAt).Render(r.Context(), w)
+		return
+	}
+
+	err = h.usecase.Save(shortenedUrlInsert, userId)
+	if err != nil {
+		pages.CreateUrlForm(fmt.Sprintf("Failed to save: %s", err.Error()), shortenedUrlInsert.OriginalUrl, shortenedUrlInsert.ExpiresAt).Render(r.Context(), w)
+		return
+	}
+
+	// Tell HTMX to do a full page transition back to dashboard to grab the fresh list
+	w.Header().Set("HX-Redirect", "/dashboard")
+	w.WriteHeader(http.StatusOK)
 }
 
-// HandleDeleteUrl processes URL deletion
-func (h *ShortenedUrlHandler) HandleDeleteUrl(w http.ResponseWriter, r *http.Request) {
-	idStr := chi.URLParam(r, "id")
-	userIdStr := r.Context().Value(authMiddleware.UserIDKey).(string)
+// DeleteUrl handles DELETE /dashboard/urls/{slug}
+// @Summary Delete a shortened URL
+// @Param slug path string true "Short URL slug"
+// @Success 200 "URL deleted successfully"
+// @Failure 401 "Unauthorized"
+// @Failure 404 "URL not found"
+// @Failure 500 "Internal server error"
+// @Router /dashboard/urls/{slug} [delete]
+func (h *ShortenedUrl) DeleteUrl(w http.ResponseWriter, r *http.Request) {
+	shortSlug := chi.URLParam(r, "slug")
+
+	userIdStr, ok := appctx.GetAuthUser(r)
+	if !ok {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
 	userId, err := uniqueEntityId.ParseID(userIdStr)
 	if err != nil {
-		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	url, err := h.usecase.FindBySlug(shortSlug)
+	if err != nil || url.UserId != userId {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	err = h.usecase.Delete(url.ID, userId)
 	if err != nil {
-		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	err = h.Usecase.Delete(id, userId)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusNotFound)
-		return
-	}
-
-	// Return empty 200 OK for HTMX to remove the row from the table
 	w.WriteHeader(http.StatusOK)
 }

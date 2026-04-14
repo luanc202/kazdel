@@ -1,9 +1,11 @@
-package errors
+package handlers
 
+// ErrInvalidID represents an error for invalid entity IDs.
 type ErrInvalidID struct {
 	Description string `json:"description"`
 }
 
+// ErrInvalidBody represents an error for invalid request bodies.
 type ErrInvalidBody struct {
 	Description string `json:"description"`
 }

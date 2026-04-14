@@ -1,17 +1,15 @@
 package middleware
 
 import (
-	"context"
-	"kazdel/pkg/constants"
-	"kazdel/pkg/usecase"
 	"net/http"
-	"strings"
+
+	"kazdel/pkg/constants"
+	appctx "kazdel/pkg/context"
+	"kazdel/pkg/usecase"
 )
 
-type contextKey string
-
-const UserIDKey contextKey = "userID"
-
+// AuthMiddleware validates the session token from cookies or Authorization header,
+// extracts the authenticated user ID, and stores it in the request context.
 func AuthMiddleware(authUseCase *usecase.AuthUseCase) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -22,17 +20,6 @@ func AuthMiddleware(authUseCase *usecase.AuthUseCase) func(http.Handler) http.Ha
 
 			if err == nil {
 				tokenString = cookie.Value
-			}
-
-			// If no cookie, check Authorization header (fallback/flexibility)
-			if tokenString == "" {
-				authHeader := r.Header.Get("Authorization")
-				if authHeader != "" {
-					parts := strings.Split(authHeader, " ")
-					if len(parts) == 2 && parts[0] == "Bearer" {
-						tokenString = parts[1]
-					}
-				}
 			}
 
 			if tokenString == "" {
@@ -46,8 +33,8 @@ func AuthMiddleware(authUseCase *usecase.AuthUseCase) func(http.Handler) http.Ha
 				return
 			}
 
-			ctx := context.WithValue(r.Context(), UserIDKey, userID)
-			next.ServeHTTP(w, r.WithContext(ctx))
+			r = appctx.SetAuthUser(r, userID)
+			next.ServeHTTP(w, r)
 		})
 	}
 }
