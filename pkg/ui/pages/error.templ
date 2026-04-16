@@ -1,0 +1,27 @@
+package pages
+
+import "kazdel/pkg/ui/components"
+import "fmt"
+
+templ ErrorPage(code int, title string, message string) {
+	@components.Base() {
+		<div class="min-h-screen bg-base-100 flex flex-col items-center justify-center p-6">
+			<div class="text-center max-w-lg">
+				<h1 class="text-[14rem] font-black brand-font text-base-content/10 leading-none select-none">
+					{ fmt.Sprintf("%d", code) }
+				</h1>
+				<h2 class="text-5xl sm:text-6xl font-black sub-brand-font text-base-content tracking-tight -mt-8">
+					{ title }
+				</h2>
+				<p class="text-base-content/60 mt-4 text-xl">
+					{ message }
+				</p>
+				<div class="mt-10 flex items-center justify-center">
+					<a href="/">
+						<button class="btn-solid-3d">GO HOME</button>
+					</a>
+				</div>
+			</div>
+		</div>
+	}
+}
