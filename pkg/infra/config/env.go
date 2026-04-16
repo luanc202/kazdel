@@ -2,9 +2,9 @@ package config
 
 import "github.com/spf13/viper"
 
-var env *envconfig
+var env *EnvConfig
 
-type envconfig struct {
+type EnvConfig struct {
 	DBUrl           string `mapstructure:"DATABASE_URL"`
 	DBUrl_Migration string `mapstructure:"MIGRATION_DATABASE_URL"`
 	PORT            string `mapstructure:"PORT"`
@@ -13,11 +13,11 @@ type envconfig struct {
 	JWT_SECRET      string `mapstructure:"JWT_SECRET"`
 }
 
-func GetEnvConfig() *envconfig {
+func GetEnvConfig() *EnvConfig {
 	return env
 }
 
-func LoadEnv(path string) (*envconfig, error) {
+func LoadEnv(path string) (*EnvConfig, error) {
 	viper.SetConfigName("app_config")
 	viper.SetConfigType("env")
 	viper.AddConfigPath(path)
