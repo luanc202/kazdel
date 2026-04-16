@@ -8,8 +8,9 @@ import (
 	"kazdel/pkg/usecase"
 )
 
-// AuthMiddleware validates the session token from cookies or Authorization header,
+// AuthMiddleware validates the session token from cookies,
 // extracts the authenticated user ID, and stores it in the request context.
+// Unauthenticated users are redirected to the login page.
 func AuthMiddleware(authUseCase *usecase.AuthUseCase) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -23,13 +24,13 @@ func AuthMiddleware(authUseCase *usecase.AuthUseCase) func(http.Handler) http.Ha
 			}
 
 			if tokenString == "" {
-				http.Error(w, "Unauthorized", http.StatusUnauthorized)
+				http.Redirect(w, r, "/login", http.StatusSeeOther)
 				return
 			}
 
 			userID, err := authUseCase.ValidateSession(tokenString)
 			if err != nil {
-				http.Error(w, "Unauthorized", http.StatusUnauthorized)
+				http.Redirect(w, r, "/login", http.StatusSeeOther)
 				return
 			}
 

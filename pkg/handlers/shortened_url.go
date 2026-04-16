@@ -58,7 +58,7 @@ func (h *ShortenedUrl) RedirectToLongUrl(w http.ResponseWriter, r *http.Request)
 
 	shortenedUrl, err := h.usecase.FindBySlug(slug)
 	if err != nil {
-		http.Error(w, "Shortened URL not found", http.StatusNotFound)
+		pages.ErrorPage(http.StatusNotFound, "Not Found", "The requested URL could not be found.").Render(r.Context(), w)
 		return
 	}
 
