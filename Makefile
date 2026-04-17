@@ -20,6 +20,11 @@ run: ui-build
 test:
 	go test ./...
 
+mock:
+	@echo "Generating mocks..."
+	mockgen -source=./pkg/repository/*.go -destination=./pkg/mocks/*.go -package=mocks
+	@echo "Done!"
+
 migration:
 	go run cmd/migration/main.go
 
