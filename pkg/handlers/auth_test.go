@@ -1,53 +1,28 @@
 package handlers
 
 import (
-	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 	"time"
 
 	"kazdel/pkg/constants"
-	"kazdel/pkg/entity"
+	"kazdel/pkg/mocks"
 	"kazdel/pkg/usecase"
 )
 
-// Minimal mock repos for Auth handler tests
-type MockUserRepository struct{}
-
-func (m *MockUserRepository) Save(user *entity.User) error                         { return nil }
-func (m *MockUserRepository) FindByEmail(email string) (*entity.User, error)       { return nil, nil }
-func (m *MockUserRepository) FindByUsername(username string) (*entity.User, error) { return nil, nil }
-func (m *MockUserRepository) ExistsByEmail(email string) (bool, error)             { return false, nil }
-func (m *MockUserRepository) ExistsByUsername(username string) (bool, error)       { return false, nil }
-
-type MockSessionRepository struct {
-	sessions map[string]*entity.Session
-}
-
-func (m *MockSessionRepository) Create(session *entity.Session) error { return nil }
-func (m *MockSessionRepository) FindByToken(token string) (*entity.Session, error) {
-	return nil, errors.New("Not implemented")
-}
-func (m *MockSessionRepository) DeleteByToken(token string) error {
-	delete(m.sessions, token)
-	return nil
-}
-func (m *MockSessionRepository) DeleteExpired() error { return nil }
-
 func TestAuth_Logout(t *testing.T) {
-	mockUserRepo := &MockUserRepository{}
-	mockSessionRepo := &MockSessionRepository{
-		sessions: make(map[string]*entity.Session),
-	}
+	mockUserRepo := new(mocks.UserRepository)
+	mockSessionRepo := new(mocks.SessionRepository)
 
 	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo)
 	authHandler := &Auth{authUseCase: authUseCase}
 
 	req := httptest.NewRequest(http.MethodGet, "/api/v1/auth/logout", nil)
-	
+
 	validToken := "my-session-token"
-	mockSessionRepo.sessions[validToken] = &entity.Session{Token: validToken}
+
+	mockSessionRepo.On("DeleteByToken", validToken).Return(nil)
 
 	req.AddCookie(&http.Cookie{
 		Name:  constants.SessionCookieName,
@@ -72,11 +47,11 @@ func TestAuth_Logout(t *testing.T) {
 	if len(cookies) != 1 {
 		t.Fatalf("Expected 1 cookie set, got %v", len(cookies))
 	}
-	
+
 	if cookies[0].Name != constants.SessionCookieName {
 		t.Errorf("Expected cookie name %s, got %s", constants.SessionCookieName, cookies[0].Name)
 	}
-	
+
 	if cookies[0].Value != "" {
 		t.Errorf("Expected empty cookie value, got %v", cookies[0].Value)
 	}
@@ -85,8 +60,5 @@ func TestAuth_Logout(t *testing.T) {
 		t.Errorf("Expected cookie expiration to be in the past, got %v", cookies[0].Expires)
 	}
 
-	// Ensure the session was truly deleted from the repo
-	if _, stillExists := mockSessionRepo.sessions[validToken]; stillExists {
-		t.Errorf("Expected session to be deleted from repo")
-	}
+	mockSessionRepo.AssertExpectations(t)
 }

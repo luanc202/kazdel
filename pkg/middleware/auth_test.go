@@ -10,57 +10,28 @@ import (
 	"kazdel/pkg/constants"
 	appctx "kazdel/pkg/context"
 	"kazdel/pkg/entity"
+	"kazdel/pkg/mocks"
 	"kazdel/pkg/uniqueEntityId"
 	"kazdel/pkg/usecase"
+
+	"github.com/stretchr/testify/mock"
 )
 
-// MockUserRepository implements interfaces.UserRepository
-type MockUserRepository struct{}
-
-func (m *MockUserRepository) Save(user *entity.User) error                                  { return nil }
-func (m *MockUserRepository) FindByEmail(email string) (*entity.User, error)                { return nil, nil }
-func (m *MockUserRepository) FindByUsername(username string) (*entity.User, error)          { return nil, nil }
-func (m *MockUserRepository) ExistsByEmail(email string) (bool, error)                      { return false, nil }
-func (m *MockUserRepository) ExistsByUsername(username string) (bool, error)                { return false, nil }
-
-// MockSessionRepository implements interfaces.SessionRepository
-type MockSessionRepository struct {
-	sessions map[string]*entity.Session
-}
-
-func (m *MockSessionRepository) Create(session *entity.Session) error {
-	m.sessions[session.Token] = session
-	return nil
-}
-
-func (m *MockSessionRepository) FindByToken(token string) (*entity.Session, error) {
-	session, exists := m.sessions[token]
-	if !exists {
-		return nil, errors.New("Session not found")
-	}
-	return session, nil
-}
-
-func (m *MockSessionRepository) DeleteByToken(token string) error {
-	delete(m.sessions, token)
-	return nil
-}
-
-func (m *MockSessionRepository) DeleteExpired() error { return nil }
-
 func TestAuthMiddleware(t *testing.T) {
-	mockSessionRepo := &MockSessionRepository{
-		sessions: make(map[string]*entity.Session),
-	}
-	mockUserRepo := &MockUserRepository{}
+	mockSessionRepo := new(mocks.SessionRepository)
+	mockUserRepo := new(mocks.UserRepository)
 	
-	// Create a valid session in the mock DB
 	validUserId := uniqueEntityId.NewID()
 	validToken := "valid-session-token"
-	mockSessionRepo.sessions[validToken] = entity.NewSession(validUserId, validToken, time.Now().Add(1*time.Hour))
-
 	expiredToken := "expired-session-token"
-	mockSessionRepo.sessions[expiredToken] = entity.NewSession(validUserId, expiredToken, time.Now().Add(-1*time.Hour))
+
+	mockSessionRepo.On("FindByToken", validToken).Return(entity.NewSession(validUserId, validToken, time.Now().Add(1*time.Hour)), nil)
+	
+	expiredSession := entity.NewSession(validUserId, expiredToken, time.Now().Add(-1*time.Hour))
+	mockSessionRepo.On("FindByToken", expiredToken).Return(expiredSession, nil)
+	mockSessionRepo.On("DeleteByToken", expiredToken).Return(nil)
+	
+	mockSessionRepo.On("FindByToken", mock.Anything).Return(nil, errors.New("Session not found"))
 
 	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo)
 
