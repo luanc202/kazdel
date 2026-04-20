@@ -142,44 +142,130 @@ func TestMain(m *testing.M) {
 	os.Exit(code)
 }
 
-func TestSignupFlow(t *testing.T) {
+func TestUserJourneyFlow(t *testing.T) {
 	page, err := browser.NewPage()
 	if err != nil {
 		t.Fatalf("could not create page: %v", err)
 	}
 	defer page.Close()
 
-	// 1. Navigate to signup page
-	if _, err = page.Goto(ts.URL + "/signup"); err != nil {
-		t.Fatalf("could not goto: %v", err)
-	}
+	username := fmt.Sprintf("e2etest%d", time.Now().Unix())
+	email := fmt.Sprintf("e2e_%d@example.com", time.Now().Unix())
+	password := "Password123!"
 
-	// Wait for the signup form to be ready
-	err = page.Locator("form[hx-post='/api/v1/auth/signup']").WaitFor(playwright.LocatorWaitForOptions{
-		Timeout: playwright.Float(5000),
+	t.Run("Signup", func(t *testing.T) {
+		if _, err = page.Goto(ts.URL + "/signup"); err != nil {
+			t.Fatalf("could not goto: %v", err)
+		}
+
+		err = page.Locator("form[hx-post='/api/v1/auth/signup']").WaitFor(playwright.LocatorWaitForOptions{
+			Timeout: playwright.Float(5000),
+		})
+		if err != nil {
+			t.Fatalf("failed to find signup form: %v", err)
+		}
+
+		_ = page.Locator("input[name='name']").Fill("E2E Test User")
+		_ = page.Locator("input[name='username']").Fill(username)
+		_ = page.Locator("input[name='email']").Fill(email)
+		_ = page.Locator("input[name='password']").Fill(password)
+		_ = page.Locator("input[id='confirm-password']").Fill(password)
+
+		_ = page.Locator("button[type='submit']").Click()
+
+		err = page.WaitForURL(ts.URL+"/dashboard", playwright.PageWaitForURLOptions{
+			Timeout: playwright.Float(5000),
+		})
+		if err != nil {
+			errText, _ := page.Locator(".text-error").TextContent()
+			t.Fatalf("expected redirect to dashboard, got error: %s", errText)
+		}
 	})
-	if err != nil {
-		t.Fatalf("failed to find signup form: %v", err)
-	}
 
-	// Fill the form (using Alpine.js client-side validation logic from previous discussions)
-	_ = page.Locator("input[name='name']").Fill("E2E Test User")
-	_ = page.Locator("input[name='username']").Fill(fmt.Sprintf("e2etest%d", time.Now().Unix()))
-	_ = page.Locator("input[name='email']").Fill(fmt.Sprintf("e2e_%d@example.com", time.Now().Unix()))
-	_ = page.Locator("input[name='password']").Fill("Password123!")
-	_ = page.Locator("input[id='confirm-password']").Fill("Password123!")
+	t.Run("Logout", func(t *testing.T) {
+		// Click on logout button
+		err := page.Locator("a[hx-post='/api/v1/auth/logout']").Click()
+		if err != nil {
+			t.Fatalf("failed to click logout: %v", err)
+		}
 
-	// Submit it
-	_ = page.Locator("button[type='submit']").Click()
-
-	// For this test, we expect HTMX to redirect us to the dashboard on success.
-	err = page.WaitForURL(ts.URL+"/dashboard", playwright.PageWaitForURLOptions{
-		Timeout: playwright.Float(5000),
+		err = page.WaitForURL(ts.URL+"/login", playwright.PageWaitForURLOptions{
+			Timeout: playwright.Float(5000),
+		})
+		if err != nil {
+			t.Fatalf("expected redirect to login: %v", err)
+		}
 	})
-	if err != nil {
-		t.Logf("Failed to redirect to dashboard: %v", err)
-		// Try to read error msg to debug
-		errText, _ := page.Locator(".text-error").TextContent()
-		t.Errorf("expected redirect, maybe got error: %s", errText)
-	}
+
+	t.Run("Login", func(t *testing.T) {
+		err = page.Locator("form[hx-post='/api/v1/auth/login']").WaitFor(playwright.LocatorWaitForOptions{
+			Timeout: playwright.Float(5000),
+		})
+		if err != nil {
+			t.Fatalf("failed to find login form: %v", err)
+		}
+
+		_ = page.Locator("input[name='username']").Fill(username)
+		_ = page.Locator("input[name='password']").Fill(password)
+
+		_ = page.Locator("button[type='submit']").Click()
+
+		err = page.WaitForURL(ts.URL+"/dashboard", playwright.PageWaitForURLOptions{
+			Timeout: playwright.Float(5000),
+		})
+		if err != nil {
+			errText, _ := page.Locator(".text-error").TextContent()
+			t.Fatalf("expected redirect to dashboard, got error: %s", errText)
+		}
+	})
+
+	testUrl := "https://example.com/very/long/url/for/testing"
+
+	t.Run("Create URL", func(t *testing.T) {
+		_ = page.Locator("input[name='originalUrl']").Fill(testUrl)
+		
+		_ = page.Locator("form[hx-post='/dashboard/urls/shorten'] button[type='submit']").Click()
+
+		// Wait for the URL list to update
+		err = page.Locator(fmt.Sprintf("text=%s", testUrl)).WaitFor(playwright.LocatorWaitForOptions{
+			Timeout: playwright.Float(5000),
+		})
+		if err != nil {
+			t.Fatalf("failed to see newly created URL: %v", err)
+		}
+	})
+
+	t.Run("Delete URL", func(t *testing.T) {
+		// Wait for the delete button
+		deleteBtn := page.Locator("button[title='Delete']").First()
+		
+		err = deleteBtn.WaitFor(playwright.LocatorWaitForOptions{
+			Timeout: playwright.Float(5000),
+		})
+		if err != nil {
+			t.Fatalf("failed to find delete button: %v", err)
+		}
+
+		// Click the delete button to reveal confirmation
+		_ = deleteBtn.Click()
+		
+		yesBtn := page.Locator("button:has-text('YES')").First()
+		err = yesBtn.WaitFor(playwright.LocatorWaitForOptions{
+			Timeout: playwright.Float(3000),
+		})
+		if err != nil {
+			t.Fatalf("failed to find confirmation YES button: %v", err)
+		}
+
+		_ = yesBtn.Click()
+
+		// Wait for the item to disappear
+		err = page.Locator(fmt.Sprintf("text=%s", testUrl)).WaitFor(playwright.LocatorWaitForOptions{
+			State: playwright.WaitForSelectorStateHidden,
+			Timeout: playwright.Float(5000),
+		})
+		if err != nil {
+			t.Fatalf("URL did not disappear after deletion: %v", err)
+		}
+	})
 }
