@@ -18,7 +18,12 @@ run: ui-build
 	go run cmd/web/main.go
 
 test:
-	go test ./...
+	go test -coverprofile=coverage.out ./...
+
+coverage:
+	go tool cover -html=coverage.out
+	go test -cover ./...
+
 
 mock:
 	@echo "Generating mocks..."
