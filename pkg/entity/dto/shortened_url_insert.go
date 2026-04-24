@@ -9,13 +9,19 @@ import (
 type ShortenedUrlInsert struct {
 	OriginalUrl     string    `form:"originalUrl"`
 	ExpiresAt       string    `form:"expiresAt"`
+	CustomSlug      string    `form:"customSlug"`
+	Description     string    `form:"description"`
+	Password        string    `form:"password"`
 	ParsedExpiresAt time.Time `form:"-"`
 }
 
-func NewShortenedUrlInsert(originalUrl string, expiresAt string) *ShortenedUrlInsert {
+func NewShortenedUrlInsert(originalUrl string, expiresAt string, customSlug string, description string, password string) *ShortenedUrlInsert {
 	return &ShortenedUrlInsert{
 		OriginalUrl: originalUrl,
 		ExpiresAt:   expiresAt,
+		CustomSlug:  customSlug,
+		Description: description,
+		Password:    password,
 	}
 }
 
@@ -42,6 +48,17 @@ func (s *ShortenedUrlInsert) Validate() error {
 
 	if s.ParsedExpiresAt.Compare(time.Now()) < 0 {
 		return errors.New("Expiration date cannot be in the past")
+	}
+
+	if s.CustomSlug != "" {
+		if len(s.CustomSlug) > 12 {
+			return errors.New("Custom slug must be at most 12 characters")
+		}
+		for _, c := range s.CustomSlug {
+			if !((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '-') {
+				return errors.New("Custom slug can only contain letters, numbers, and hyphens")
+			}
+		}
 	}
 
 	return nil
