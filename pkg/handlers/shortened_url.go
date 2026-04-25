@@ -14,6 +14,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-playground/form"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // ShortenedUrl handles URL shortening HTTP routes.
@@ -45,6 +46,7 @@ func (h *ShortenedUrl) Routes(r chi.Router) {
 	// Public redirect route for short links (must be registered last to avoid
 	// catching other routes)
 	r.Get("/{slug}", h.RedirectToLongUrl)
+	r.Post("/{slug}/password", h.HandlePasswordSubmission)
 }
 
 // RedirectToLongUrl handles GET /{slug}
@@ -59,6 +61,41 @@ func (h *ShortenedUrl) RedirectToLongUrl(w http.ResponseWriter, r *http.Request)
 	shortenedUrl, err := h.usecase.FindBySlug(slug)
 	if err != nil {
 		pages.ErrorPage(http.StatusNotFound, "Not Found", "The requested URL could not be found.").Render(r.Context(), w)
+		return
+	}
+
+	if shortenedUrl.PasswordHash != nil {
+		pages.PasswordPrompt(slug, "").Render(r.Context(), w)
+		return
+	}
+
+	http.Redirect(w, r, shortenedUrl.LongUrl, http.StatusFound)
+}
+
+func (h *ShortenedUrl) HandlePasswordSubmission(w http.ResponseWriter, r *http.Request) {
+	slug := chi.URLParam(r, "slug")
+
+	shortenedUrl, err := h.usecase.FindBySlug(slug)
+	if err != nil {
+		pages.ErrorPage(http.StatusNotFound, "Not Found", "The requested URL could not be found.").Render(r.Context(), w)
+		return
+	}
+
+	if shortenedUrl.PasswordHash == nil {
+		http.Redirect(w, r, shortenedUrl.LongUrl, http.StatusFound)
+		return
+	}
+
+	err = r.ParseForm()
+	if err != nil {
+		pages.PasswordPrompt(slug, "Invalid form submission").Render(r.Context(), w)
+		return
+	}
+
+	password := r.FormValue("password")
+	err = bcrypt.CompareHashAndPassword([]byte(*shortenedUrl.PasswordHash), []byte(password))
+	if err != nil {
+		pages.PasswordPrompt(slug, "Incorrect password").Render(r.Context(), w)
 		return
 	}
 
@@ -123,7 +160,7 @@ func (h *ShortenedUrl) CreateUrl(w http.ResponseWriter, r *http.Request) {
 
 	err = r.ParseForm()
 	if err != nil {
-		pages.CreateUrlForm("Invalid form submission", "", time.Now().AddDate(0, 0, 7).Format("2006-01-02T15:04")).Render(r.Context(), w)
+		pages.CreateUrlForm("Invalid form submission", "", time.Now().AddDate(0, 0, 7).Format("2006-01-02T15:04"), "", "").Render(r.Context(), w)
 		return
 	}
 
@@ -132,19 +169,21 @@ func (h *ShortenedUrl) CreateUrl(w http.ResponseWriter, r *http.Request) {
 	if err := decoder.Decode(&shortenedUrlInsert, r.Form); err != nil {
 		originalUrl := r.FormValue("originalUrl")
 		expiresAt := r.FormValue("expiresAt")
-		pages.CreateUrlForm("Form decoding error", originalUrl, expiresAt).Render(r.Context(), w)
+		customSlug := r.FormValue("customSlug")
+		description := r.FormValue("description")
+		pages.CreateUrlForm("Form decoding error", originalUrl, expiresAt, customSlug, description).Render(r.Context(), w)
 		return
 	}
 
 	err = shortenedUrlInsert.Validate()
 	if err != nil {
-		pages.CreateUrlForm(err.Error(), shortenedUrlInsert.OriginalUrl, shortenedUrlInsert.ExpiresAt).Render(r.Context(), w)
+		pages.CreateUrlForm(err.Error(), shortenedUrlInsert.OriginalUrl, shortenedUrlInsert.ExpiresAt, shortenedUrlInsert.CustomSlug, shortenedUrlInsert.Description).Render(r.Context(), w)
 		return
 	}
 
 	err = h.usecase.Save(shortenedUrlInsert, userId)
 	if err != nil {
-		pages.CreateUrlForm(fmt.Sprintf("Failed to save: %s", err.Error()), shortenedUrlInsert.OriginalUrl, shortenedUrlInsert.ExpiresAt).Render(r.Context(), w)
+		pages.CreateUrlForm(fmt.Sprintf("Failed to save: %s", err.Error()), shortenedUrlInsert.OriginalUrl, shortenedUrlInsert.ExpiresAt, shortenedUrlInsert.CustomSlug, shortenedUrlInsert.Description).Render(r.Context(), w)
 		return
 	}
 
