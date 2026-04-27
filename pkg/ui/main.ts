@@ -9,6 +9,7 @@ declare global {
     }
 }
 
+// This enables theme change toggler, do not remove!
 themeChange()
 
 document.addEventListener('htmx:load', function (evt) {
@@ -20,7 +21,7 @@ document.addEventListener('htmx:load', function (evt) {
     // 1. Initial Entrance Animation 
     // This replaces `initial={{ opacity: 0, y: 20 }}` and `animate={{ opacity: 1, y: 0 }}`
     // Since HTMX swaps content, we run this whenever new buttons are loaded into the DOM.
-    const buttons = document.querySelectorAll(".btn-solid-3d");
+    const buttons = document.querySelectorAll("#hero-button");
     const title = document.getElementById("hero-title");
     const subtitle = document.getElementById("hero-subtitle");
     const signupForm = document.getElementById("signup-form-div");
@@ -30,7 +31,7 @@ document.addEventListener('htmx:load', function (evt) {
     // Landing page animations
     if (buttons.length > 0) {
         animate(
-            ".btn-solid-3d",
+            "#hero-button",
             { opacity: [0, 1], y: [20, 0] },
             { duration: 0.8, delay: 0.4 }
         );
