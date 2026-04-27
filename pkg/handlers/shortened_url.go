@@ -8,6 +8,7 @@ import (
 	appctx "kazdel/pkg/context"
 	"kazdel/pkg/entity/dto"
 	"kazdel/pkg/middleware"
+	"kazdel/pkg/ui/components"
 	"kazdel/pkg/ui/pages"
 	"kazdel/pkg/uniqueEntityId"
 	"kazdel/pkg/usecase"
@@ -65,7 +66,7 @@ func (h *ShortenedUrl) RedirectToLongUrl(w http.ResponseWriter, r *http.Request)
 	}
 
 	if shortenedUrl.PasswordHash != nil {
-		pages.PasswordPrompt(slug, "").Render(r.Context(), w)
+		components.PasswordPrompt(slug, "").Render(r.Context(), w)
 		return
 	}
 
@@ -88,14 +89,14 @@ func (h *ShortenedUrl) HandlePasswordSubmission(w http.ResponseWriter, r *http.R
 
 	err = r.ParseForm()
 	if err != nil {
-		pages.PasswordPrompt(slug, "Invalid form submission").Render(r.Context(), w)
+		components.PasswordPrompt(slug, "Invalid form submission").Render(r.Context(), w)
 		return
 	}
 
 	password := r.FormValue("password")
 	err = bcrypt.CompareHashAndPassword([]byte(*shortenedUrl.PasswordHash), []byte(password))
 	if err != nil {
-		pages.PasswordPrompt(slug, "Incorrect password").Render(r.Context(), w)
+		components.PasswordPrompt(slug, "Incorrect password").Render(r.Context(), w)
 		return
 	}
 
