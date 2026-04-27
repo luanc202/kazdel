@@ -141,3 +141,36 @@ func (pr *ShortenedUrlRepository) Delete(id uint64, userId uniqueEntityId.ID) er
 
 	return nil
 }
+
+func (pr *ShortenedUrlRepository) Update(shortenedUrl *entity.ShortenedUrl) error {
+	sql := `UPDATE shortened_urls 
+	SET long_url = @longUrl, 
+	    description = @description, 
+	    password_hash = @passwordHash, 
+	    expires_at = @expiresAt,
+	    updated_at = CURRENT_TIMESTAMP
+	WHERE id = @id AND user_id = @userId`
+
+	result, err := pr.dbConnection.Exec(
+		context.Background(),
+		sql,
+		pgx.NamedArgs{
+			"id":           shortenedUrl.ID,
+			"userId":       shortenedUrl.UserId,
+			"longUrl":      shortenedUrl.LongUrl,
+			"description":  shortenedUrl.Description,
+			"passwordHash": shortenedUrl.PasswordHash,
+			"expiresAt":    shortenedUrl.ExpiresAt,
+		})
+
+	if err != nil {
+		slog.Error("failed to update shortened url in database", "error", err)
+		return err
+	}
+
+	if result.RowsAffected() == 0 {
+		return errors.New("shortened url not found or not owned by user")
+	}
+
+	return nil
+}
