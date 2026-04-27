@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"errors"
 	"fmt"
 	"log/slog"
 	"kazdel/pkg/entity"
@@ -54,7 +55,9 @@ func (su *ShortenedUrlUsecase) Save(shortenedUrlDto dto.ShortenedUrlInsert, user
 	err := su.repo.Save(shortenedUrl)
 
 	if err != nil {
-		su.logger.Error(fmt.Errorf("Error saving shortened url: %w", err).Error())
+		if !errors.Is(err, entity.ErrCustomSlugAlreadyExists) {
+			su.logger.Error(fmt.Errorf("Error saving shortened url: %w", err).Error())
+		}
 		return err
 	}
 

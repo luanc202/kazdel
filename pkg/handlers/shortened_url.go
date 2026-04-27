@@ -1,11 +1,13 @@
 package handlers
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
 
 	appctx "kazdel/pkg/context"
+	"kazdel/pkg/entity"
 	"kazdel/pkg/entity/dto"
 	"kazdel/pkg/middleware"
 	"kazdel/pkg/ui/components"
@@ -138,8 +140,8 @@ func (h *ShortenedUrl) DashboardPage(w http.ResponseWriter, r *http.Request) {
 			desc = *u.Description
 		}
 		response = append(response, *dto.NewShortenedUrlView(
-			u.ShortSlug, 
-			u.LongUrl, 
+			u.ShortSlug,
+			u.LongUrl,
 			u.ExpiresAt.Format("2006-01-02 15:04:05"),
 			desc,
 			u.PasswordHash != nil,
@@ -198,7 +200,11 @@ func (h *ShortenedUrl) CreateUrl(w http.ResponseWriter, r *http.Request) {
 
 	err = h.usecase.Save(shortenedUrlInsert, userId)
 	if err != nil {
-		pages.CreateUrlForm(fmt.Sprintf("Failed to save: %s", err.Error()), shortenedUrlInsert.OriginalUrl, shortenedUrlInsert.ExpiresAt, shortenedUrlInsert.CustomSlug, shortenedUrlInsert.Description).Render(r.Context(), w)
+		errMsg := fmt.Sprintf("Failed to save: %s", err.Error())
+		if errors.Is(err, entity.ErrCustomSlugAlreadyExists) {
+			errMsg = "This custom slug is already taken. Please choose another one."
+		}
+		pages.CreateUrlForm(errMsg, shortenedUrlInsert.OriginalUrl, shortenedUrlInsert.ExpiresAt, shortenedUrlInsert.CustomSlug, shortenedUrlInsert.Description).Render(r.Context(), w)
 		return
 	}
 

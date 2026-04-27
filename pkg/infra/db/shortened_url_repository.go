@@ -9,6 +9,7 @@ import (
 	"log/slog"
 
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -42,6 +43,10 @@ func (pr *ShortenedUrlRepository) Save(shortenedUrl *entity.ShortenedUrl) error 
 		})
 
 	if err != nil {
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
+			return entity.ErrCustomSlugAlreadyExists
+		}
 		slog.Error("failed to insert product into database", "error", err)
 		return err
 	}
