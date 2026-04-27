@@ -111,6 +111,24 @@ func (_m *ShortenedUrlRepository) Save(shortenedUrl *entity.ShortenedUrl) error 
 	return r0
 }
 
+// Update provides a mock function with given fields: shortenedUrl
+func (_m *ShortenedUrlRepository) Update(shortenedUrl *entity.ShortenedUrl) error {
+	ret := _m.Called(shortenedUrl)
+
+	if len(ret) == 0 {
+		panic("no return value specified for Update")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(*entity.ShortenedUrl) error); ok {
+		r0 = rf(shortenedUrl)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // NewShortenedUrlRepository creates a new instance of ShortenedUrlRepository. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
 // The first argument is typically a *testing.T value.
 func NewShortenedUrlRepository(t interface {
