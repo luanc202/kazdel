@@ -72,3 +72,47 @@ func (su *ShortenedUrlUsecase) ListByUser(userId uniqueEntityId.ID) ([]*entity.S
 func (su *ShortenedUrlUsecase) Delete(id uint64, userId uniqueEntityId.ID) error {
 	return su.repo.Delete(id, userId)
 }
+
+func (su *ShortenedUrlUsecase) Update(slug string, updateDto dto.ShortenedUrlUpdate, userId uniqueEntityId.ID) error {
+	existingUrl, err := su.repo.FindBySlug(slug)
+	if err != nil {
+		return err
+	}
+	if existingUrl.UserId != userId {
+		return fmt.Errorf("unauthorized to edit this url")
+	}
+
+	var passwordHash *string
+	if updateDto.Password != "" {
+		hash, err := bcrypt.GenerateFromPassword([]byte(updateDto.Password), bcrypt.DefaultCost)
+		if err != nil {
+			return fmt.Errorf("failed to hash password: %w", err)
+		}
+		hashStr := string(hash)
+		passwordHash = &hashStr
+	} else {
+		// if empty, we might want to keep the existing one or clear it?
+		// Let's assume empty means clear it, or maybe a special value.
+		// Actually, if they want to clear it, they might leave it empty. Let's assume empty clears it for simplicity.
+		passwordHash = nil
+	}
+
+	var description *string
+	if updateDto.Description != "" {
+		descStr := updateDto.Description
+		description = &descStr
+	}
+
+	existingUrl.LongUrl = updateDto.OriginalUrl
+	existingUrl.Description = description
+	existingUrl.PasswordHash = passwordHash
+	existingUrl.ExpiresAt = updateDto.ParsedExpiresAt
+
+	err = su.repo.Update(existingUrl)
+	if err != nil {
+		su.logger.Error(fmt.Errorf("Error updating shortened url: %w", err).Error())
+		return err
+	}
+
+	return nil
+}

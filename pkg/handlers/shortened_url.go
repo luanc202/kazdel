@@ -42,6 +42,9 @@ func (h *ShortenedUrl) Routes(r chi.Router) {
 		protectedWeb.Get("/dashboard", h.DashboardPage)
 		protectedWeb.Post("/dashboard/urls/shorten", h.CreateUrl)
 		protectedWeb.Delete("/dashboard/urls/{slug}", h.DeleteUrl)
+		protectedWeb.Get("/dashboard/urls/{slug}/edit", h.EditUrlForm)
+		protectedWeb.Post("/dashboard/urls/{slug}/edit", h.UpdateUrl)
+		protectedWeb.Get("/dashboard/urls/{slug}", h.GetUrlRow)
 	})
 
 	// Public redirect route for short links (must be registered last to avoid
@@ -130,7 +133,18 @@ func (h *ShortenedUrl) DashboardPage(w http.ResponseWriter, r *http.Request) {
 
 	var response []dto.ShortenedUrlView
 	for _, u := range urls {
-		response = append(response, *dto.NewShortenedUrlView(u.ShortSlug, u.LongUrl, u.ExpiresAt.Format("2006-01-02 15:04:05")))
+		desc := ""
+		if u.Description != nil {
+			desc = *u.Description
+		}
+		response = append(response, *dto.NewShortenedUrlView(
+			u.ShortSlug, 
+			u.LongUrl, 
+			u.ExpiresAt.Format("2006-01-02 15:04:05"),
+			desc,
+			u.PasswordHash != nil,
+			u.ExpiresAt.Format("2006-01-02T15:04"),
+		))
 	}
 
 	pages.Dashboard(response).Render(r.Context(), w)
@@ -229,4 +243,156 @@ func (h *ShortenedUrl) DeleteUrl(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
+}
+
+// EditUrlForm handles GET /dashboard/urls/{slug}/edit
+func (h *ShortenedUrl) EditUrlForm(w http.ResponseWriter, r *http.Request) {
+	shortSlug := chi.URLParam(r, "slug")
+
+	userIdStr, ok := appctx.GetAuthUser(r)
+	if !ok {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	userId, err := uniqueEntityId.ParseID(userIdStr)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	url, err := h.usecase.FindBySlug(shortSlug)
+	if err != nil || url.UserId != userId {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	desc := ""
+	if url.Description != nil {
+		desc = *url.Description
+	}
+
+	view := dto.NewShortenedUrlView(
+		url.ShortSlug,
+		url.LongUrl,
+		url.ExpiresAt.Format("2006-01-02 15:04:05"),
+		desc,
+		url.PasswordHash != nil,
+		url.ExpiresAt.Format("2006-01-02T15:04"),
+	)
+
+	pages.EditUrlRow(*view, "").Render(r.Context(), w)
+}
+
+// UpdateUrl handles POST /dashboard/urls/{slug}/edit
+func (h *ShortenedUrl) UpdateUrl(w http.ResponseWriter, r *http.Request) {
+	shortSlug := chi.URLParam(r, "slug")
+
+	userIdStr, ok := appctx.GetAuthUser(r)
+	if !ok {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	userId, err := uniqueEntityId.ParseID(userIdStr)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	err = r.ParseForm()
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	var updateDto dto.ShortenedUrlUpdate
+	decoder := form.NewDecoder()
+	if err := decoder.Decode(&updateDto, r.Form); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	err = updateDto.Validate()
+	if err != nil {
+		// Just re-render the edit form with the error message
+		view := dto.NewShortenedUrlView(
+			shortSlug,
+			updateDto.OriginalUrl,
+			"",
+			updateDto.Description,
+			updateDto.Password != "",
+			updateDto.ExpiresAt,
+		)
+		pages.EditUrlRow(*view, err.Error()).Render(r.Context(), w)
+		return
+	}
+
+	err = h.usecase.Update(shortSlug, updateDto, userId)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	// Fetch updated to render UrlRow again
+	url, err := h.usecase.FindBySlug(shortSlug)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	desc := ""
+	if url.Description != nil {
+		desc = *url.Description
+	}
+
+	updatedView := dto.NewShortenedUrlView(
+		url.ShortSlug,
+		url.LongUrl,
+		url.ExpiresAt.Format("2006-01-02 15:04:05"),
+		desc,
+		url.PasswordHash != nil,
+		url.ExpiresAt.Format("2006-01-02T15:04"),
+	)
+
+	pages.UrlRow(*updatedView).Render(r.Context(), w)
+}
+
+// GetUrlRow handles GET /dashboard/urls/{slug}
+func (h *ShortenedUrl) GetUrlRow(w http.ResponseWriter, r *http.Request) {
+	shortSlug := chi.URLParam(r, "slug")
+
+	userIdStr, ok := appctx.GetAuthUser(r)
+	if !ok {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	userId, err := uniqueEntityId.ParseID(userIdStr)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	url, err := h.usecase.FindBySlug(shortSlug)
+	if err != nil || url.UserId != userId {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	desc := ""
+	if url.Description != nil {
+		desc = *url.Description
+	}
+
+	view := dto.NewShortenedUrlView(
+		url.ShortSlug,
+		url.LongUrl,
+		url.ExpiresAt.Format("2006-01-02 15:04:05"),
+		desc,
+		url.PasswordHash != nil,
+		url.ExpiresAt.Format("2006-01-02T15:04"),
+	)
+
+	pages.UrlRow(*view).Render(r.Context(), w)
 }
