@@ -3,6 +3,7 @@ package pages
 import (
 	"kazdel/pkg/entity/dto"
 	"kazdel/pkg/ui/components"
+	"kazdel/pkg/ui/icons"
 	"time"
 )
 
@@ -104,12 +105,21 @@ templ UrlRow(url dto.ShortenedUrlView) {
 				class="absolute right-0 flex justify-end gap-3"
 			>
 				<button
+					hx-get={ "/dashboard/urls/" + url.ShortSlug + "/edit" }
+					hx-target="closest .grid"
+					hx-swap="outerHTML swap:150ms settle:200ms"
+					class="p-2 btn-action-3d"
+					title="Edit Link"
+				>
+					@icons.PencilIcon("18")
+				</button>
+				<button
 					data-slug={ url.ShortSlug }
 					onclick="navigator.clipboard.writeText(window.location.origin + '/' + this.getAttribute('data-slug'))"
 					class="p-2 btn-action-3d"
 					title="Copy Link"
 				>
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+					@icons.CopyIcon("18")
 				</button>
 				<a
 					href={ templ.SafeURL(url.OriginalUrl) }
@@ -118,7 +128,7 @@ templ UrlRow(url dto.ShortenedUrlView) {
 					class="p-2 btn-action-3d"
 					title="Open Link"
 				>
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+					@icons.ExternalLinkIcon("18")
 				</a>
 				<button
 					@click="confirmingDelete = true"
@@ -126,7 +136,7 @@ templ UrlRow(url dto.ShortenedUrlView) {
 					class="p-2 btn-action-3d"
 					title="Delete"
 				>
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+					@icons.TrashIcon("18")
 				</button>
 			</div>
 			<div
@@ -160,6 +170,65 @@ templ UrlRow(url dto.ShortenedUrlView) {
 			</div>
 		</div>
 	</div>
+}
+
+templ EditUrlRow(url dto.ShortenedUrlView, errMessage string) {
+	<form hx-post={ "/dashboard/urls/" + url.ShortSlug + "/edit" } hx-target="this" hx-swap="outerHTML swap:150ms settle:200ms" class="grid grid-cols-12 gap-4 bg-base-200 border-2 border-base-content/30 p-6 items-center">
+		if errMessage != "" {
+			<div class="col-span-12 alert alert-error text-sm py-2 px-4 border border-error/20 bg-error/10 text-error rounded-none">
+				{ errMessage }
+			</div>
+		}
+		<div class="col-span-12 flex flex-col gap-4">
+			<input
+				type="url"
+				name="originalUrl"
+				placeholder="LONG_URL"
+				value={ url.OriginalUrl }
+				class="w-full bg-base-100 border-2 border-base-content/10 px-4 py-2 text-sm font-bold focus:outline-none focus:border-base-content transition-colors"
+				required
+			/>
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+				<input
+					type="datetime-local"
+					name="expiresAt"
+					value={ url.RawExpiresAt }
+					class="w-full bg-base-100 border-2 border-base-content/10 px-4 py-2 text-sm font-bold focus:outline-none focus:border-base-content transition-colors"
+					required
+				/>
+				<input
+					type="text"
+					name="description"
+					placeholder="DESCRIPTION"
+					value={ url.Description }
+					class="w-full bg-base-100 border-2 border-base-content/10 px-4 py-2 text-sm font-bold focus:outline-none focus:border-base-content transition-colors"
+				/>
+				<input
+					type="password"
+					name="password"
+					placeholder={ func() string { if url.HasPassword { return "NEW_PASSWORD" }; return "PASSWORD" }() }
+					class="w-full bg-base-100 border-2 border-base-content/10 px-4 py-2 text-sm font-bold focus:outline-none focus:border-base-content transition-colors"
+				/>
+			</div>
+			<div class="flex justify-end gap-2 mt-2">
+				<button
+					type="submit"
+					class="px-4 py-2 btn-solid-3d text-sm"
+				>
+					SAVE
+				</button>
+				<button
+					type="button"
+					hx-get={ "/dashboard/urls/" + url.ShortSlug }
+					hx-target="closest .grid"
+					hx-swap="outerHTML swap:150ms settle:200ms"
+					class="px-4 py-2 btn-action-3d text-sm"
+				>
+					CANCEL
+				</button>
+			</div>
+		</div>
+	</form>
 }
 
 templ Dashboard(urls []dto.ShortenedUrlView) {

@@ -493,3 +493,34 @@
     clip-path: inset(0 0 0 0);
   }
 }
+
+/* Brutalist Fade for HTMX */
+.htmx-swapping {
+  opacity: 0;
+  transition: opacity 150ms steps(3, end), transform 150ms steps(3, end);
+  transform: translateY(-4px);
+}
+
+.htmx-added {
+  opacity: 0;
+  transform: translateY(4px);
+  animation: brutalist-snap-in 200ms steps(4, end) forwards;
+}
+
+@keyframes brutalist-snap-in {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+    box-shadow: none;
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(4px);
+    box-shadow: 2px 2px 0px var(--color-base-content);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    /* Restores to normal state */
+  }
+}
