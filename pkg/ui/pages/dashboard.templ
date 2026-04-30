@@ -104,6 +104,13 @@ templ UrlRow(url dto.ShortenedUrlView) {
 				x-transition:leave-end="opacity-0 -translate-x-8"
 				class="absolute right-0 flex justify-end gap-3"
 			>
+				<a
+					href={ templ.SafeURL("/dashboard/urls/" + url.ShortSlug + "/stats") }
+					class="p-2 btn-action-3d"
+					title="View Stats"
+				>
+					@icons.ChartIcon("18")
+				</a>
 				<button
 					hx-get={ "/dashboard/urls/" + url.ShortSlug + "/edit" }
 					hx-target="closest .grid"

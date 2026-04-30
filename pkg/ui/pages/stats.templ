@@ -1,0 +1,63 @@
+package pages
+
+import (
+	"fmt"
+	"kazdel/pkg/entity/dto"
+	"kazdel/pkg/ui/components"
+	"kazdel/pkg/ui/icons"
+)
+
+templ StatsPage(slug string, stats *dto.UrlStats) {
+	@components.Base() {
+		<div class="max-w-6xl mx-auto space-y-12">
+			<!-- Header -->
+			<div class="flex justify-between items-end border-b-4 border-base-content pb-4">
+				<div class="space-y-2">
+					<h1 class="text-6xl font-black tracking-tighter uppercase">STATS // { slug }</h1>
+					<p class="text-xl font-mono text-base-content/70">TOTAL CLICKS: <span class="font-bold text-base-content">{ fmt.Sprintf("%d", stats.TotalClicks) }</span></p>
+				</div>
+				<a href="/dashboard" class="btn-solid-3d px-6 py-3 font-bold flex items-center gap-2">
+					@icons.ArrowLeftIcon(20)
+					BACK TO DASHBOARD
+				</a>
+			</div>
+
+			<!-- Stats Grid -->
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+				<!-- Browsers -->
+				@StatCard("BROWSERS", stats.BrowserStats, stats.TotalClicks)
+				<!-- OS -->
+				@StatCard("OPERATING SYSTEMS", stats.OsStats, stats.TotalClicks)
+				<!-- Countries -->
+				@StatCard("LOCATIONS", stats.CountryStats, stats.TotalClicks)
+				<!-- Referrers -->
+				@StatCard("REFERRERS", stats.ReferrerStats, stats.TotalClicks)
+			</div>
+		</div>
+	}
+}
+
+templ StatCard(title string, data map[string]int, total int) {
+	<div class="border-4 border-base-content bg-base-200 p-6 flex flex-col gap-6 brutalist-shadow">
+		<h2 class="text-2xl font-black tracking-tighter uppercase">{ title }</h2>
+		if len(data) == 0 {
+			<div class="flex-1 flex items-center justify-center border-2 border-dashed border-base-content/20 p-8">
+				<span class="font-mono text-base-content/50">NO_DATA_AVAILABLE</span>
+			</div>
+		} else {
+			<div class="flex flex-col gap-4">
+				for key, count := range data {
+					<div class="space-y-1">
+						<div class="flex justify-between font-mono text-sm font-bold">
+							<span class="uppercase truncate max-w-[70%]">{ key }</span>
+							<span>{ fmt.Sprintf("%d", count) }</span>
+						</div>
+						<div class="w-full bg-base-100 border border-base-content/20 h-4">
+							<div class="bg-base-content h-full transition-all duration-1000" style={ fmt.Sprintf("width: %f%%", float64(count)/float64(total)*100) }></div>
+						</div>
+					</div>
+				}
+			</div>
+		}
+	</div>
+}
