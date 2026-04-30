@@ -93,7 +93,8 @@ func TestMain(m *testing.M) {
 	userRepo := db.NewUserRepository(dbConn)
 	sessionRepo := db.NewPostgresSessionRepository(dbConn)
 
-	shortenedURLUseCase := usecase.NewShortenedUrlUseCase(shortenedURLsRepo)
+	urlVisitRepo := db.NewUrlVisitRepository(dbConn)
+	shortenedURLUseCase := usecase.NewShortenedUrlUseCase(shortenedURLsRepo, urlVisitRepo, nil)
 	authUseCase := usecase.NewAuthUseCase(userRepo, sessionRepo)
 
 	deps := &handlers.Dependencies{

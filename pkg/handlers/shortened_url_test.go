@@ -22,7 +22,8 @@ import (
 
 func TestShortenedUrl_RedirectToLongUrl(t *testing.T) {
 	mockRepo := new(mocks.ShortenedUrlRepository)
-	suUseCase := usecase.NewShortenedUrlUseCase(mockRepo)
+	mockVisitRepo := new(mocks.UrlVisitRepository)
+	suUseCase := usecase.NewShortenedUrlUseCase(mockRepo, mockVisitRepo, nil)
 
 	// We can pass nil for authUseCase here because this route is public
 	handler := &ShortenedUrl{usecase: suUseCase, authUseCase: nil}
@@ -89,7 +90,8 @@ func TestShortenedUrl_RedirectToLongUrl(t *testing.T) {
 
 func TestShortenedUrl_CreateUrl(t *testing.T) {
 	mockRepo := new(mocks.ShortenedUrlRepository)
-	suUseCase := usecase.NewShortenedUrlUseCase(mockRepo)
+	mockVisitRepo := new(mocks.UrlVisitRepository)
+	suUseCase := usecase.NewShortenedUrlUseCase(mockRepo, mockVisitRepo, nil)
 	
 	handler := &ShortenedUrl{usecase: suUseCase, authUseCase: nil}
 	
