@@ -13,7 +13,7 @@ templ StatsPage(slug string, stats *dto.UrlStats) {
 			<!-- Header -->
 			<div class="flex justify-between items-end border-b-4 border-base-content pb-4">
 				<div class="space-y-2">
-					<h1 class="text-6xl font-black tracking-tighter uppercase">STATS // { slug }</h1>
+					<h1 class="text-6xl font-black tracking-tighter uppercase">STATS // <span class="text-accent">{ slug }</span></h1>
 					<p class="text-xl font-mono text-base-content/70">TOTAL CLICKS: <span class="font-bold text-base-content">{ fmt.Sprintf("%d", stats.TotalClicks) }</span></p>
 				</div>
 				<a href="/dashboard" class="btn-solid-3d px-6 py-3 font-bold flex items-center gap-2">
@@ -21,7 +21,6 @@ templ StatsPage(slug string, stats *dto.UrlStats) {
 					BACK TO DASHBOARD
 				</a>
 			</div>
-
 			<!-- Stats Grid -->
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 				<!-- Browsers -->
