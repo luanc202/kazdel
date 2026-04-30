@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net/http"
@@ -46,6 +47,7 @@ func (h *ShortenedUrl) Routes(r chi.Router) {
 		protectedWeb.Delete("/dashboard/urls/{slug}", h.DeleteUrl)
 		protectedWeb.Get("/dashboard/urls/{slug}/edit", h.EditUrlForm)
 		protectedWeb.Post("/dashboard/urls/{slug}/edit", h.UpdateUrl)
+		protectedWeb.Get("/dashboard/urls/{slug}/stats", h.GetUrlStatsPage)
 		protectedWeb.Get("/dashboard/urls/{slug}", h.GetUrlRow)
 	})
 
@@ -75,6 +77,8 @@ func (h *ShortenedUrl) RedirectToLongUrl(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
+	go h.usecase.RecordVisit(context.Background(), shortenedUrl.ID, r)
+
 	http.Redirect(w, r, shortenedUrl.LongUrl, http.StatusFound)
 }
 
@@ -88,6 +92,7 @@ func (h *ShortenedUrl) HandlePasswordSubmission(w http.ResponseWriter, r *http.R
 	}
 
 	if shortenedUrl.PasswordHash == nil {
+		go h.usecase.RecordVisit(context.Background(), shortenedUrl.ID, r)
 		http.Redirect(w, r, shortenedUrl.LongUrl, http.StatusFound)
 		return
 	}
@@ -104,6 +109,8 @@ func (h *ShortenedUrl) HandlePasswordSubmission(w http.ResponseWriter, r *http.R
 		components.PasswordPrompt(slug, "Incorrect password").Render(r.Context(), w)
 		return
 	}
+
+	go h.usecase.RecordVisit(context.Background(), shortenedUrl.ID, r)
 
 	http.Redirect(w, r, shortenedUrl.LongUrl, http.StatusFound)
 }
@@ -401,4 +408,29 @@ func (h *ShortenedUrl) GetUrlRow(w http.ResponseWriter, r *http.Request) {
 	)
 
 	pages.UrlRow(*view).Render(r.Context(), w)
+}
+
+// GetUrlStatsPage handles GET /dashboard/urls/{slug}/stats
+func (h *ShortenedUrl) GetUrlStatsPage(w http.ResponseWriter, r *http.Request) {
+	shortSlug := chi.URLParam(r, "slug")
+
+	userIdStr, ok := appctx.GetAuthUser(r)
+	if !ok {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	userId, err := uniqueEntityId.ParseID(userIdStr)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	stats, err := h.usecase.GetUrlStats(r.Context(), shortSlug, userId)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	pages.StatsPage(shortSlug, stats).Render(r.Context(), w)
 }
