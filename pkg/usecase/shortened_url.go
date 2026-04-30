@@ -1,9 +1,14 @@
 package usecase
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"log/slog"
+	"net"
+	"net/http"
+	"strings"
+
 	"kazdel/pkg/entity"
 	"kazdel/pkg/entity/dto"
 	"kazdel/pkg/infra/config"
@@ -11,18 +16,24 @@ import (
 	"kazdel/pkg/slug"
 	"kazdel/pkg/uniqueEntityId"
 
+	"github.com/mssola/user_agent"
+	"github.com/oschwald/geoip2-golang"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type ShortenedUrlUsecase struct {
-	repo   interfaces.ShortenedUrlRepository
-	logger slog.Logger
+	repo       interfaces.ShortenedUrlRepository
+	visitRepo  interfaces.UrlVisitRepository
+	geoipDb    *geoip2.Reader
+	logger     slog.Logger
 }
 
-func NewShortenedUrlUseCase(repo interfaces.ShortenedUrlRepository) *ShortenedUrlUsecase {
+func NewShortenedUrlUseCase(repo interfaces.ShortenedUrlRepository, visitRepo interfaces.UrlVisitRepository, geoipDb *geoip2.Reader) *ShortenedUrlUsecase {
 	return &ShortenedUrlUsecase{
-		repo:   repo,
-		logger: *config.GetLogger("shortened-url-usecase"),
+		repo:       repo,
+		visitRepo:  visitRepo,
+		geoipDb:    geoipDb,
+		logger:     *config.GetLogger("shortened-url-usecase"),
 	}
 }
 
@@ -118,4 +129,80 @@ func (su *ShortenedUrlUsecase) Update(slug string, updateDto dto.ShortenedUrlUpd
 	}
 
 	return nil
+}
+
+func (su *ShortenedUrlUsecase) RecordVisit(ctx context.Context, urlId uint64, req *http.Request) {
+	// Extract IP
+	ipStr := req.Header.Get("X-Forwarded-For")
+	if ipStr == "" {
+		ipStr = req.RemoteAddr
+	}
+	// X-Forwarded-For could be a comma-separated list
+	if strings.Contains(ipStr, ",") {
+		ipStr = strings.Split(ipStr, ",")[0]
+	}
+	// Strip port from RemoteAddr
+	if strings.Contains(ipStr, ":") {
+		host, _, err := net.SplitHostPort(ipStr)
+		if err == nil {
+			ipStr = host
+		}
+	}
+
+	userAgentStr := req.UserAgent()
+	ua := user_agent.New(userAgentStr)
+	browserName, _ := ua.Browser()
+	osName := ua.OS()
+
+	referrerStr := req.Referer()
+
+	var countryStr string
+	if su.geoipDb != nil && ipStr != "" {
+		ip := net.ParseIP(strings.TrimSpace(ipStr))
+		if ip != nil {
+			record, err := su.geoipDb.Country(ip)
+			if err == nil && record.Country.Names != nil {
+				countryStr = record.Country.Names["en"]
+			}
+		}
+	}
+
+	var pIp, pReferrer, pUserAgent, pBrowser, pOs, pCountry *string
+
+	if ipStr != "" {
+		pIp = &ipStr
+	}
+	if referrerStr != "" {
+		pReferrer = &referrerStr
+	}
+	if userAgentStr != "" {
+		pUserAgent = &userAgentStr
+	}
+	if browserName != "" {
+		pBrowser = &browserName
+	}
+	if osName != "" {
+		pOs = &osName
+	}
+	if countryStr != "" {
+		pCountry = &countryStr
+	}
+
+	visit := entity.NewUrlVisit(urlId, pIp, pReferrer, pUserAgent, pBrowser, pOs, pCountry)
+	err := su.visitRepo.Save(ctx, visit)
+	if err != nil {
+		su.logger.Error("Failed to save url visit: " + err.Error())
+	}
+}
+
+func (su *ShortenedUrlUsecase) GetUrlStats(ctx context.Context, slug string, userId uniqueEntityId.ID) (*dto.UrlStats, error) {
+	url, err := su.FindBySlug(slug)
+	if err != nil {
+		return nil, err
+	}
+	if url.UserId != userId {
+		return nil, fmt.Errorf("unauthorized")
+	}
+
+	return su.visitRepo.GetStatsByUrlId(ctx, url.ID)
 }
