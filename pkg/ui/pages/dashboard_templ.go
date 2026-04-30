@@ -140,7 +140,7 @@ func UrlRow(url dto.ShortenedUrlView) templ.Component {
 			templ_7745c5c3_Var7 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"grid grid-cols-12 gap-4 bg-base-200 border border-base-content/10 p-6 items-center hover:border-base-content/30 transition-all duration-500 group [&.htmx-swapping]:opacity-0 [&.htmx-swapping]:scale-95 [&.htmx-swapping]:-translate-x-4\"><div class=\"col-span-5 truncate font-mono text-sm text-base-content/70\" title=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"grid grid-cols-12 gap-4 p-6 items-center brutalist-row group [&.htmx-swapping]:opacity-0 [&.htmx-swapping]:scale-95 [&.htmx-swapping]:-translate-x-4\"><div class=\"col-span-5 truncate font-mono text-sm text-base-content/70\" title=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -339,7 +339,7 @@ func EditUrlRow(url dto.ShortenedUrlView, errMessage string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "\" hx-target=\"this\" hx-swap=\"outerHTML swap:150ms settle:200ms\" class=\"grid grid-cols-12 gap-4 bg-base-200 border-2 border-base-content/30 p-6 items-center\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "\" hx-target=\"this\" hx-swap=\"outerHTML swap:150ms settle:200ms\" class=\"grid grid-cols-12 gap-4 p-6 items-center brutalist-row\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

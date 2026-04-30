@@ -237,6 +237,16 @@
     @apply bg-accent-content text-accent shadow-3d-hover -translate-x-[4px] -translate-y-[4px];
   }
 
+  .brutalist-row {
+    @apply bg-base-200 border-2 border-base-content/30 transition-all duration-200;
+    box-shadow: 6px 6px 0px 0px var(--color-base-content);
+  }
+
+  .brutalist-row:hover {
+    @apply border-base-content/60 -translate-x-[4px] -translate-y-[4px] z-10;
+    box-shadow: 8px 8px 0px 0px var(--color-base-content);
+  }
+
   .btn-danger-3d:active {
     @apply bg-error-content text-error shadow-3d-active translate-x-[4px] translate-y-[4px];
   }
