@@ -230,11 +230,11 @@
   }
 
   .btn-danger-3d {
-    @apply relative font-inter cursor-pointer z-10 block bg-error text-error-content px-8 py-4 font-bold border-2 border-error transition-all duration-150 shadow-3d shadow-error uppercase;
+    @apply relative font-inter cursor-pointer z-10 block bg-accent text-accent-content px-8 py-4 font-bold border-2 border-accent transition-all duration-150 shadow-3d shadow-accent uppercase;
   }
 
   .btn-danger-3d:hover {
-    @apply bg-error-content text-error shadow-3d-hover -translate-x-[4px] -translate-y-[4px];
+    @apply bg-accent-content text-accent shadow-3d-hover -translate-x-[4px] -translate-y-[4px];
   }
 
   .btn-danger-3d:active {
@@ -513,11 +513,13 @@
     transform: translateY(8px);
     box-shadow: none;
   }
+
   50% {
     opacity: 0.5;
     transform: translateY(4px);
     box-shadow: 2px 2px 0px var(--color-base-content);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);

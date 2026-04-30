@@ -158,7 +158,7 @@ templ UrlRow(url dto.ShortenedUrlView) {
 				style="display: none;"
 				class="absolute right-0 grid grid-cols-2 items-center justify-end gap-2 p-3 bg-base-200 border-2 border-base-content shadow-3d z-10 text-[0.5rem] font-bold whitespace-nowrap"
 			>
-				<span class="text-content text-center text-shadow-lg col-span-2 text-sm mr-1">ARE YOU <span class="text-error underline decoration-error decoration-2">SURE?</span></span>
+				<span class="text-content text-center text-shadow-lg col-span-2 text-sm mr-1">ARE YOU <span class="text-accent underline decoration-accent decoration-2">SURE?</span></span>
 				<button
 					hx-delete={ "/dashboard/urls/" + url.ShortSlug }
 					hx-target="closest .group"
