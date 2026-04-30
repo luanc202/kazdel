@@ -9,6 +9,8 @@ import (
 	"kazdel/pkg/infra/config"
 	"kazdel/pkg/infra/db"
 	"kazdel/pkg/usecase"
+
+	"github.com/oschwald/geoip2-golang"
 )
 
 func main() {
@@ -24,13 +26,25 @@ func main() {
 
 	dbConn := config.GetDbConnection()
 
+	// Initialize GeoIP2 Reader
+	var geoipDb *geoip2.Reader
+	geoipPath := "data/GeoLite2-Country.mmdb"
+	dbReader, err := geoip2.Open(geoipPath)
+	if err == nil {
+		geoipDb = dbReader
+		defer geoipDb.Close()
+	} else {
+		slog.Warn("Failed to open GeoIP database, geolocation tracking will be disabled", "error", err)
+	}
+
 	// Create repositories
 	shortenedURLsRepo := db.NewShortenedUrlRepository(dbConn)
+	urlVisitRepo := db.NewUrlVisitRepository(dbConn)
 	userRepo := db.NewUserRepository(dbConn)
 	sessionRepo := db.NewPostgresSessionRepository(dbConn)
 
 	// Create use cases
-	shortenedURLUseCase := usecase.NewShortenedUrlUseCase(shortenedURLsRepo)
+	shortenedURLUseCase := usecase.NewShortenedUrlUseCase(shortenedURLsRepo, urlVisitRepo, geoipDb)
 	authUseCase := usecase.NewAuthUseCase(userRepo, sessionRepo)
 
 	// Create handler dependencies
