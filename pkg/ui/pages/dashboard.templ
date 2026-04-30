@@ -87,13 +87,13 @@ templ UrlRow(url dto.ShortenedUrlView) {
 		<div class="col-span-5 truncate font-mono text-sm text-base-content/70" title={ url.OriginalUrl }>
 			{ url.OriginalUrl }
 		</div>
-		<div class="col-span-3 font-bold text-lg tracking-tight">
+		<div class="col-span-1 font-bold text-lg tracking-tight">
 			{ url.ShortSlug }
 		</div>
-		<div class="col-span-2 font-mono text-base-content/50">
+		<div class="col-span-3 font-mono text-base-content/50">
 			{ url.ExpiresAt }
 		</div>
-		<div class="col-span-2 flex justify-end items-center relative min-h-[40px] w-full" x-data="{ confirmingDelete: false }">
+		<div class="col-span-3 flex justify-end items-center relative min-h-[40px] w-full" x-data="{ confirmingDelete: false }">
 			<div
 				x-show="!confirmingDelete"
 				x-transition:enter="transition ease-out duration-300 delay-100"
@@ -260,9 +260,9 @@ templ Dashboard(urls []dto.ShortenedUrlView) {
 				<section class="space-y-4">
 					<div class="grid grid-cols-12 gap-4 px-6 py-2 text-xs font-bold text-base-content/30 uppercase tracking-widest">
 						<div class="col-span-5">Original URL</div>
-						<div class="col-span-3">Short Code</div>
-						<div class="col-span-2">Expires</div>
-						<div class="col-span-2 text-right">Actions</div>
+						<div class="col-span-1">Short Code</div>
+						<div class="col-span-3">Expires</div>
+						<div class="col-span-3 text-right">Actions</div>
 					</div>
 					<div id="url-list" class="space-y-4">
 						if len(urls) == 0 {

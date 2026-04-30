@@ -166,7 +166,7 @@ func UrlRow(url dto.ShortenedUrlView) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div><div class=\"col-span-3 font-bold text-lg tracking-tight\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div><div class=\"col-span-1 font-bold text-lg tracking-tight\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -179,7 +179,7 @@ func UrlRow(url dto.ShortenedUrlView) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div><div class=\"col-span-2 font-mono text-base-content/50\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div><div class=\"col-span-3 font-mono text-base-content/50\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -192,7 +192,7 @@ func UrlRow(url dto.ShortenedUrlView) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div><div class=\"col-span-2 flex justify-end items-center relative min-h-[40px] w-full\" x-data=\"{ confirmingDelete: false }\"><div x-show=\"!confirmingDelete\" x-transition:enter=\"transition ease-out duration-300 delay-100\" x-transition:enter-start=\"opacity-0 -translate-x-8\" x-transition:enter-end=\"opacity-100 translate-x-0\" x-transition:leave=\"transition ease-in duration-200\" x-transition:leave-start=\"opacity-100 translate-x-0\" x-transition:leave-end=\"opacity-0 -translate-x-8\" class=\"absolute right-0 flex justify-end gap-3\"><a href=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div><div class=\"col-span-3 flex justify-end items-center relative min-h-[40px] w-full\" x-data=\"{ confirmingDelete: false }\"><div x-show=\"!confirmingDelete\" x-transition:enter=\"transition ease-out duration-300 delay-100\" x-transition:enter-start=\"opacity-0 -translate-x-8\" x-transition:enter-end=\"opacity-100 translate-x-0\" x-transition:leave=\"transition ease-in duration-200\" x-transition:leave-start=\"opacity-100 translate-x-0\" x-transition:leave-end=\"opacity-0 -translate-x-8\" class=\"absolute right-0 flex justify-end gap-3\"><a href=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -481,7 +481,7 @@ func Dashboard(urls []dto.ShortenedUrlView) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "<section class=\"space-y-4\"><div class=\"grid grid-cols-12 gap-4 px-6 py-2 text-xs font-bold text-base-content/30 uppercase tracking-widest\"><div class=\"col-span-5\">Original URL</div><div class=\"col-span-3\">Short Code</div><div class=\"col-span-2\">Expires</div><div class=\"col-span-2 text-right\">Actions</div></div><div id=\"url-list\" class=\"space-y-4\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "<section class=\"space-y-4\"><div class=\"grid grid-cols-12 gap-4 px-6 py-2 text-xs font-bold text-base-content/30 uppercase tracking-widest\"><div class=\"col-span-5\">Original URL</div><div class=\"col-span-1\">Short Code</div><div class=\"col-span-3\">Expires</div><div class=\"col-span-3 text-right\">Actions</div></div><div id=\"url-list\" class=\"space-y-4\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
