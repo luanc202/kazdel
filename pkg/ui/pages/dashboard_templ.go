@@ -192,7 +192,7 @@ func UrlRow(url dto.ShortenedUrlView) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div><div class=\"col-span-3 flex justify-end items-center relative min-h-[40px] w-full\" x-data=\"{ confirmingDelete: false }\"><div x-show=\"!confirmingDelete\" x-transition:enter=\"transition ease-out duration-300 delay-100\" x-transition:enter-start=\"opacity-0 -translate-x-8\" x-transition:enter-end=\"opacity-100 translate-x-0\" x-transition:leave=\"transition ease-in duration-200\" x-transition:leave-start=\"opacity-100 translate-x-0\" x-transition:leave-end=\"opacity-0 -translate-x-8\" class=\"absolute right-0 flex justify-end gap-3\"><a href=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div><div class=\"col-span-3 flex justify-end items-center relative min-h-[40px] w-full\" x-data=\"{ confirmingDelete: false }\"><div x-show=\"!confirmingDelete\" x-transition:enter=\"transition-transform duration-150 ease-out delay-100\" x-transition:enter-start=\"-translate-x-4 -translate-y-4\" x-transition:enter-end=\"translate-x-0 translate-y-0\" x-transition:leave=\"transition-transform duration-100 ease-in\" x-transition:leave-start=\"translate-x-0 translate-y-0\" x-transition:leave-end=\"translate-x-4 translate-y-4\" class=\"absolute right-0 flex justify-end gap-3\"><a href=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -284,7 +284,7 @@ func UrlRow(url dto.ShortenedUrlView) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</button></div><div x-cloak x-show=\"confirmingDelete\" x-transition:enter=\"transition ease-out duration-300 delay-100\" x-transition:enter-start=\"opacity-0 translate-x-8\" x-transition:enter-end=\"opacity-100 translate-x-0\" x-transition:leave=\"transition ease-in duration-200\" x-transition:leave-start=\"opacity-100 translate-x-0\" x-transition:leave-end=\"opacity-0 translate-x-8\" style=\"display: none;\" class=\"absolute right-0 grid grid-cols-2 items-center justify-end gap-2 text-[0.5rem] font-bold whitespace-nowrap\"><span class=\"text-content text-center text-shadow-lg col-span-2 text-sm mr-1\">ARE YOU <span class=\"text-error underline decoration-error decoration-2\">SURE?</span></span> <button hx-delete=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</button></div><div x-cloak x-show=\"confirmingDelete\" x-transition:enter=\"transition-transform duration-150 ease-out delay-100\" x-transition:enter-start=\"-translate-x-4 -translate-y-4\" x-transition:enter-end=\"translate-x-0 translate-y-0\" x-transition:leave=\"transition-transform duration-100 ease-in\" x-transition:leave-start=\"translate-x-0 translate-y-0\" x-transition:leave-end=\"translate-x-4 translate-y-4\" style=\"display: none;\" class=\"absolute right-0 grid grid-cols-2 items-center justify-end gap-2 p-3 bg-base-200 border-2 border-base-content shadow-3d z-10 text-[0.5rem] font-bold whitespace-nowrap\"><span class=\"text-content text-center text-shadow-lg col-span-2 text-sm mr-1\">ARE YOU <span class=\"text-accent underline decoration-accent decoration-2\">SURE?</span></span> <button hx-delete=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
