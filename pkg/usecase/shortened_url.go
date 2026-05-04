@@ -37,7 +37,7 @@ func NewShortenedUrlUseCase(repo interfaces.ShortenedUrlRepository, visitRepo in
 	}
 }
 
-func (su *ShortenedUrlUsecase) Save(shortenedUrlDto dto.ShortenedUrlInsert, userId uniqueEntityId.ID) error {
+func (su *ShortenedUrlUsecase) Save(shortenedUrlDto dto.ShortenedUrlInsert, userId uniqueEntityId.ID) (string, error) {
 	shortSlug := shortenedUrlDto.CustomSlug
 	if shortSlug == "" {
 		shortSlug = slug.GenerateSlug(6)
@@ -47,7 +47,7 @@ func (su *ShortenedUrlUsecase) Save(shortenedUrlDto dto.ShortenedUrlInsert, user
 	if shortenedUrlDto.Password != "" {
 		hash, err := bcrypt.GenerateFromPassword([]byte(shortenedUrlDto.Password), bcrypt.DefaultCost)
 		if err != nil {
-			return fmt.Errorf("failed to hash password: %w", err)
+			return "", fmt.Errorf("failed to hash password: %w", err)
 		}
 		hashStr := string(hash)
 		passwordHash = &hashStr
@@ -69,10 +69,10 @@ func (su *ShortenedUrlUsecase) Save(shortenedUrlDto dto.ShortenedUrlInsert, user
 		if !errors.Is(err, entity.ErrCustomSlugAlreadyExists) {
 			su.logger.Error(fmt.Errorf("Error saving shortened url: %w", err).Error())
 		}
-		return err
+		return "", err
 	}
 
-	return nil
+	return shortSlug, nil
 }
 
 func (su *ShortenedUrlUsecase) FindBySlug(slug string) (*entity.ShortenedUrl, error) {

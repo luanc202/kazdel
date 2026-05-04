@@ -205,7 +205,7 @@ func (h *ShortenedUrl) CreateUrl(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.usecase.Save(shortenedUrlInsert, userId)
+	shortSlug, err := h.usecase.Save(shortenedUrlInsert, userId)
 	if err != nil {
 		errMsg := fmt.Sprintf("Failed to save: %s", err.Error())
 		if errors.Is(err, entity.ErrCustomSlugAlreadyExists) {
@@ -215,9 +215,31 @@ func (h *ShortenedUrl) CreateUrl(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Tell HTMX to do a full page transition back to dashboard to grab the fresh list
-	w.Header().Set("HX-Redirect", "/dashboard")
-	w.WriteHeader(http.StatusOK)
+	// Fetch the newly created URL to render the new row
+	url, err := h.usecase.FindBySlug(shortSlug)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	desc := ""
+	if url.Description != nil {
+		desc = *url.Description
+	}
+
+	view := dto.NewShortenedUrlView(
+		url.ShortSlug,
+		url.LongUrl,
+		url.ExpiresAt.Format("2006-01-02 15:04:05"),
+		desc,
+		url.PasswordHash != nil,
+		url.ExpiresAt.Format("2006-01-02T15:04"),
+	)
+
+	clearedForm := pages.CreateUrlForm("", "", time.Now().AddDate(0, 0, 7).Format("2006-01-02T15:04"), "", "")
+	newRow := pages.NewUrlRow(*view)
+
+	pages.CreateUrlSuccess(clearedForm, newRow).Render(r.Context(), w)
 }
 
 // DeleteUrl handles DELETE /dashboard/urls/{slug}
