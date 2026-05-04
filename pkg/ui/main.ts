@@ -69,8 +69,5 @@ document.addEventListener('htmx:load', function (evt) {
             { duration: 0.8, delay: 0.4 }
         );
     }
-
-    // 2. Interactive Animations (Hover and Press/Tap) are now managed
-    // via pure CSS in main.css to keep the box-shadow base totally anchored.
 });
 
