@@ -247,6 +247,11 @@
     box-shadow: 8px 8px 0px 0px var(--color-base-content);
   }
 
+  /* Brutalist fade-in for newly created rows */
+  .brutalist-row-enter {
+    animation: brutalist-snap-in 150ms steps(3, end) backwards;
+  }
+
   .btn-danger-3d:active {
     @apply bg-error-content text-error shadow-3d-active translate-x-[4px] translate-y-[4px];
   }
@@ -512,27 +517,22 @@
 }
 
 .htmx-added {
-  opacity: 0;
-  transform: translateY(4px);
-  animation: brutalist-snap-in 200ms steps(4, end) forwards;
+  animation: brutalist-snap-in 150ms steps(3, end) backwards;
 }
 
 @keyframes brutalist-snap-in {
   0% {
     opacity: 0;
-    transform: translateY(8px);
-    box-shadow: none;
+    transform: translateX(-4px) scale(0.95);
   }
 
   50% {
     opacity: 0.5;
-    transform: translateY(4px);
-    box-shadow: 2px 2px 0px var(--color-base-content);
+    transform: translateX(-2px) scale(0.97);
   }
 
   100% {
     opacity: 1;
-    transform: translateY(0);
-    /* Restores to normal state */
+    transform: translateX(0) scale(1);
   }
 }
