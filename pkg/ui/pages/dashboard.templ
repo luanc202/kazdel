@@ -82,6 +82,111 @@ templ CreateUrlForm(errMessage string, originalUrl string, defaultExpiresAt stri
 	</form>
 }
 
+templ CreateUrlSuccess(form templ.Component, newRow templ.Component) {
+	@form
+	<div hx-swap-oob="afterbegin:#url-list">
+		@newRow
+	</div>
+	<template id="empty-state" hx-swap-oob="outerHTML"></template>
+}
+
+templ NewUrlRow(url dto.ShortenedUrlView) {
+	<div class="grid grid-cols-12 gap-4 p-6 items-center brutalist-row brutalist-row-enter group [&.htmx-swapping]:opacity-0 [&.htmx-swapping]:scale-95 [&.htmx-swapping]:-translate-x-4">
+		<div class="col-span-5 truncate font-mono text-sm text-base-content/70" title={ url.OriginalUrl }>
+			{ url.OriginalUrl }
+		</div>
+		<div class="col-span-1 font-bold text-lg tracking-tight">
+			{ url.ShortSlug }
+		</div>
+		<div class="col-span-3 font-mono text-base-content/50">
+			{ url.ExpiresAt }
+		</div>
+		<div class="col-span-3 flex justify-end items-center relative min-h-[40px] w-full" x-data="{ confirmingDelete: false }">
+			<div
+				x-show="!confirmingDelete"
+				x-transition:enter="transition-transform duration-150 ease-out delay-100"
+				x-transition:enter-start="-translate-x-4 -translate-y-4"
+				x-transition:enter-end="translate-x-0 translate-y-0"
+				x-transition:leave="transition-transform duration-100 ease-in"
+				x-transition:leave-start="translate-x-0 translate-y-0"
+				x-transition:leave-end="translate-x-4 translate-y-4"
+				class="absolute right-0 flex justify-end gap-3"
+			>
+				<a
+					href={ templ.SafeURL("/dashboard/urls/" + url.ShortSlug + "/stats") }
+					class="p-2 btn-action-3d"
+					title="View Stats"
+				>
+					@icons.ChartIcon("18")
+				</a>
+				<button
+					hx-get={ "/dashboard/urls/" + url.ShortSlug + "/edit" }
+					hx-target="closest .grid"
+					hx-swap="outerHTML swap:150ms settle:200ms"
+					class="p-2 btn-action-3d"
+					title="Edit Link"
+				>
+					@icons.PencilIcon("18")
+				</button>
+				<button
+					data-slug={ url.ShortSlug }
+					onclick="navigator.clipboard.writeText(window.location.origin + '/' + this.getAttribute('data-slug'))"
+					class="p-2 btn-action-3d"
+					title="Copy Link"
+				>
+					@icons.CopyIcon("18")
+				</button>
+				<a
+					href={ templ.SafeURL(url.OriginalUrl) }
+					target="_blank"
+					rel="noopener noreferrer"
+					class="p-2 btn-action-3d"
+					title="Open Link"
+				>
+					@icons.ExternalLinkIcon("18")
+				</a>
+				<button
+					@click="confirmingDelete = true"
+					type="button"
+					class="p-2 btn-action-3d"
+					title="Delete"
+				>
+					@icons.TrashIcon("18")
+				</button>
+			</div>
+			<div
+				x-cloak
+				x-show="confirmingDelete"
+				x-transition:enter="transition-transform duration-150 ease-out delay-100"
+				x-transition:enter-start="-translate-x-4 -translate-y-4"
+				x-transition:enter-end="translate-x-0 translate-y-0"
+				x-transition:leave="transition-transform duration-100 ease-in"
+				x-transition:leave-start="translate-x-0 translate-y-0"
+				x-transition:leave-end="translate-x-4 translate-y-4"
+				style="display: none;"
+				class="absolute right-0 grid grid-cols-2 items-center justify-end gap-2 p-3 bg-base-200 border-2 border-base-content shadow-3d z-10 text-[0.5rem] font-bold whitespace-nowrap"
+			>
+				<span class="text-content text-center text-shadow-lg col-span-2 text-sm mr-1">ARE YOU <span class="text-accent underline decoration-accent decoration-2">SURE?</span></span>
+				<button
+					hx-delete={ "/dashboard/urls/" + url.ShortSlug }
+					hx-target="closest .group"
+					hx-swap="outerHTML swap:500ms"
+					class="px-2 py-1 btn-danger-3d text-base"
+				>
+					YES
+				</button>
+				<button
+					@click="confirmingDelete = false"
+					type="button"
+					class="px-2 py-1 btn-action-3d text-base"
+				>
+					NO
+				</button>
+			</div>
+		</div>
+	</div>
+}
+
 templ UrlRow(url dto.ShortenedUrlView) {
 	<div class="grid grid-cols-12 gap-4 p-6 items-center brutalist-row group [&.htmx-swapping]:opacity-0 [&.htmx-swapping]:scale-95 [&.htmx-swapping]:-translate-x-4">
 		<div class="col-span-5 truncate font-mono text-sm text-base-content/70" title={ url.OriginalUrl }>
