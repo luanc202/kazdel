@@ -291,7 +291,8 @@ templ EditUrlRow(url dto.ShortenedUrlView, errMessage string) {
 				{ errMessage }
 			</div>
 		}
-		<div class="col-span-12 flex flex-col gap-4">
+		<div class="col-span-12 flex flex-col gap-2">
+			<label for="originalUrl" class="text-base font-bold text-base-content/70">ORIGINAL URL</label>
 			<input
 				type="url"
 				name="originalUrl"
@@ -300,7 +301,10 @@ templ EditUrlRow(url dto.ShortenedUrlView, errMessage string) {
 				class="w-full bg-base-100 border-2 border-base-content/10 px-4 py-2 text-sm font-bold focus:outline-none focus:border-base-content transition-colors"
 				required
 			/>
-			<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+				<label for="expiresAt" class="text-base font-bold text-base-content/70">EXPIRATION DATE</label>
+				<label for="customSlug" class="text-base font-bold text-base-content/70">CUSTOM SLUG</label>
+				<label for="password" class="text-base font-bold text-base-content/70">PASSWORD</label>
 				<input
 					type="datetime-local"
 					name="expiresAt"

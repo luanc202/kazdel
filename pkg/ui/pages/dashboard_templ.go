@@ -589,27 +589,27 @@ func EditUrlRow(url dto.ShortenedUrlView, errMessage string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "<div class=\"col-span-12 flex flex-col gap-4\"><input type=\"url\" name=\"originalUrl\" placeholder=\"LONG_URL\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "<div class=\"col-span-12 flex flex-col gap-2\"><label for=\"originalUrl\" class=\"text-base font-bold text-base-content/70\">ORIGINAL URL</label> <input type=\"url\" name=\"originalUrl\" placeholder=\"LONG_URL\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var31 string
 		templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(url.OriginalUrl)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 299, Col: 27}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 300, Col: 27}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var31))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, "\" class=\"w-full bg-base-100 border-2 border-base-content/10 px-4 py-2 text-sm font-bold focus:outline-none focus:border-base-content transition-colors\" required><div class=\"grid grid-cols-1 md:grid-cols-3 gap-4\"><input type=\"datetime-local\" name=\"expiresAt\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, "\" class=\"w-full bg-base-100 border-2 border-base-content/10 px-4 py-2 text-sm font-bold focus:outline-none focus:border-base-content transition-colors\" required><div class=\"grid grid-cols-1 md:grid-cols-3 gap-2\"><label for=\"expiresAt\" class=\"text-base font-bold text-base-content/70\">EXPIRATION DATE</label> <label for=\"customSlug\" class=\"text-base font-bold text-base-content/70\">CUSTOM SLUG</label> <label for=\"password\" class=\"text-base font-bold text-base-content/70\">PASSWORD</label> <input type=\"datetime-local\" name=\"expiresAt\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var32 string
 		templ_7745c5c3_Var32, templ_7745c5c3_Err = templ.JoinStringErrs(url.RawExpiresAt)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 307, Col: 29}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 311, Col: 29}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var32))
 		if templ_7745c5c3_Err != nil {
@@ -622,7 +622,7 @@ func EditUrlRow(url dto.ShortenedUrlView, errMessage string) templ.Component {
 		var templ_7745c5c3_Var33 string
 		templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.JoinStringErrs(url.Description)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 315, Col: 28}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 319, Col: 28}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var33))
 		if templ_7745c5c3_Err != nil {
@@ -640,7 +640,7 @@ func EditUrlRow(url dto.ShortenedUrlView, errMessage string) templ.Component {
 			return "PASSWORD"
 		}())
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 321, Col: 102}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 325, Col: 102}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var34))
 		if templ_7745c5c3_Err != nil {
@@ -653,7 +653,7 @@ func EditUrlRow(url dto.ShortenedUrlView, errMessage string) templ.Component {
 		var templ_7745c5c3_Var35 string
 		templ_7745c5c3_Var35, templ_7745c5c3_Err = templ.JoinStringErrs("/dashboard/urls/" + url.ShortSlug)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 334, Col: 48}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 338, Col: 48}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var35))
 		if templ_7745c5c3_Err != nil {
