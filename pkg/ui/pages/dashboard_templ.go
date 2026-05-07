@@ -646,7 +646,7 @@ func EditUrlRow(url dto.ShortenedUrlView, errMessage string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "\" class=\"w-full bg-base-100 border-2 border-base-content/10 px-4 py-2 text-sm font-bold focus:outline-none focus:border-base-content transition-colors\"></div><div class=\"flex justify-end gap-2 mt-2\"><button type=\"submit\" class=\"px-4 py-2 btn-solid-3d text-sm\">SAVE</button> <button type=\"button\" hx-get=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "\" class=\"w-full bg-base-100 border-2 border-base-content/10 px-4 py-2 text-sm font-bold focus:outline-none focus:border-base-content transition-colors\"></div><div class=\"flex justify-end gap-2 mt-2\"><button type=\"submit\" class=\"px-4 py-2 btn-danger-3d text-sm\">SAVE</button> <button type=\"button\" hx-get=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
