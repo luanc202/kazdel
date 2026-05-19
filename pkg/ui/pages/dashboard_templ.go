@@ -700,7 +700,7 @@ func Dashboard(urls []dto.ShortenedUrlView) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 51, "<div class=\"min-h-screen bg-base-100 text-base-content p-6 md:p-12 font-sans\"><div class=\"max-w-5xl mx-auto\"><header class=\"flex justify-between items-center mb-12 border-b border-base-content/10 pb-8\"><div><h1 class=\"text-4xl font-bold tracking-tighter\">DASHBOARD</h1><p class=\"text-base-content/50 text-sm font-mono mt-1\">USER_SESSION: ACTIVE</p></div><a hx-post=\"/api/v1/auth/logout\" hx-target=\"body\" hx-swap=\"innerHTML\" class=\"text-base-content/50 hover:text-base-content transition-colors uppercase text-xs font-bold tracking-widest cursor-pointer\">Logout</a></header>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 51, "<div class=\"min-h-screen bg-base-100 text-base-content p-6 md:p-12 font-sans\"><div class=\"max-w-6xl mx-auto\"><header class=\"flex justify-between items-center mb-12 border-b border-base-content/10 pb-8\"><div><h1 class=\"text-4xl font-bold tracking-tighter\">DASHBOARD</h1><p class=\"text-base-content/50 text-sm font-mono mt-1\">USER_SESSION: ACTIVE</p></div><a hx-post=\"/api/v1/auth/logout\" hx-target=\"body\" hx-swap=\"innerHTML\" class=\"text-base-content/50 hover:text-base-content transition-colors uppercase text-xs font-bold tracking-widest cursor-pointer\">Logout</a></header>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
