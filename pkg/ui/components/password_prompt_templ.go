@@ -77,7 +77,7 @@ func PasswordPrompt(slug string, errMessage string) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<input type=\"password\" name=\"password\" placeholder=\"Enter Password\" class=\"w-full bg-base-200 border-2 border-base-content/10 px-6 py-4 text-xl font-bold focus:outline-none focus:border-base-content transition-colors placeholder:text-base-content/20 text-center\" required autofocus> <button type=\"submit\" class=\"w-full btn-solid-3d py-4 text-xl tracking-widest uppercase font-bold\">Unlock Link</button></form></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<input type=\"password\" name=\"password\" placeholder=\"ENTER PASSWORD\" class=\"w-full bg-base-200 border-2 border-base-content/10 px-6 py-4 text-xl font-bold focus:outline-none focus:border-base-content transition-colors placeholder:text-base-content/20 text-center\" required autofocus> <button type=\"submit\" class=\"w-full btn-solid-3d py-4 text-xl tracking-widest uppercase font-bold\">Unlock Link</button></form></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
