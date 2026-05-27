@@ -7,9 +7,11 @@ type ShortenedUrlView struct {
 	Description  string `json:"description"`
 	HasPassword  bool   `json:"hasPassword"`
 	RawExpiresAt string `json:"rawExpiresAt"`
+	CreatedAt    string `json:"createdAt"`
+	Views        string `json:"views"`
 }
 
-func NewShortenedUrlView(shortSlug, originalUrl, expiresAt, description string, hasPassword bool, rawExpiresAt string) *ShortenedUrlView {
+func NewShortenedUrlView(shortSlug, originalUrl, expiresAt, description string, hasPassword bool, rawExpiresAt, createdAt, views string) *ShortenedUrlView {
 	return &ShortenedUrlView{
 		ShortSlug:    shortSlug,
 		OriginalUrl:  originalUrl,
@@ -17,5 +19,7 @@ func NewShortenedUrlView(shortSlug, originalUrl, expiresAt, description string, 
 		Description:  description,
 		HasPassword:  hasPassword,
 		RawExpiresAt: rawExpiresAt,
+		CreatedAt:    createdAt,
+		Views:        views,
 	}
 }

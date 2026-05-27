@@ -15,6 +15,7 @@ type ShortenedUrl struct {
 	UpdatedAt    time.Time
 	ExpiresAt    time.Time
 	UserId       uniqueEntityId.ID
+	Views        int64
 }
 
 func NewShortenedUrl(shortSlug, longUrl string, expiresAt time.Time, userId uniqueEntityId.ID, description *string, passwordHash *string) *ShortenedUrl {

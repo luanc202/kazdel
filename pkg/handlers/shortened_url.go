@@ -5,7 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
 	"time"
+
+	"github.com/dustin/go-humanize"
 
 	appctx "kazdel/pkg/context"
 	"kazdel/pkg/entity"
@@ -134,7 +137,21 @@ func (h *ShortenedUrl) DashboardPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	urls, err := h.usecase.ListByUser(userId)
+	search := r.URL.Query().Get("search")
+	pageStr := r.URL.Query().Get("page")
+	limitStr := r.URL.Query().Get("limit")
+
+	page := 1
+	if p, err := strconv.Atoi(pageStr); err == nil && p > 0 {
+		page = p
+	}
+
+	limit := 30
+	if l, err := strconv.Atoi(limitStr); err == nil && (l == 20 || l == 30 || l == 50 || l == 100) {
+		limit = l
+	}
+
+	urls, total, err := h.usecase.ListByUser(userId, search, page, limit)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -149,14 +166,21 @@ func (h *ShortenedUrl) DashboardPage(w http.ResponseWriter, r *http.Request) {
 		response = append(response, *dto.NewShortenedUrlView(
 			u.ShortSlug,
 			u.LongUrl,
-			u.ExpiresAt.Format("2006-01-02 15:04:05"),
+			humanize.Time(u.ExpiresAt),
 			desc,
 			u.PasswordHash != nil,
 			u.ExpiresAt.Format("2006-01-02T15:04"),
+			humanize.Time(u.CreatedAt),
+			fmt.Sprintf("%d", u.Views),
 		))
 	}
 
-	pages.Dashboard(response).Render(r.Context(), w)
+	totalPages := (total + limit - 1) / limit
+	if totalPages == 0 {
+		totalPages = 1
+	}
+
+	pages.Dashboard(response, search, page, limit, totalPages).Render(r.Context(), w)
 }
 
 // CreateUrl handles POST /dashboard/urls/shorten
@@ -230,10 +254,12 @@ func (h *ShortenedUrl) CreateUrl(w http.ResponseWriter, r *http.Request) {
 	view := dto.NewShortenedUrlView(
 		url.ShortSlug,
 		url.LongUrl,
-		url.ExpiresAt.Format("2006-01-02 15:04:05"),
+		humanize.Time(url.ExpiresAt),
 		desc,
 		url.PasswordHash != nil,
 		url.ExpiresAt.Format("2006-01-02T15:04"),
+		humanize.Time(url.CreatedAt),
+		fmt.Sprintf("%d", url.Views),
 	)
 
 	clearedForm := pages.CreateUrlForm("", "", time.Now().AddDate(0, 0, 7).Format("2006-01-02T15:04"), "", "")
@@ -310,10 +336,12 @@ func (h *ShortenedUrl) EditUrlForm(w http.ResponseWriter, r *http.Request) {
 	view := dto.NewShortenedUrlView(
 		url.ShortSlug,
 		url.LongUrl,
-		url.ExpiresAt.Format("2006-01-02 15:04:05"),
+		humanize.Time(url.ExpiresAt),
 		desc,
 		url.PasswordHash != nil,
 		url.ExpiresAt.Format("2006-01-02T15:04"),
+		humanize.Time(url.CreatedAt),
+		fmt.Sprintf("%d", url.Views),
 	)
 
 	pages.EditUrlRow(*view, "").Render(r.Context(), w)
@@ -358,6 +386,8 @@ func (h *ShortenedUrl) UpdateUrl(w http.ResponseWriter, r *http.Request) {
 			updateDto.Description,
 			updateDto.Password != "",
 			updateDto.ExpiresAt,
+			"",
+			"0",
 		)
 		pages.EditUrlRow(*view, err.Error()).Render(r.Context(), w)
 		return
@@ -384,10 +414,12 @@ func (h *ShortenedUrl) UpdateUrl(w http.ResponseWriter, r *http.Request) {
 	updatedView := dto.NewShortenedUrlView(
 		url.ShortSlug,
 		url.LongUrl,
-		url.ExpiresAt.Format("2006-01-02 15:04:05"),
+		humanize.Time(url.ExpiresAt),
 		desc,
 		url.PasswordHash != nil,
 		url.ExpiresAt.Format("2006-01-02T15:04"),
+		humanize.Time(url.CreatedAt),
+		fmt.Sprintf("%d", url.Views),
 	)
 
 	pages.UrlRow(*updatedView).Render(r.Context(), w)
@@ -423,10 +455,12 @@ func (h *ShortenedUrl) GetUrlRow(w http.ResponseWriter, r *http.Request) {
 	view := dto.NewShortenedUrlView(
 		url.ShortSlug,
 		url.LongUrl,
-		url.ExpiresAt.Format("2006-01-02 15:04:05"),
+		humanize.Time(url.ExpiresAt),
 		desc,
 		url.PasswordHash != nil,
 		url.ExpiresAt.Format("2006-01-02T15:04"),
+		humanize.Time(url.CreatedAt),
+		fmt.Sprintf("%d", url.Views),
 	)
 
 	pages.UrlRow(*view).Render(r.Context(), w)

@@ -3,6 +3,8 @@ package db
 import (
 	"context"
 	"errors"
+	"time"
+
 	"kazdel/pkg/entity"
 	interfaces "kazdel/pkg/interface"
 	"kazdel/pkg/uniqueEntityId"
@@ -84,20 +86,45 @@ func (pr *ShortenedUrlRepository) FindBySlug(slug string) (*entity.ShortenedUrl,
 	return &shortenedUrl, nil
 }
 
-func (pr *ShortenedUrlRepository) FindByUserId(userId uniqueEntityId.ID) ([]*entity.ShortenedUrl, error) {
-	sql := `SELECT short_slug, long_url, description, password_hash, expires_at, user_id FROM shortened_urls WHERE user_id = @userId`
+func (pr *ShortenedUrlRepository) FindByUserIdPaginated(userId uniqueEntityId.ID, search string, page, limit int) ([]*entity.ShortenedUrl, int, error) {
+	offset := (page - 1) * limit
+	
+	baseQuery := `
+		FROM shortened_urls s
+		WHERE s.user_id = @userId
+	`
+	args := pgx.NamedArgs{
+		"userId": userId,
+		"limit": limit,
+		"offset": offset,
+	}
 
-	rows, err := pr.dbConnection.Query(
-		context.Background(),
-		sql,
-		pgx.NamedArgs{
-			"userId": userId,
-		},
-	)
+	if search != "" {
+		baseQuery += ` AND (s.short_slug ILIKE @search OR s.long_url ILIKE @search)`
+		args["search"] = "%" + search + "%"
+	}
 
+	countSql := `SELECT COUNT(DISTINCT s.id) ` + baseQuery
+	var total int
+	err := pr.dbConnection.QueryRow(context.Background(), countSql, args).Scan(&total)
+	if err != nil {
+		slog.Error("failed to count shortened urls", "error", err)
+		return nil, 0, err
+	}
+
+	sql := `
+		SELECT s.short_slug, s.long_url, s.description, s.password_hash, s.expires_at, s.user_id, s.created_at, COUNT(v.id) as views
+		` + baseQuery + `
+		LEFT JOIN url_visits v ON s.id = v.url_id
+		GROUP BY s.id
+		ORDER BY s.created_at DESC
+		LIMIT @limit OFFSET @offset
+	`
+
+	rows, err := pr.dbConnection.Query(context.Background(), sql, args)
 	if err != nil {
 		slog.Error("failed to find shortened urls by user id", "error", err)
-		return nil, err
+		return nil, 0, err
 	}
 	defer rows.Close()
 
@@ -112,15 +139,35 @@ func (pr *ShortenedUrlRepository) FindByUserId(userId uniqueEntityId.ID) ([]*ent
 			&shortenedUrl.PasswordHash,
 			&shortenedUrl.ExpiresAt,
 			&shortenedUrl.UserId,
+			&shortenedUrl.CreatedAt,
+			&shortenedUrl.Views,
 		)
 		if err != nil {
 			slog.Error("failed to scan shortened url", "error", err)
-			return nil, err
+			return nil, 0, err
 		}
 		shortenedUrls = append(shortenedUrls, &shortenedUrl)
 	}
 
-	return shortenedUrls, nil
+	return shortenedUrls, total, nil
+}
+
+func (pr *ShortenedUrlRepository) DeleteExpired(now time.Time) error {
+	sql := `DELETE FROM shortened_urls WHERE expires_at < @now`
+	slog.Info("Deleting expired shortened urls", "now", now)
+	_, err := pr.dbConnection.Exec(
+		context.Background(),
+		sql,
+		pgx.NamedArgs{
+			"now": now,
+		})
+
+	if err != nil {
+		slog.Error("failed to delete expired shortened urls from database", "error", err)
+		return err
+	}
+
+	return nil
 }
 
 func (pr *ShortenedUrlRepository) Delete(id uint64, userId uniqueEntityId.ID) error {
