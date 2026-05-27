@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"time"
 
 	"kazdel/pkg/handlers"
 	"kazdel/pkg/infra/config"
@@ -46,6 +47,16 @@ func main() {
 	// Create use cases
 	shortenedURLUseCase := usecase.NewShortenedUrlUseCase(shortenedURLsRepo, urlVisitRepo, geoipDb)
 	authUseCase := usecase.NewAuthUseCase(userRepo, sessionRepo)
+
+	go func() {
+		ticker := time.NewTicker(30 * time.Second)
+		defer ticker.Stop()
+		for range ticker.C {
+			if err := shortenedURLUseCase.CleanExpiredURLs(); err != nil {
+				slog.Error("Failed to clean expired URLs", "error", err)
+			}
+		}
+	}()
 
 	// Create handler dependencies
 	deps := &handlers.Dependencies{
