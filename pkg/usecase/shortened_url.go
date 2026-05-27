@@ -8,6 +8,7 @@ import (
 	"net"
 	"net/http"
 	"strings"
+	"time"
 
 	"kazdel/pkg/entity"
 	"kazdel/pkg/entity/dto"
@@ -79,8 +80,12 @@ func (su *ShortenedUrlUsecase) FindBySlug(slug string) (*entity.ShortenedUrl, er
 	return su.repo.FindBySlug(slug)
 }
 
-func (su *ShortenedUrlUsecase) ListByUser(userId uniqueEntityId.ID) ([]*entity.ShortenedUrl, error) {
-	return su.repo.FindByUserId(userId)
+func (su *ShortenedUrlUsecase) ListByUser(userId uniqueEntityId.ID, search string, page, limit int) ([]*entity.ShortenedUrl, int, error) {
+	return su.repo.FindByUserIdPaginated(userId, search, page, limit)
+}
+
+func (su *ShortenedUrlUsecase) CleanExpiredURLs() error {
+	return su.repo.DeleteExpired(time.Now().UTC())
 }
 
 func (su *ShortenedUrlUsecase) Delete(id uint64, userId uniqueEntityId.ID) error {
