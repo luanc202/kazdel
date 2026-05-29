@@ -88,14 +88,15 @@ func (pr *ShortenedUrlRepository) FindBySlug(slug string) (*entity.ShortenedUrl,
 
 func (pr *ShortenedUrlRepository) FindByUserIdPaginated(userId uniqueEntityId.ID, search string, page, limit int) ([]*entity.ShortenedUrl, int, error) {
 	offset := (page - 1) * limit
-	
+
 	baseQuery := `
 		FROM shortened_urls s
+		LEFT JOIN url_visits v ON s.id = v.url_id
 		WHERE s.user_id = @userId
 	`
 	args := pgx.NamedArgs{
 		"userId": userId,
-		"limit": limit,
+		"limit":  limit,
 		"offset": offset,
 	}
 
@@ -115,7 +116,6 @@ func (pr *ShortenedUrlRepository) FindByUserIdPaginated(userId uniqueEntityId.ID
 	sql := `
 		SELECT s.short_slug, s.long_url, s.description, s.password_hash, s.expires_at, s.user_id, s.created_at, COUNT(v.id) as views
 		` + baseQuery + `
-		LEFT JOIN url_visits v ON s.id = v.url_id
 		GROUP BY s.id
 		ORDER BY s.created_at DESC
 		LIMIT @limit OFFSET @offset
