@@ -1,7 +1,12 @@
 title := "add_needed_care"
 include .env
 
-.PHONY: dev prod run test migration migration-up migration-up-force migration-down
+.PHONY: dev prod run test migration migration-up migration-down migration-force
+
+# Force
+migration-force:
+	go run cmd/migration/main.go -force -version ${ver}
+
 dev: ui-build
 	docker compose --profile development --env-file .env up --build
 
