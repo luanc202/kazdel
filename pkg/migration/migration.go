@@ -122,3 +122,43 @@ func Create(name string) error {
 	fmt.Printf("Created: %s and %s\n", upFile, downFile)
 	return nil
 }
+
+func Force(version int) error {
+
+	env, err := config.LoadEnv("../")
+	if err != nil {
+		log.Fatalf("Failed to load .env file: %v\n", err)
+	}
+
+	db, err := sql.Open("postgres", env.DBUrl_Migration)
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v\n", err)
+	}
+	defer func() {
+		if err := db.Close(); err != nil {
+			log.Fatalf("Failed to close database: %v\n", err)
+		}
+	}()
+
+	driver, err := postgres.WithInstance(db, &postgres.Config{
+		MigrationsTable: "schema_migrations",
+	})
+	if err != nil {
+		return fmt.Errorf("failed to create postgres driver: %v", err)
+	}
+	migration, err := migrate.NewWithDatabaseInstance(
+		migrationsDir,
+		"postgres",
+		driver,
+	)
+
+	if err != nil {
+		return fmt.Errorf("failed to initialize migration: %v", err)
+	}
+	defer migration.Close()
+
+	if err := migration.Force(version); err != nil {
+		return fmt.Errorf("failed to run force migration: %v", err)
+	}
+	return nil
+}

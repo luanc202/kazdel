@@ -10,7 +10,23 @@ func main() {
 
 	upFlag := flag.Bool("up", false, "Run migrations UP")
 	downFlag := flag.Bool("down", false, "Run migrations DOWN")
+	forceFlag := flag.Bool("force", false, "Force migrations")
+	versionFlag := flag.Int("version", 0, "Set specific version")
 	flag.Parse()
+
+	if *forceFlag {
+		if *versionFlag == 0 {
+			fmt.Println("Error: Version is required for force migration")
+			return
+		}
+		fmt.Println("Running Migrations FORCE...")
+		if err := migration.Force(*versionFlag); err != nil {
+			fmt.Printf("Error running migrations FORCE: %v\n", err)
+			return
+		}
+		fmt.Println("Migrations executed (Forced)!")
+		return
+	}
 
 	if *upFlag {
 		fmt.Println("Running Migrations UP...")
