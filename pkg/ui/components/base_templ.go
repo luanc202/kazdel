@@ -35,11 +35,11 @@ func Base() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = icons.SunIcon("swap-off fill-current w-8 h-8").Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = icons.Sun("swap-off fill-current w-8 h-8").Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = icons.MoonIcon("swap-on fill-current w-8 h-8").Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = icons.Moon("swap-on fill-current w-8 h-8").Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
