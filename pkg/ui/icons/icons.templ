@@ -2,7 +2,7 @@ package icons
 
 // Icons by Heroicons under MIT License
 // https://heroicons.com/
-templ GitHubIcon(size int) {
+templ GitHub(size int) {
 	<svg
 		width={ size }
 		height={ size }
@@ -17,7 +17,7 @@ templ GitHubIcon(size int) {
 	</svg>
 }
 
-templ ArrowLeftIcon(size int) {
+templ ArrowLeft(size int) {
 	<svg
 		width={ size }
 		height={ size }
@@ -32,7 +32,7 @@ templ ArrowLeftIcon(size int) {
 	</svg>
 }
 
-templ SunIcon(className string) {
+templ Sun(className string) {
 	<svg
 		class={ className }
 		xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +45,7 @@ templ SunIcon(className string) {
 	</svg>
 }
 
-templ MoonIcon(className string) {
+templ Moon(className string) {
 	<svg
 		class={ className }
 		xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +58,7 @@ templ MoonIcon(className string) {
 	</svg>
 }
 
-templ TrashIcon(size string) {
+templ Trash(size string) {
 	<svg
 		width={ size }
 		height={ size }
@@ -72,7 +72,7 @@ templ TrashIcon(size string) {
 	</svg>
 }
 
-templ ExternalLinkIcon(size string) {
+templ ExternalLink(size string) {
 	<svg
 		width={ size }
 		height={ size }
@@ -86,7 +86,7 @@ templ ExternalLinkIcon(size string) {
 	</svg>
 }
 
-templ CopyIcon(size string) {
+templ Copy(size string) {
 	<svg
 		width={ size }
 		height={ size }
@@ -100,7 +100,7 @@ templ CopyIcon(size string) {
 	</svg>
 }
 
-templ PencilIcon(size string) {
+templ Pencil(size string) {
 	<svg
 		width={ size }
 		height={ size }
@@ -114,7 +114,7 @@ templ PencilIcon(size string) {
 	</svg>
 }
 
-templ ChartIcon(size string) {
+templ Chart(size string) {
 	<svg xmlns="http://www.w3.org/2000/svg" width={ size } height={ size } viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 		<path d="M3 3v18h18"></path>
 		<path d="M18 17V9"></path>
@@ -123,7 +123,7 @@ templ ChartIcon(size string) {
 	</svg>
 }
 
-templ CheckIcon(size string) {
+templ Check(size string) {
 	<svg
 		width={ size }
 		height={ size }
@@ -136,3 +136,59 @@ templ CheckIcon(size string) {
 		<path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd"></path>
 	</svg>
 }
+
+templ LockOpen(size string) {
+	<svg
+		width={ size }
+		height={ size }
+		xmlns="http://www.w3.org/2000/svg"
+		fill="none"
+		viewBox="0 0 24 24"
+		stroke-width="1.5"
+		stroke="currentColor"
+	>
+		<path stroke-linecap="round" stroke-linejoin="round"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+	</svg>
+}
+
+templ LockClosed(size string) {
+	<svg
+		width={ size }
+		height={ size }
+		xmlns="http://www.w3.org/2000/svg"
+		fill="none"
+		viewBox="0 0 24 24"
+		stroke-width="1.5"
+		stroke="currentColor"
+	>
+		<path stroke-linecap="round" stroke-linejoin="round"></path><path d="M5 13l4 4L19 7"></path>
+	</svg>
+}
+
+templ Plus(size string) {
+	<svg
+		width={ size }
+		height={ size }
+		xmlns="http://www.w3.org/2000/svg"
+		fill="none"
+		viewBox="0 0 24 24"
+		stroke-width="1.5"
+		stroke="currentColor"
+	>
+		<path stroke-linecap="round" stroke-linejoin="round"></path><path d="M5 12h14"></path><path d="M12 5v14"></path>
+	</svg>
+}
+
+// templ Check(size string) {
+// 	<svg
+// 		width={ size }
+// 		height={ size }
+// 		xmlns="http://www.w3.org/2000/svg"
+// 		fill="none"
+// 		viewBox="0 0 24 24"
+// 		stroke-width="1.5"
+// 		stroke="currentColor"
+// 	>
+// 		<polyline points="20 6 9 17 4 12"></polyline>
+// 	</svg>
+// }
