@@ -1,6 +1,7 @@
 package pages
 
 import (
+	"fmt"
 	"kazdel/pkg/entity/dto"
 	"kazdel/pkg/ui/components"
 	"kazdel/pkg/ui/icons"
@@ -38,7 +39,7 @@ templ CreateUrlForm(errMessage string, originalUrl string, defaultExpiresAt stri
 					type="submit"
 					class="w-full h-full flex flex-row items-center justify-center gap-2 relative z-10 btn-solid-3d"
 				>
-					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+					@icons.Plus("24")
 					SHORTEN
 				</button>
 			</div>
@@ -92,16 +93,39 @@ templ CreateUrlSuccess(form templ.Component, newRow templ.Component) {
 
 templ NewUrlRow(url dto.ShortenedUrlView) {
 	<div class="grid grid-cols-12 gap-4 p-6 items-center brutalist-row brutalist-row-enter group [&.htmx-swapping]:opacity-0 [&.htmx-swapping]:scale-95 [&.htmx-swapping]:-translate-x-4">
-		<div class="col-span-5 truncate font-mono text-sm text-base-content/70" title={ url.OriginalUrl }>
+		<div class="col-span-3 truncate font-mono text-sm text-base-content/70" title={ url.OriginalUrl }>
 			{ url.OriginalUrl }
 		</div>
-		<div class="col-span-1 font-bold text-lg tracking-tight">
-			{ url.ShortSlug }
+		<div class="col-span-2 font-bold text-sm tracking-tight flex items-center gap-2">
+			<button
+				data-slug={ url.ShortSlug }
+				onclick="
+					navigator.clipboard.writeText(window.location.origin + '/' + this.getAttribute('data-slug'));
+					this.classList.add('copied');
+					setTimeout(() => this.classList.remove('copied'), 2000);
+				"
+				class="p-1 hover:text-accent transition-colors copy-btn"
+				title="Copy Link"
+			>
+				<span class="copy-icon">
+					@icons.Copy("16")
+				</span>
+				<span class="check-icon hidden text-success">
+					@icons.Check("16")
+				</span>
+			</button>
+			<a href={ templ.SafeURL("/" + url.ShortSlug) } target="_blank" class="hover:underline">{ url.ShortSlug }</a>
 		</div>
-		<div class="col-span-3 font-mono text-base-content/50">
+		<div class="col-span-2 font-mono text-base-content/50 text-sm">
+			{ url.CreatedAt }
+		</div>
+		<div class="col-span-2 font-mono text-base-content/50 text-sm">
 			{ url.ExpiresAt }
 		</div>
-		<div class="col-span-3 flex justify-end items-center relative min-h-[40px] w-full" x-data="{ confirmingDelete: false }">
+		<div class="col-span-1 font-mono text-base-content/50 text-sm text-center">
+			{ url.Views }
+		</div>
+		<div class="col-span-2 flex justify-end items-center relative min-h-[40px] w-full" x-data="{ confirmingDelete: false }">
 			<div
 				x-show="!confirmingDelete"
 				x-transition:enter="transition-transform duration-150 ease-out delay-100"
@@ -117,7 +141,7 @@ templ NewUrlRow(url dto.ShortenedUrlView) {
 					class="p-2 btn-action-3d"
 					title="View Stats"
 				>
-					@icons.ChartIcon("18")
+					@icons.Chart("18")
 				</a>
 				<button
 					hx-get={ "/dashboard/urls/" + url.ShortSlug + "/edit" }
@@ -126,15 +150,7 @@ templ NewUrlRow(url dto.ShortenedUrlView) {
 					class="p-2 btn-action-3d"
 					title="Edit Link"
 				>
-					@icons.PencilIcon("18")
-				</button>
-				<button
-					data-slug={ url.ShortSlug }
-					onclick="navigator.clipboard.writeText(window.location.origin + '/' + this.getAttribute('data-slug'))"
-					class="p-2 btn-action-3d"
-					title="Copy Link"
-				>
-					@icons.CopyIcon("18")
+					@icons.Pencil("18")
 				</button>
 				<a
 					href={ templ.SafeURL(url.OriginalUrl) }
@@ -143,7 +159,7 @@ templ NewUrlRow(url dto.ShortenedUrlView) {
 					class="p-2 btn-action-3d"
 					title="Open Link"
 				>
-					@icons.ExternalLinkIcon("18")
+					@icons.ExternalLink("18")
 				</a>
 				<button
 					@click="confirmingDelete = true"
@@ -151,7 +167,7 @@ templ NewUrlRow(url dto.ShortenedUrlView) {
 					class="p-2 btn-action-3d"
 					title="Delete"
 				>
-					@icons.TrashIcon("18")
+					@icons.Trash("18")
 				</button>
 			</div>
 			<div
@@ -189,16 +205,39 @@ templ NewUrlRow(url dto.ShortenedUrlView) {
 
 templ UrlRow(url dto.ShortenedUrlView) {
 	<div class="grid grid-cols-12 gap-4 p-6 items-center brutalist-row group [&.htmx-swapping]:opacity-0 [&.htmx-swapping]:scale-95 [&.htmx-swapping]:-translate-x-4">
-		<div class="col-span-5 truncate font-mono text-sm text-base-content/70" title={ url.OriginalUrl }>
+		<div class="col-span-3 truncate font-mono text-sm text-base-content/70" title={ url.OriginalUrl }>
 			{ url.OriginalUrl }
 		</div>
-		<div class="col-span-1 font-bold text-lg tracking-tight">
-			{ url.ShortSlug }
+		<div class="col-span-2 font-bold text-sm tracking-tight flex items-center gap-2">
+			<button
+				data-slug={ url.ShortSlug }
+				onclick="
+					navigator.clipboard.writeText(window.location.origin + '/' + this.getAttribute('data-slug'));
+					this.classList.add('copied');
+					setTimeout(() => this.classList.remove('copied'), 2000);
+				"
+				class="p-1 hover:text-accent transition-colors copy-btn"
+				title="Copy Link"
+			>
+				<span class="copy-icon">
+					@icons.Copy("16")
+				</span>
+				<span class="check-icon hidden text-success">
+					@icons.Check("16")
+				</span>
+			</button>
+			<a href={ templ.SafeURL("/" + url.ShortSlug) } target="_blank" class="hover:underline">{ url.ShortSlug }</a>
 		</div>
-		<div class="col-span-3 font-mono text-base-content/50">
+		<div class="col-span-2 font-mono text-base-content/50 text-sm">
+			{ url.CreatedAt }
+		</div>
+		<div class="col-span-2 font-mono text-base-content/50 text-sm">
 			{ url.ExpiresAt }
 		</div>
-		<div class="col-span-3 flex justify-end items-center relative min-h-[40px] w-full" x-data="{ confirmingDelete: false }">
+		<div class="col-span-1 font-mono text-base-content/50 text-sm text-center">
+			{ url.Views }
+		</div>
+		<div class="col-span-2 flex justify-end items-center relative min-h-[40px] w-full" x-data="{ confirmingDelete: false }">
 			<div
 				x-show="!confirmingDelete"
 				x-transition:enter="transition-transform duration-150 ease-out delay-100"
@@ -214,7 +253,7 @@ templ UrlRow(url dto.ShortenedUrlView) {
 					class="p-2 btn-action-3d"
 					title="View Stats"
 				>
-					@icons.ChartIcon("18")
+					@icons.Chart("18")
 				</a>
 				<button
 					hx-get={ "/dashboard/urls/" + url.ShortSlug + "/edit" }
@@ -223,15 +262,7 @@ templ UrlRow(url dto.ShortenedUrlView) {
 					class="p-2 btn-action-3d"
 					title="Edit Link"
 				>
-					@icons.PencilIcon("18")
-				</button>
-				<button
-					data-slug={ url.ShortSlug }
-					onclick="navigator.clipboard.writeText(window.location.origin + '/' + this.getAttribute('data-slug'))"
-					class="p-2 btn-action-3d"
-					title="Copy Link"
-				>
-					@icons.CopyIcon("18")
+					@icons.Pencil("18")
 				</button>
 				<a
 					href={ templ.SafeURL(url.OriginalUrl) }
@@ -240,7 +271,7 @@ templ UrlRow(url dto.ShortenedUrlView) {
 					class="p-2 btn-action-3d"
 					title="Open Link"
 				>
-					@icons.ExternalLinkIcon("18")
+					@icons.ExternalLink("18")
 				</a>
 				<button
 					@click="confirmingDelete = true"
@@ -248,7 +279,7 @@ templ UrlRow(url dto.ShortenedUrlView) {
 					class="p-2 btn-action-3d"
 					title="Delete"
 				>
-					@icons.TrashIcon("18")
+					@icons.Trash("18")
 				</button>
 			</div>
 			<div
@@ -347,31 +378,40 @@ templ EditUrlRow(url dto.ShortenedUrlView, errMessage string) {
 	</form>
 }
 
-templ Dashboard(urls []dto.ShortenedUrlView) {
+templ Dashboard(urls []dto.ShortenedUrlView, search string, page, limit, totalPages int) {
 	@components.Base() {
 		<div class="min-h-screen bg-base-100 text-base-content p-6 md:p-12 font-sans">
 			<div class="max-w-6xl mx-auto">
-				<header class="flex justify-between items-center mb-12 border-b border-base-content/10 pb-8">
+				<header class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-12 border-b border-base-content/10 pb-8">
 					<div>
 						<h1 class="text-4xl font-bold tracking-tighter">DASHBOARD</h1>
 						<p class="text-base-content/50 text-sm font-mono mt-1">USER_SESSION: ACTIVE</p>
 					</div>
-					<a
-						hx-post="/api/v1/auth/logout"
-						hx-target="body"
-						hx-swap="innerHTML"
-						class="text-base-content/50 hover:text-base-content transition-colors uppercase text-xs font-bold tracking-widest cursor-pointer"
-					>
-						Logout
-					</a>
+					<div class="flex items-center gap-4">
+						<form hx-get="/dashboard" hx-target="body" hx-push-url="true" class="flex gap-2">
+							<input type="hidden" name="limit" value={ fmt.Sprint(limit) }/>
+							<input type="text" name="search" value={ search } placeholder="SEARCH_URLS" class="bg-base-200 border-2 border-base-content/10 px-4 py-2 font-bold focus:outline-none focus:border-base-content transition-colors"/>
+							<button type="submit" class="btn-action-3d px-4 py-2 text-sm">SEARCH</button>
+						</form>
+						<a
+							hx-post="/api/v1/auth/logout"
+							hx-target="body"
+							hx-swap="innerHTML"
+							class="text-base-content/50 hover:text-base-content transition-colors uppercase text-xs font-bold tracking-widest cursor-pointer"
+						>
+							Logout
+						</a>
+					</div>
 				</header>
 				@CreateUrlForm("", "", time.Now().AddDate(0, 0, 7).Format("2006-01-02T15:04"), "", "")
 				<section class="space-y-4">
-					<div class="grid grid-cols-12 gap-4 px-6 py-2 text-xs font-bold text-base-content/30 uppercase tracking-widest">
-						<div class="col-span-5">Original URL</div>
-						<div class="col-span-1">Short Code</div>
-						<div class="col-span-3">Expires</div>
-						<div class="col-span-3 text-right">Actions</div>
+					<div class="grid grid-cols-12 gap-4 px-6 py-2 text-[0.65rem] font-bold text-base-content/50 uppercase tracking-widest">
+						<div class="col-span-3">Original URL</div>
+						<div class="col-span-2">Short Link</div>
+						<div class="col-span-2">Created At</div>
+						<div class="col-span-2">Expires</div>
+						<div class="col-span-1 text-center">Views</div>
+						<div class="col-span-2 text-right">Actions</div>
 					</div>
 					<div id="url-list" class="space-y-4">
 						if len(urls) == 0 {
@@ -383,6 +423,27 @@ templ Dashboard(urls []dto.ShortenedUrlView) {
 								@UrlRow(url)
 							}
 						}
+					</div>
+					<div class="flex flex-col sm:flex-row justify-between items-center mt-8 gap-4 bg-base-200/50 p-4 border border-base-content/10">
+						<form hx-get="/dashboard" hx-target="body" hx-push-url="true" class="flex items-center gap-3">
+							<input type="hidden" name="search" value={ search }/>
+							<label class="text-xs font-bold text-base-content/50 tracking-widest">PER PAGE:</label>
+							<select name="limit" onchange="this.form.submit()" class="bg-base-100 border border-base-content/20 px-2 py-1 text-sm font-bold focus:outline-none focus:border-base-content cursor-pointer">
+								<option value="20" selected?={ limit == 20 }>20</option>
+								<option value="30" selected?={ limit == 30 }>30</option>
+								<option value="50" selected?={ limit == 50 }>50</option>
+								<option value="100" selected?={ limit == 100 }>100</option>
+							</select>
+						</form>
+						<div class="flex items-center gap-3">
+							if page > 1 {
+								<a href={ templ.SafeURL(fmt.Sprintf("/dashboard?page=%d&limit=%d&search=%s", page-1, limit, search)) } class="btn-action-3d px-3 py-1 text-xs">PREV</a>
+							}
+							<span class="px-4 py-1 text-xs font-bold tracking-widest border border-base-content/20 bg-base-100">PAGE { fmt.Sprint(page) } OF { fmt.Sprint(totalPages) }</span>
+							if page < totalPages {
+								<a href={ templ.SafeURL(fmt.Sprintf("/dashboard?page=%d&limit=%d&search=%s", page+1, limit, search)) } class="btn-action-3d px-3 py-1 text-xs">NEXT</a>
+							}
+						</div>
 					</div>
 				</section>
 			</div>

@@ -9,6 +9,7 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
+	"fmt"
 	"kazdel/pkg/entity/dto"
 	"kazdel/pkg/ui/components"
 	"kazdel/pkg/ui/icons"
@@ -48,7 +49,7 @@ func CreateUrlForm(errMessage string, originalUrl string, defaultExpiresAt strin
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(errMessage)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 14, Col: 16}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 15, Col: 16}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
@@ -66,52 +67,60 @@ func CreateUrlForm(errMessage string, originalUrl string, defaultExpiresAt strin
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(originalUrl)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 22, Col: 23}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 23, Col: 23}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\" class=\"flex-1 bg-base-200 border-2 border-base-content/10 px-6 py-4 text-xl font-bold focus:outline-none focus:border-base-content transition-colors placeholder:text-base-content/20\" required> <button type=\"button\" @click=\"showOptional = !showOptional\" class=\"bg-base-200 border-2 border-base-content/10 px-4 py-4 flex items-center justify-center hover:bg-base-content/10 text-base-content\" title=\"Toggle Optional Fields\"><svg x-bind:class=\"showOptional ? 'rotate-180' : ''\" class=\"w-6 h-6 transition-transform duration-300\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg></button><div class=\"relative group\"><button type=\"submit\" class=\"w-full h-full flex flex-row items-center justify-center gap-2 relative z-10 btn-solid-3d\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14\"></path><path d=\"M12 5v14\"></path></svg> SHORTEN</button></div></div><div x-cloak x-show=\"showOptional\" x-transition:enter=\"glitch-enter\" x-transition:leave=\"glitch-leave\" class=\"relative grid grid-cols-1 gap-4 md:grid-cols-2 items-stretch\"><input type=\"datetime-local\" name=\"expiresAt\" title=\"Expiration Date\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\" class=\"flex-1 bg-base-200 border-2 border-base-content/10 px-6 py-4 text-xl font-bold focus:outline-none focus:border-base-content transition-colors placeholder:text-base-content/20\" required> <button type=\"button\" @click=\"showOptional = !showOptional\" class=\"bg-base-200 border-2 border-base-content/10 px-4 py-4 flex items-center justify-center hover:bg-base-content/10 text-base-content\" title=\"Toggle Optional Fields\"><svg x-bind:class=\"showOptional ? 'rotate-180' : ''\" class=\"w-6 h-6 transition-transform duration-300\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg></button><div class=\"relative group\"><button type=\"submit\" class=\"w-full h-full flex flex-row items-center justify-center gap-2 relative z-10 btn-solid-3d\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = icons.Plus("24").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "SHORTEN</button></div></div><div x-cloak x-show=\"showOptional\" x-transition:enter=\"glitch-enter\" x-transition:leave=\"glitch-leave\" class=\"relative grid grid-cols-1 gap-4 md:grid-cols-2 items-stretch\"><input type=\"datetime-local\" name=\"expiresAt\" title=\"Expiration Date\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(defaultExpiresAt)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 57, Col: 28}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 58, Col: 28}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\" class=\"flex-1 bg-base-200 border-2 border-base-content/10 px-6 py-4 text-xl font-bold focus:outline-none focus:border-base-content transition-colors text-base-content/70\" required> <input type=\"text\" name=\"customSlug\" placeholder=\"CUSTOM_SLUG\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" class=\"flex-1 bg-base-200 border-2 border-base-content/10 px-6 py-4 text-xl font-bold focus:outline-none focus:border-base-content transition-colors text-base-content/70\" required> <input type=\"text\" name=\"customSlug\" placeholder=\"CUSTOM_SLUG\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(customSlug)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 65, Col: 22}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 66, Col: 22}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" class=\"flex-1 bg-base-200 border-2 border-base-content/10 px-6 py-4 text-xl font-bold focus:outline-none focus:border-base-content transition-colors placeholder:text-base-content/20\"> <input type=\"text\" name=\"description\" placeholder=\"DESCRIPTION\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" class=\"flex-1 bg-base-200 border-2 border-base-content/10 px-6 py-4 text-xl font-bold focus:outline-none focus:border-base-content transition-colors placeholder:text-base-content/20\"> <input type=\"text\" name=\"description\" placeholder=\"DESCRIPTION\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(description)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 72, Col: 23}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 73, Col: 23}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" class=\"flex-1 bg-base-200 border-2 border-base-content/10 px-6 py-4 text-xl font-bold focus:outline-none focus:border-base-content transition-colors placeholder:text-base-content/20\"> <input type=\"password\" name=\"password\" placeholder=\"PASSWORD\" class=\"flex-1 bg-base-200 border-2 border-base-content/10 px-6 py-4 text-xl font-bold focus:outline-none focus:border-base-content transition-colors placeholder:text-base-content/20\"></div></form>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" class=\"flex-1 bg-base-200 border-2 border-base-content/10 px-6 py-4 text-xl font-bold focus:outline-none focus:border-base-content transition-colors placeholder:text-base-content/20\"> <input type=\"password\" name=\"password\" placeholder=\"PASSWORD\" class=\"flex-1 bg-base-200 border-2 border-base-content/10 px-6 py-4 text-xl font-bold focus:outline-none focus:border-base-content transition-colors placeholder:text-base-content/20\"></div></form>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -144,7 +153,7 @@ func CreateUrlSuccess(form templ.Component, newRow templ.Component) templ.Compon
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div hx-swap-oob=\"afterbegin:#url-list\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<div hx-swap-oob=\"afterbegin:#url-list\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -152,7 +161,7 @@ func CreateUrlSuccess(form templ.Component, newRow templ.Component) templ.Compon
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div><template id=\"empty-state\" hx-swap-oob=\"outerHTML\"></template>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div><template id=\"empty-state\" hx-swap-oob=\"outerHTML\"></template>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -181,164 +190,211 @@ func NewUrlRow(url dto.ShortenedUrlView) templ.Component {
 			templ_7745c5c3_Var8 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<div class=\"grid grid-cols-12 gap-4 p-6 items-center brutalist-row brutalist-row-enter group [&.htmx-swapping]:opacity-0 [&.htmx-swapping]:scale-95 [&.htmx-swapping]:-translate-x-4\"><div class=\"col-span-5 truncate font-mono text-sm text-base-content/70\" title=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<div class=\"grid grid-cols-12 gap-4 p-6 items-center brutalist-row brutalist-row-enter group [&.htmx-swapping]:opacity-0 [&.htmx-swapping]:scale-95 [&.htmx-swapping]:-translate-x-4\"><div class=\"col-span-3 truncate font-mono text-sm text-base-content/70\" title=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(url.OriginalUrl)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 95, Col: 97}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 96, Col: 97}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var10 string
 		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(url.OriginalUrl)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 96, Col: 20}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 97, Col: 20}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div><div class=\"col-span-1 font-bold text-lg tracking-tight\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</div><div class=\"col-span-2 font-bold text-sm tracking-tight flex items-center gap-2\"><button data-slug=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(url.ShortSlug)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 99, Col: 18}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 101, Col: 29}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</div><div class=\"col-span-3 font-mono text-base-content/50\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "\" onclick=\"\n\t\t\t\t\tnavigator.clipboard.writeText(window.location.origin + '/' + this.getAttribute('data-slug'));\n\t\t\t\t\tthis.classList.add('copied');\n\t\t\t\t\tsetTimeout(() => this.classList.remove('copied'), 2000);\n\t\t\t\t\" class=\"p-1 hover:text-accent transition-colors copy-btn\" title=\"Copy Link\"><span class=\"copy-icon\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var12 string
-		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(url.ExpiresAt)
+		templ_7745c5c3_Err = icons.Copy("16").Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 102, Col: 18}
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</span> <span class=\"check-icon hidden text-success\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = icons.Check("16").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</span></button> <a href=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var12 templ.SafeURL
+		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL("/" + url.ShortSlug))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 117, Col: 47}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div><div class=\"col-span-3 flex justify-end items-center relative min-h-[40px] w-full\" x-data=\"{ confirmingDelete: false }\"><div x-show=\"!confirmingDelete\" x-transition:enter=\"transition-transform duration-150 ease-out delay-100\" x-transition:enter-start=\"-translate-x-4 -translate-y-4\" x-transition:enter-end=\"translate-x-0 translate-y-0\" x-transition:leave=\"transition-transform duration-100 ease-in\" x-transition:leave-start=\"translate-x-0 translate-y-0\" x-transition:leave-end=\"translate-x-4 translate-y-4\" class=\"absolute right-0 flex justify-end gap-3\"><a href=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "\" target=\"_blank\" class=\"hover:underline\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var13 templ.SafeURL
-		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL("/dashboard/urls/" + url.ShortSlug + "/stats"))
+		var templ_7745c5c3_Var13 string
+		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(url.ShortSlug)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 116, Col: 72}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 117, Col: 105}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "\" class=\"p-2 btn-action-3d\" title=\"View Stats\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = icons.ChartIcon("18").Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</a> <button hx-get=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</a></div><div class=\"col-span-2 font-mono text-base-content/50 text-sm\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var14 string
-		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs("/dashboard/urls/" + url.ShortSlug + "/edit")
+		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(url.CreatedAt)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 123, Col: 58}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 120, Col: 18}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "\" hx-target=\"closest .grid\" hx-swap=\"outerHTML swap:150ms settle:200ms\" class=\"p-2 btn-action-3d\" title=\"Edit Link\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = icons.PencilIcon("18").Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</button> <button data-slug=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div><div class=\"col-span-2 font-mono text-base-content/50 text-sm\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var15 string
-		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(url.ShortSlug)
+		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(url.ExpiresAt)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 132, Col: 30}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 123, Col: 18}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "\" onclick=\"navigator.clipboard.writeText(window.location.origin + '/' + this.getAttribute('data-slug'))\" class=\"p-2 btn-action-3d\" title=\"Copy Link\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</div><div class=\"col-span-1 font-mono text-base-content/50 text-sm text-center\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = icons.CopyIcon("18").Render(ctx, templ_7745c5c3_Buffer)
+		var templ_7745c5c3_Var16 string
+		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(url.Views)
 		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</button> <a href=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var16 templ.SafeURL
-		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(url.OriginalUrl))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 140, Col: 42}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 126, Col: 14}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"p-2 btn-action-3d\" title=\"Open Link\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</div><div class=\"col-span-2 flex justify-end items-center relative min-h-[40px] w-full\" x-data=\"{ confirmingDelete: false }\"><div x-show=\"!confirmingDelete\" x-transition:enter=\"transition-transform duration-150 ease-out delay-100\" x-transition:enter-start=\"-translate-x-4 -translate-y-4\" x-transition:enter-end=\"translate-x-0 translate-y-0\" x-transition:leave=\"transition-transform duration-100 ease-in\" x-transition:leave-start=\"translate-x-0 translate-y-0\" x-transition:leave-end=\"translate-x-4 translate-y-4\" class=\"absolute right-0 flex justify-end gap-3\"><a href=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = icons.ExternalLinkIcon("18").Render(ctx, templ_7745c5c3_Buffer)
+		var templ_7745c5c3_Var17 templ.SafeURL
+		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL("/dashboard/urls/" + url.ShortSlug + "/stats"))
 		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</a> <button @click=\"confirmingDelete = true\" type=\"button\" class=\"p-2 btn-action-3d\" title=\"Delete\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = icons.TrashIcon("18").Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</button></div><div x-cloak x-show=\"confirmingDelete\" x-transition:enter=\"transition-transform duration-150 ease-out delay-100\" x-transition:enter-start=\"-translate-x-4 -translate-y-4\" x-transition:enter-end=\"translate-x-0 translate-y-0\" x-transition:leave=\"transition-transform duration-100 ease-in\" x-transition:leave-start=\"translate-x-0 translate-y-0\" x-transition:leave-end=\"translate-x-4 translate-y-4\" style=\"display: none;\" class=\"absolute right-0 grid grid-cols-2 items-center justify-end gap-2 p-3 bg-base-200 border-2 border-base-content shadow-3d z-10 text-[0.5rem] font-bold whitespace-nowrap\"><span class=\"text-content text-center text-shadow-lg col-span-2 text-sm mr-1\">ARE YOU <span class=\"text-accent underline decoration-accent decoration-2\">SURE?</span></span> <button hx-delete=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var17 string
-		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs("/dashboard/urls/" + url.ShortSlug)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 171, Col: 51}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 140, Col: 72}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "\" hx-target=\"closest .group\" hx-swap=\"outerHTML swap:500ms\" class=\"px-2 py-1 btn-danger-3d text-base\">YES</button> <button @click=\"confirmingDelete = false\" type=\"button\" class=\"px-2 py-1 btn-action-3d text-base\">NO</button></div></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "\" class=\"p-2 btn-action-3d\" title=\"View Stats\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = icons.Chart("18").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</a> <button hx-get=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var18 string
+		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs("/dashboard/urls/" + url.ShortSlug + "/edit")
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 147, Col: 58}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "\" hx-target=\"closest .grid\" hx-swap=\"outerHTML swap:150ms settle:200ms\" class=\"p-2 btn-action-3d\" title=\"Edit Link\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = icons.Pencil("18").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</button> <a href=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var19 templ.SafeURL
+		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(url.OriginalUrl))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 156, Col: 42}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"p-2 btn-action-3d\" title=\"Open Link\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = icons.ExternalLink("18").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</a> <button @click=\"confirmingDelete = true\" type=\"button\" class=\"p-2 btn-action-3d\" title=\"Delete\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = icons.Trash("18").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</button></div><div x-cloak x-show=\"confirmingDelete\" x-transition:enter=\"transition-transform duration-150 ease-out delay-100\" x-transition:enter-start=\"-translate-x-4 -translate-y-4\" x-transition:enter-end=\"translate-x-0 translate-y-0\" x-transition:leave=\"transition-transform duration-100 ease-in\" x-transition:leave-start=\"translate-x-0 translate-y-0\" x-transition:leave-end=\"translate-x-4 translate-y-4\" style=\"display: none;\" class=\"absolute right-0 grid grid-cols-2 items-center justify-end gap-2 p-3 bg-base-200 border-2 border-base-content shadow-3d z-10 text-[0.5rem] font-bold whitespace-nowrap\"><span class=\"text-content text-center text-shadow-lg col-span-2 text-sm mr-1\">ARE YOU <span class=\"text-accent underline decoration-accent decoration-2\">SURE?</span></span> <button hx-delete=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var20 string
+		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs("/dashboard/urls/" + url.ShortSlug)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 187, Col: 51}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "\" hx-target=\"closest .group\" hx-swap=\"outerHTML swap:500ms\" class=\"px-2 py-1 btn-danger-3d text-base\">YES</button> <button @click=\"confirmingDelete = false\" type=\"button\" class=\"px-2 py-1 btn-action-3d text-base\">NO</button></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -362,169 +418,216 @@ func UrlRow(url dto.ShortenedUrlView) templ.Component {
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var18 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var18 == nil {
-			templ_7745c5c3_Var18 = templ.NopComponent
+		templ_7745c5c3_Var21 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var21 == nil {
+			templ_7745c5c3_Var21 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<div class=\"grid grid-cols-12 gap-4 p-6 items-center brutalist-row group [&.htmx-swapping]:opacity-0 [&.htmx-swapping]:scale-95 [&.htmx-swapping]:-translate-x-4\"><div class=\"col-span-5 truncate font-mono text-sm text-base-content/70\" title=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var19 string
-		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(url.OriginalUrl)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 192, Col: 97}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var20 string
-		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(url.OriginalUrl)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 193, Col: 20}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</div><div class=\"col-span-1 font-bold text-lg tracking-tight\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var21 string
-		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(url.ShortSlug)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 196, Col: 18}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</div><div class=\"col-span-3 font-mono text-base-content/50\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "<div class=\"grid grid-cols-12 gap-4 p-6 items-center brutalist-row group [&.htmx-swapping]:opacity-0 [&.htmx-swapping]:scale-95 [&.htmx-swapping]:-translate-x-4\"><div class=\"col-span-3 truncate font-mono text-sm text-base-content/70\" title=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var22 string
-		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(url.ExpiresAt)
+		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(url.OriginalUrl)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 199, Col: 18}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 208, Col: 97}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</div><div class=\"col-span-3 flex justify-end items-center relative min-h-[40px] w-full\" x-data=\"{ confirmingDelete: false }\"><div x-show=\"!confirmingDelete\" x-transition:enter=\"transition-transform duration-150 ease-out delay-100\" x-transition:enter-start=\"-translate-x-4 -translate-y-4\" x-transition:enter-end=\"translate-x-0 translate-y-0\" x-transition:leave=\"transition-transform duration-100 ease-in\" x-transition:leave-start=\"translate-x-0 translate-y-0\" x-transition:leave-end=\"translate-x-4 translate-y-4\" class=\"absolute right-0 flex justify-end gap-3\"><a href=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var23 templ.SafeURL
-		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL("/dashboard/urls/" + url.ShortSlug + "/stats"))
+		var templ_7745c5c3_Var23 string
+		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(url.OriginalUrl)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 213, Col: 72}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 209, Col: 20}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "\" class=\"p-2 btn-action-3d\" title=\"View Stats\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = icons.ChartIcon("18").Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</a> <button hx-get=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</div><div class=\"col-span-2 font-bold text-sm tracking-tight flex items-center gap-2\"><button data-slug=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var24 string
-		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs("/dashboard/urls/" + url.ShortSlug + "/edit")
+		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(url.ShortSlug)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 220, Col: 58}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 213, Col: 29}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "\" hx-target=\"closest .grid\" hx-swap=\"outerHTML swap:150ms settle:200ms\" class=\"p-2 btn-action-3d\" title=\"Edit Link\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "\" onclick=\"\n\t\t\t\t\tnavigator.clipboard.writeText(window.location.origin + '/' + this.getAttribute('data-slug'));\n\t\t\t\t\tthis.classList.add('copied');\n\t\t\t\t\tsetTimeout(() => this.classList.remove('copied'), 2000);\n\t\t\t\t\" class=\"p-1 hover:text-accent transition-colors copy-btn\" title=\"Copy Link\"><span class=\"copy-icon\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = icons.PencilIcon("18").Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = icons.Copy("16").Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</button> <button data-slug=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</span> <span class=\"check-icon hidden text-success\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var25 string
-		templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(url.ShortSlug)
+		templ_7745c5c3_Err = icons.Check("16").Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 229, Col: 30}
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</span></button> <a href=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var25 templ.SafeURL
+		templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL("/" + url.ShortSlug))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 229, Col: 47}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "\" onclick=\"navigator.clipboard.writeText(window.location.origin + '/' + this.getAttribute('data-slug'))\" class=\"p-2 btn-action-3d\" title=\"Copy Link\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "\" target=\"_blank\" class=\"hover:underline\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = icons.CopyIcon("18").Render(ctx, templ_7745c5c3_Buffer)
+		var templ_7745c5c3_Var26 string
+		templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(url.ShortSlug)
 		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</button> <a href=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var26 templ.SafeURL
-		templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(url.OriginalUrl))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 237, Col: 42}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 229, Col: 105}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"p-2 btn-action-3d\" title=\"Open Link\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = icons.ExternalLinkIcon("18").Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "</a> <button @click=\"confirmingDelete = true\" type=\"button\" class=\"p-2 btn-action-3d\" title=\"Delete\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = icons.TrashIcon("18").Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "</button></div><div x-cloak x-show=\"confirmingDelete\" x-transition:enter=\"transition-transform duration-150 ease-out delay-100\" x-transition:enter-start=\"-translate-x-4 -translate-y-4\" x-transition:enter-end=\"translate-x-0 translate-y-0\" x-transition:leave=\"transition-transform duration-100 ease-in\" x-transition:leave-start=\"translate-x-0 translate-y-0\" x-transition:leave-end=\"translate-x-4 translate-y-4\" style=\"display: none;\" class=\"absolute right-0 grid grid-cols-2 items-center justify-end gap-2 p-3 bg-base-200 border-2 border-base-content shadow-3d z-10 text-[0.5rem] font-bold whitespace-nowrap\"><span class=\"text-content text-center text-shadow-lg col-span-2 text-sm mr-1\">ARE YOU <span class=\"text-accent underline decoration-accent decoration-2\">SURE?</span></span> <button hx-delete=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "</a></div><div class=\"col-span-2 font-mono text-base-content/50 text-sm\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var27 string
-		templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs("/dashboard/urls/" + url.ShortSlug)
+		templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(url.CreatedAt)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 268, Col: 51}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 232, Col: 18}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "\" hx-target=\"closest .group\" hx-swap=\"outerHTML swap:500ms\" class=\"px-2 py-1 btn-danger-3d text-base\">YES</button> <button @click=\"confirmingDelete = false\" type=\"button\" class=\"px-2 py-1 btn-action-3d text-base\">NO</button></div></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "</div><div class=\"col-span-2 font-mono text-base-content/50 text-sm\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var28 string
+		templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.JoinStringErrs(url.ExpiresAt)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 235, Col: 18}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var28))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "</div><div class=\"col-span-1 font-mono text-base-content/50 text-sm text-center\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var29 string
+		templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.JoinStringErrs(url.Views)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 238, Col: 14}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var29))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "</div><div class=\"col-span-2 flex justify-end items-center relative min-h-[40px] w-full\" x-data=\"{ confirmingDelete: false }\"><div x-show=\"!confirmingDelete\" x-transition:enter=\"transition-transform duration-150 ease-out delay-100\" x-transition:enter-start=\"-translate-x-4 -translate-y-4\" x-transition:enter-end=\"translate-x-0 translate-y-0\" x-transition:leave=\"transition-transform duration-100 ease-in\" x-transition:leave-start=\"translate-x-0 translate-y-0\" x-transition:leave-end=\"translate-x-4 translate-y-4\" class=\"absolute right-0 flex justify-end gap-3\"><a href=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var30 templ.SafeURL
+		templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL("/dashboard/urls/" + url.ShortSlug + "/stats"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 252, Col: 72}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "\" class=\"p-2 btn-action-3d\" title=\"View Stats\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = icons.Chart("18").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "</a> <button hx-get=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var31 string
+		templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs("/dashboard/urls/" + url.ShortSlug + "/edit")
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 259, Col: 58}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var31))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "\" hx-target=\"closest .grid\" hx-swap=\"outerHTML swap:150ms settle:200ms\" class=\"p-2 btn-action-3d\" title=\"Edit Link\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = icons.Pencil("18").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "</button> <a href=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var32 templ.SafeURL
+		templ_7745c5c3_Var32, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(url.OriginalUrl))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 268, Col: 42}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var32))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"p-2 btn-action-3d\" title=\"Open Link\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = icons.ExternalLink("18").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "</a> <button @click=\"confirmingDelete = true\" type=\"button\" class=\"p-2 btn-action-3d\" title=\"Delete\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = icons.Trash("18").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "</button></div><div x-cloak x-show=\"confirmingDelete\" x-transition:enter=\"transition-transform duration-150 ease-out delay-100\" x-transition:enter-start=\"-translate-x-4 -translate-y-4\" x-transition:enter-end=\"translate-x-0 translate-y-0\" x-transition:leave=\"transition-transform duration-100 ease-in\" x-transition:leave-start=\"translate-x-0 translate-y-0\" x-transition:leave-end=\"translate-x-4 translate-y-4\" style=\"display: none;\" class=\"absolute right-0 grid grid-cols-2 items-center justify-end gap-2 p-3 bg-base-200 border-2 border-base-content shadow-3d z-10 text-[0.5rem] font-bold whitespace-nowrap\"><span class=\"text-content text-center text-shadow-lg col-span-2 text-sm mr-1\">ARE YOU <span class=\"text-accent underline decoration-accent decoration-2\">SURE?</span></span> <button hx-delete=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var33 string
+		templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.JoinStringErrs("/dashboard/urls/" + url.ShortSlug)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 299, Col: 51}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var33))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "\" hx-target=\"closest .group\" hx-swap=\"outerHTML swap:500ms\" class=\"px-2 py-1 btn-danger-3d text-base\">YES</button> <button @click=\"confirmingDelete = false\" type=\"button\" class=\"px-2 py-1 btn-action-3d text-base\">NO</button></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -548,118 +651,118 @@ func EditUrlRow(url dto.ShortenedUrlView, errMessage string) templ.Component {
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var28 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var28 == nil {
-			templ_7745c5c3_Var28 = templ.NopComponent
+		templ_7745c5c3_Var34 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var34 == nil {
+			templ_7745c5c3_Var34 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "<form hx-post=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 50, "<form hx-post=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var29 string
-		templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.JoinStringErrs("/dashboard/urls/" + url.ShortSlug + "/edit")
+		var templ_7745c5c3_Var35 string
+		templ_7745c5c3_Var35, templ_7745c5c3_Err = templ.JoinStringErrs("/dashboard/urls/" + url.ShortSlug + "/edit")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 288, Col: 61}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 319, Col: 61}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var29))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var35))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "\" hx-target=\"this\" hx-swap=\"outerHTML swap:150ms settle:200ms\" class=\"grid grid-cols-12 gap-4 p-6 items-center brutalist-row\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 51, "\" hx-target=\"this\" hx-swap=\"outerHTML swap:150ms settle:200ms\" class=\"grid grid-cols-12 gap-4 p-6 items-center brutalist-row\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if errMessage != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "<div class=\"col-span-12 alert alert-error text-sm py-2 px-4 border border-error/20 bg-error/10 text-error rounded-none\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 52, "<div class=\"col-span-12 alert alert-error text-sm py-2 px-4 border border-error/20 bg-error/10 text-error rounded-none\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var30 string
-			templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs(errMessage)
+			var templ_7745c5c3_Var36 string
+			templ_7745c5c3_Var36, templ_7745c5c3_Err = templ.JoinStringErrs(errMessage)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 291, Col: 16}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 322, Col: 16}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "</div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var36))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 53, "</div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "<div class=\"col-span-12 flex flex-col gap-2\"><label for=\"originalUrl\" class=\"text-base font-bold text-base-content/70\">ORIGINAL URL</label> <input type=\"url\" name=\"originalUrl\" placeholder=\"LONG_URL\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 54, "<div class=\"col-span-12 flex flex-col gap-2\"><label for=\"originalUrl\" class=\"text-base font-bold text-base-content/70\">ORIGINAL URL</label> <input type=\"url\" name=\"originalUrl\" placeholder=\"LONG_URL\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var31 string
-		templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(url.OriginalUrl)
+		var templ_7745c5c3_Var37 string
+		templ_7745c5c3_Var37, templ_7745c5c3_Err = templ.JoinStringErrs(url.OriginalUrl)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 300, Col: 27}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 331, Col: 27}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var31))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, "\" class=\"w-full bg-base-100 border-2 border-base-content/10 px-4 py-2 text-sm font-bold focus:outline-none focus:border-base-content transition-colors\" required><div class=\"grid grid-cols-1 md:grid-cols-3 gap-2\"><label for=\"expiresAt\" class=\"text-base font-bold text-base-content/70\">EXPIRATION DATE</label> <label for=\"customSlug\" class=\"text-base font-bold text-base-content/70\">CUSTOM SLUG</label> <label for=\"password\" class=\"text-base font-bold text-base-content/70\">PASSWORD</label> <input type=\"datetime-local\" name=\"expiresAt\" value=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var37))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var32 string
-		templ_7745c5c3_Var32, templ_7745c5c3_Err = templ.JoinStringErrs(url.RawExpiresAt)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 311, Col: 29}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var32))
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 55, "\" class=\"w-full bg-base-100 border-2 border-base-content/10 px-4 py-2 text-sm font-bold focus:outline-none focus:border-base-content transition-colors\" required><div class=\"grid grid-cols-1 md:grid-cols-3 gap-2\"><label for=\"expiresAt\" class=\"text-base font-bold text-base-content/70\">EXPIRATION DATE</label> <label for=\"customSlug\" class=\"text-base font-bold text-base-content/70\">CUSTOM SLUG</label> <label for=\"password\" class=\"text-base font-bold text-base-content/70\">PASSWORD</label> <input type=\"datetime-local\" name=\"expiresAt\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "\" class=\"w-full bg-base-100 border-2 border-base-content/10 px-4 py-2 text-sm font-bold focus:outline-none focus:border-base-content transition-colors\" required> <input type=\"text\" name=\"description\" placeholder=\"DESCRIPTION\" value=\"")
+		var templ_7745c5c3_Var38 string
+		templ_7745c5c3_Var38, templ_7745c5c3_Err = templ.JoinStringErrs(url.RawExpiresAt)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 342, Col: 29}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var38))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var33 string
-		templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.JoinStringErrs(url.Description)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 319, Col: 28}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var33))
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 56, "\" class=\"w-full bg-base-100 border-2 border-base-content/10 px-4 py-2 text-sm font-bold focus:outline-none focus:border-base-content transition-colors\" required> <input type=\"text\" name=\"description\" placeholder=\"DESCRIPTION\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "\" class=\"w-full bg-base-100 border-2 border-base-content/10 px-4 py-2 text-sm font-bold focus:outline-none focus:border-base-content transition-colors\"> <input type=\"password\" name=\"password\" placeholder=\"")
+		var templ_7745c5c3_Var39 string
+		templ_7745c5c3_Var39, templ_7745c5c3_Err = templ.JoinStringErrs(url.Description)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 350, Col: 28}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var39))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var34 string
-		templ_7745c5c3_Var34, templ_7745c5c3_Err = templ.JoinStringErrs(func() string {
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 57, "\" class=\"w-full bg-base-100 border-2 border-base-content/10 px-4 py-2 text-sm font-bold focus:outline-none focus:border-base-content transition-colors\"> <input type=\"password\" name=\"password\" placeholder=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var40 string
+		templ_7745c5c3_Var40, templ_7745c5c3_Err = templ.JoinStringErrs(func() string {
 			if url.HasPassword {
 				return "NEW_PASSWORD"
 			}
 			return "PASSWORD"
 		}())
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 325, Col: 102}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 356, Col: 102}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var34))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var40))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "\" class=\"w-full bg-base-100 border-2 border-base-content/10 px-4 py-2 text-sm font-bold focus:outline-none focus:border-base-content transition-colors\"></div><div class=\"flex justify-end gap-2 mt-2\"><button type=\"submit\" class=\"px-4 py-2 btn-danger-3d text-sm\">SAVE</button> <button type=\"button\" hx-get=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 58, "\" class=\"w-full bg-base-100 border-2 border-base-content/10 px-4 py-2 text-sm font-bold focus:outline-none focus:border-base-content transition-colors\"></div><div class=\"flex justify-end gap-2 mt-2\"><button type=\"submit\" class=\"px-4 py-2 btn-danger-3d text-sm\">SAVE</button> <button type=\"button\" hx-get=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var35 string
-		templ_7745c5c3_Var35, templ_7745c5c3_Err = templ.JoinStringErrs("/dashboard/urls/" + url.ShortSlug)
+		var templ_7745c5c3_Var41 string
+		templ_7745c5c3_Var41, templ_7745c5c3_Err = templ.JoinStringErrs("/dashboard/urls/" + url.ShortSlug)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 338, Col: 48}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 369, Col: 48}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var35))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var41))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 50, "\" hx-target=\"closest .grid\" hx-swap=\"outerHTML swap:150ms settle:200ms\" class=\"px-4 py-2 btn-action-3d text-sm\">CANCEL</button></div></div></form>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 59, "\" hx-target=\"closest .grid\" hx-swap=\"outerHTML swap:150ms settle:200ms\" class=\"px-4 py-2 btn-action-3d text-sm\">CANCEL</button></div></div></form>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -667,7 +770,7 @@ func EditUrlRow(url dto.ShortenedUrlView, errMessage string) templ.Component {
 	})
 }
 
-func Dashboard(urls []dto.ShortenedUrlView) templ.Component {
+func Dashboard(urls []dto.ShortenedUrlView, search string, page, limit, totalPages int) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -683,12 +786,12 @@ func Dashboard(urls []dto.ShortenedUrlView) templ.Component {
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var36 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var36 == nil {
-			templ_7745c5c3_Var36 = templ.NopComponent
+		templ_7745c5c3_Var42 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var42 == nil {
+			templ_7745c5c3_Var42 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Var37 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_Var43 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
 			if !templ_7745c5c3_IsBuffer {
@@ -700,7 +803,33 @@ func Dashboard(urls []dto.ShortenedUrlView) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 51, "<div class=\"min-h-screen bg-base-100 text-base-content p-6 md:p-12 font-sans\"><div class=\"max-w-6xl mx-auto\"><header class=\"flex justify-between items-center mb-12 border-b border-base-content/10 pb-8\"><div><h1 class=\"text-4xl font-bold tracking-tighter\">DASHBOARD</h1><p class=\"text-base-content/50 text-sm font-mono mt-1\">USER_SESSION: ACTIVE</p></div><a hx-post=\"/api/v1/auth/logout\" hx-target=\"body\" hx-swap=\"innerHTML\" class=\"text-base-content/50 hover:text-base-content transition-colors uppercase text-xs font-bold tracking-widest cursor-pointer\">Logout</a></header>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 60, "<div class=\"min-h-screen bg-base-100 text-base-content p-6 md:p-12 font-sans\"><div class=\"max-w-6xl mx-auto\"><header class=\"flex flex-col md:flex-row justify-between md:items-center gap-4 mb-12 border-b border-base-content/10 pb-8\"><div><h1 class=\"text-4xl font-bold tracking-tighter\">DASHBOARD</h1><p class=\"text-base-content/50 text-sm font-mono mt-1\">USER_SESSION: ACTIVE</p></div><div class=\"flex items-center gap-4\"><form hx-get=\"/dashboard\" hx-target=\"body\" hx-push-url=\"true\" class=\"flex gap-2\"><input type=\"hidden\" name=\"limit\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var44 string
+			templ_7745c5c3_Var44, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprint(limit))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 392, Col: 66}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var44))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 61, "\"> <input type=\"text\" name=\"search\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var45 string
+			templ_7745c5c3_Var45, templ_7745c5c3_Err = templ.JoinStringErrs(search)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 393, Col: 54}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var45))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 62, "\" placeholder=\"SEARCH_URLS\" class=\"bg-base-200 border-2 border-base-content/10 px-4 py-2 font-bold focus:outline-none focus:border-base-content transition-colors\"> <button type=\"submit\" class=\"btn-action-3d px-4 py-2 text-sm\">SEARCH</button></form><a hx-post=\"/api/v1/auth/logout\" hx-target=\"body\" hx-swap=\"innerHTML\" class=\"text-base-content/50 hover:text-base-content transition-colors uppercase text-xs font-bold tracking-widest cursor-pointer\">Logout</a></div></header>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -708,12 +837,12 @@ func Dashboard(urls []dto.ShortenedUrlView) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 52, "<section class=\"space-y-4\"><div class=\"grid grid-cols-12 gap-4 px-6 py-2 text-xs font-bold text-base-content/30 uppercase tracking-widest\"><div class=\"col-span-5\">Original URL</div><div class=\"col-span-1\">Short Code</div><div class=\"col-span-3\">Expires</div><div class=\"col-span-3 text-right\">Actions</div></div><div id=\"url-list\" class=\"space-y-4\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 63, "<section class=\"space-y-4\"><div class=\"grid grid-cols-12 gap-4 px-6 py-2 text-[0.65rem] font-bold text-base-content/50 uppercase tracking-widest\"><div class=\"col-span-3\">Original URL</div><div class=\"col-span-2\">Short Link</div><div class=\"col-span-2\">Created At</div><div class=\"col-span-2\">Expires</div><div class=\"col-span-1 text-center\">Views</div><div class=\"col-span-2 text-right\">Actions</div></div><div id=\"url-list\" class=\"space-y-4\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if len(urls) == 0 {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 53, "<div id=\"empty-state\" class=\"border border-dashed border-base-content/10 p-12 text-center text-base-content/20 font-bold text-xl uppercase tracking-widest\">No URLs found in protocol</div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 64, "<div id=\"empty-state\" class=\"border border-dashed border-base-content/10 p-12 text-center text-base-content/20 font-bold text-xl uppercase tracking-widest\">No URLs found in protocol</div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -725,13 +854,138 @@ func Dashboard(urls []dto.ShortenedUrlView) templ.Component {
 					}
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 54, "</div></section></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 65, "</div><div class=\"flex flex-col sm:flex-row justify-between items-center mt-8 gap-4 bg-base-200/50 p-4 border border-base-content/10\"><form hx-get=\"/dashboard\" hx-target=\"body\" hx-push-url=\"true\" class=\"flex items-center gap-3\"><input type=\"hidden\" name=\"search\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var46 string
+			templ_7745c5c3_Var46, templ_7745c5c3_Err = templ.JoinStringErrs(search)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 429, Col: 56}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var46))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 66, "\"> <label class=\"text-xs font-bold text-base-content/50 tracking-widest\">PER PAGE:</label> <select name=\"limit\" onchange=\"this.form.submit()\" class=\"bg-base-100 border border-base-content/20 px-2 py-1 text-sm font-bold focus:outline-none focus:border-base-content cursor-pointer\"><option value=\"20\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if limit == 20 {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 67, " selected")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 68, ">20</option> <option value=\"30\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if limit == 30 {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 69, " selected")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 70, ">30</option> <option value=\"50\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if limit == 50 {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 71, " selected")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 72, ">50</option> <option value=\"100\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if limit == 100 {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 73, " selected")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 74, ">100</option></select></form><div class=\"flex items-center gap-3\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if page > 1 {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 75, "<a href=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var47 templ.SafeURL
+				templ_7745c5c3_Var47, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(fmt.Sprintf("/dashboard?page=%d&limit=%d&search=%s", page-1, limit, search)))
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 440, Col: 108}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var47))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 76, "\" class=\"btn-action-3d px-3 py-1 text-xs\">PREV</a> ")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 77, "<span class=\"px-4 py-1 text-xs font-bold tracking-widest border border-base-content/20 bg-base-100\">PAGE ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var48 string
+			templ_7745c5c3_Var48, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprint(page))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 442, Col: 130}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var48))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 78, " OF ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var49 string
+			templ_7745c5c3_Var49, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprint(totalPages))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 442, Col: 160}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var49))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 79, "</span> ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if page < totalPages {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 80, "<a href=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var50 templ.SafeURL
+				templ_7745c5c3_Var50, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(fmt.Sprintf("/dashboard?page=%d&limit=%d&search=%s", page+1, limit, search)))
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 444, Col: 108}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var50))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 81, "\" class=\"btn-action-3d px-3 py-1 text-xs\">NEXT</a>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 82, "</div></div></section></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = components.Base().Render(templ.WithChildren(ctx, templ_7745c5c3_Var37), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = components.Base().Render(templ.WithChildren(ctx, templ_7745c5c3_Var43), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
