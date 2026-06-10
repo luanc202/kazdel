@@ -9,6 +9,7 @@ import (
 	"kazdel/pkg/handlers"
 	"kazdel/pkg/infra/config"
 	"kazdel/pkg/infra/db"
+	"kazdel/pkg/infra/mail"
 	"kazdel/pkg/usecase"
 
 	"github.com/oschwald/geoip2-golang"
@@ -43,10 +44,14 @@ func main() {
 	urlVisitRepo := db.NewUrlVisitRepository(dbConn)
 	userRepo := db.NewUserRepository(dbConn)
 	sessionRepo := db.NewPostgresSessionRepository(dbConn)
+	userTokenRepo := db.NewUserTokenRepository(dbConn)
+
+	// Create services
+	emailService := mail.NewSMTPMailService()
 
 	// Create use cases
-	shortenedURLUseCase := usecase.NewShortenedUrlUseCase(shortenedURLsRepo, urlVisitRepo, geoipDb)
-	authUseCase := usecase.NewAuthUseCase(userRepo, sessionRepo)
+	shortenedURLUseCase := usecase.NewShortenedUrlUseCase(shortenedURLsRepo, urlVisitRepo, geoipDb, emailService)
+	authUseCase := usecase.NewAuthUseCase(userRepo, sessionRepo, userTokenRepo, emailService)
 
 	go func() {
 		ticker := time.NewTicker(30 * time.Second)
