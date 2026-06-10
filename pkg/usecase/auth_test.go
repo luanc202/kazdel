@@ -20,13 +20,13 @@ func TestAuthUseCase_Signup(t *testing.T) {
 		username      string
 		email         string
 		password      string
-		setupMock     func(u *mocks.UserRepository, s *mocks.SessionRepository)
+		setupMock     func(u *mocks.UserRepository, s *mocks.SessionRepository, ut *mocks.UserTokenRepository, e *mocks.EmailService)
 		expectedError string
 	}{
 		"Email already registered": {
 			email:    "test@example.com",
 			password: "password123",
-			setupMock: func(u *mocks.UserRepository, s *mocks.SessionRepository) {
+			setupMock: func(u *mocks.UserRepository, s *mocks.SessionRepository, ut *mocks.UserTokenRepository, e *mocks.EmailService) {
 				u.On("ExistsByEmail", "test@example.com").Return(true, nil)
 			},
 			expectedError: "Email already registered",
@@ -35,7 +35,7 @@ func TestAuthUseCase_Signup(t *testing.T) {
 			username: "testuser",
 			email:    "test@example.com",
 			password: "password123",
-			setupMock: func(u *mocks.UserRepository, s *mocks.SessionRepository) {
+			setupMock: func(u *mocks.UserRepository, s *mocks.SessionRepository, ut *mocks.UserTokenRepository, e *mocks.EmailService) {
 				u.On("ExistsByEmail", "test@example.com").Return(false, nil)
 				u.On("ExistsByUsername", "testuser").Return(true, nil)
 			},
@@ -46,11 +46,13 @@ func TestAuthUseCase_Signup(t *testing.T) {
 			username: "testuser",
 			email:    "test@example.com",
 			password: "password123",
-			setupMock: func(u *mocks.UserRepository, s *mocks.SessionRepository) {
+			setupMock: func(u *mocks.UserRepository, s *mocks.SessionRepository, ut *mocks.UserTokenRepository, e *mocks.EmailService) {
 				u.On("ExistsByEmail", "test@example.com").Return(false, nil)
 				u.On("ExistsByUsername", "testuser").Return(false, nil)
 				u.On("Save", mock.AnythingOfType("*entity.User")).Return(nil)
 				s.On("Create", mock.AnythingOfType("*entity.Session")).Return(nil)
+				ut.On("Save", mock.AnythingOfType("*entity.UserToken")).Return(nil)
+				e.On("SendVerificationEmail", "test@example.com", "Test User", mock.AnythingOfType("string")).Return(nil)
 			},
 			expectedError: "",
 		},
@@ -60,10 +62,12 @@ func TestAuthUseCase_Signup(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			mockUserRepo := new(mocks.UserRepository)
 			mockSessionRepo := new(mocks.SessionRepository)
+			mockUserTokenRepo := new(mocks.UserTokenRepository)
+			mockEmailService := new(mocks.EmailService)
 
-			tt.setupMock(mockUserRepo, mockSessionRepo)
+			tt.setupMock(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
 
-			uc := NewAuthUseCase(mockUserRepo, mockSessionRepo)
+			uc := NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
 			token, err := uc.Signup(tt.name, tt.username, tt.email, tt.password)
 
 			if tt.expectedError != "" {
@@ -127,10 +131,12 @@ func TestAuthUseCase_Login(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			mockUserRepo := new(mocks.UserRepository)
 			mockSessionRepo := new(mocks.SessionRepository)
+			mockUserTokenRepo := new(mocks.UserTokenRepository)
+			mockEmailService := new(mocks.EmailService)
 
 			tt.setupMock(mockUserRepo, mockSessionRepo)
 
-			uc := NewAuthUseCase(mockUserRepo, mockSessionRepo)
+			uc := NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
 			token, err := uc.Login(tt.username, tt.password)
 
 			if tt.expectedError != "" {
@@ -150,10 +156,12 @@ func TestAuthUseCase_Login(t *testing.T) {
 func TestAuthUseCase_Logout(t *testing.T) {
 	mockUserRepo := new(mocks.UserRepository)
 	mockSessionRepo := new(mocks.SessionRepository)
+	mockUserTokenRepo := new(mocks.UserTokenRepository)
+	mockEmailService := new(mocks.EmailService)
 
 	mockSessionRepo.On("DeleteByToken", "validtoken").Return(nil)
 
-	uc := NewAuthUseCase(mockUserRepo, mockSessionRepo)
+	uc := NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
 	err := uc.Logout("validtoken")
 
 	assert.NoError(t, err)
@@ -207,10 +215,12 @@ func TestAuthUseCase_ValidateSession(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			mockUserRepo := new(mocks.UserRepository)
 			mockSessionRepo := new(mocks.SessionRepository)
+			mockUserTokenRepo := new(mocks.UserTokenRepository)
+			mockEmailService := new(mocks.EmailService)
 
 			tt.setupMock(mockSessionRepo)
 
-			uc := NewAuthUseCase(mockUserRepo, mockSessionRepo)
+			uc := NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
 			returnedUserId, err := uc.ValidateSession(tt.token)
 
 			if tt.expectedError != "" {

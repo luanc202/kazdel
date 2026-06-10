@@ -19,8 +19,10 @@ import (
 func TestAuth_Logout(t *testing.T) {
 	mockUserRepo := new(mocks.UserRepository)
 	mockSessionRepo := new(mocks.SessionRepository)
+	mockUserTokenRepo := new(mocks.UserTokenRepository)
+	mockEmailService := new(mocks.EmailService)
 
-	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo)
+	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
 	authHandler := &Auth{authUseCase: authUseCase}
 
 	req := httptest.NewRequest(http.MethodGet, "/api/v1/auth/logout", nil)
@@ -71,8 +73,10 @@ func TestAuth_Logout(t *testing.T) {
 func TestAuth_SignupSubmit(t *testing.T) {
 	mockUserRepo := new(mocks.UserRepository)
 	mockSessionRepo := new(mocks.SessionRepository)
+	mockUserTokenRepo := new(mocks.UserTokenRepository)
+	mockEmailService := new(mocks.EmailService)
 
-	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo)
+	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
 	authHandler := &Auth{authUseCase: authUseCase}
 
 	// Setup mock expectations
@@ -80,6 +84,8 @@ func TestAuth_SignupSubmit(t *testing.T) {
 	mockUserRepo.On("ExistsByUsername", "testuser").Return(false, nil)
 	mockUserRepo.On("Save", mock.AnythingOfType("*entity.User")).Return(nil)
 	mockSessionRepo.On("Create", mock.AnythingOfType("*entity.Session")).Return(nil)
+	mockUserTokenRepo.On("Save", mock.AnythingOfType("*entity.UserToken")).Return(nil)
+	mockEmailService.On("SendVerificationEmail", mock.Anything, mock.Anything, mock.Anything).Return(nil)
 
 	formData := "name=Test+User&username=testuser&email=test%40example.com&password=Password1%21"
 	req := httptest.NewRequest(http.MethodPost, "/api/v1/auth/signup", strings.NewReader(formData))
@@ -112,8 +118,10 @@ func TestAuth_SignupSubmit(t *testing.T) {
 func TestAuth_LoginSubmit(t *testing.T) {
 	mockUserRepo := new(mocks.UserRepository)
 	mockSessionRepo := new(mocks.SessionRepository)
+	mockUserTokenRepo := new(mocks.UserTokenRepository)
+	mockEmailService := new(mocks.EmailService)
 
-	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo)
+	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
 	authHandler := &Auth{authUseCase: authUseCase}
 
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("Password1!"), bcrypt.DefaultCost)

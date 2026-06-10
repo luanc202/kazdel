@@ -56,8 +56,8 @@ func TestShortenedUrlUsecase_Save(t *testing.T) {
 			}
 
 			mockVisitRepo := new(mocks.UrlVisitRepository)
-			usecase := NewShortenedUrlUseCase(mockRepo, mockVisitRepo, nil)
-			err := usecase.Save(tt.input, userId)
+			usecase := NewShortenedUrlUseCase(mockRepo, mockVisitRepo, nil, nil)
+			_, err := usecase.Save(tt.input, userId)
 
 			if tt.expectedError != nil {
 				assert.Error(t, err)
@@ -110,7 +110,7 @@ func TestShortenedUrlUsecase_FindBySlug(t *testing.T) {
 			}
 
 			mockVisitRepo := new(mocks.UrlVisitRepository)
-			usecase := NewShortenedUrlUseCase(mockRepo, mockVisitRepo, nil)
+			usecase := NewShortenedUrlUseCase(mockRepo, mockVisitRepo, nil, nil)
 			result, err := usecase.FindBySlug(tt.slug)
 
 			if tt.expectedError != nil {

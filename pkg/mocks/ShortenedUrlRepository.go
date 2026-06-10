@@ -3,6 +3,7 @@
 package mocks
 
 import (
+	"time"
 	entity "kazdel/pkg/entity"
 
 	mock "github.com/stretchr/testify/mock"
@@ -26,6 +27,24 @@ func (_m *ShortenedUrlRepository) Delete(id uint64, userId uuid.UUID) error {
 	var r0 error
 	if rf, ok := ret.Get(0).(func(uint64, uuid.UUID) error); ok {
 		r0 = rf(id, userId)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// DeleteExpired provides a mock function with given fields: t
+func (_m *ShortenedUrlRepository) DeleteExpired(t time.Time) error {
+	ret := _m.Called(t)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteExpired")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(time.Time) error); ok {
+		r0 = rf(t)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -91,6 +110,43 @@ func (_m *ShortenedUrlRepository) FindByUserId(userId uuid.UUID) ([]*entity.Shor
 	}
 
 	return r0, r1
+}
+
+// FindByUserIdPaginated provides a mock function with given fields: userId, search, page, limit
+func (_m *ShortenedUrlRepository) FindByUserIdPaginated(userId uuid.UUID, search string, page int, limit int) ([]*entity.ShortenedUrl, int, error) {
+	ret := _m.Called(userId, search, page, limit)
+
+	if len(ret) == 0 {
+		panic("no return value specified for FindByUserIdPaginated")
+	}
+
+	var r0 []*entity.ShortenedUrl
+	var r1 int
+	var r2 error
+	if rf, ok := ret.Get(0).(func(uuid.UUID, string, int, int) ([]*entity.ShortenedUrl, int, error)); ok {
+		return rf(userId, search, page, limit)
+	}
+	if rf, ok := ret.Get(0).(func(uuid.UUID, string, int, int) []*entity.ShortenedUrl); ok {
+		r0 = rf(userId, search, page, limit)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]*entity.ShortenedUrl)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(uuid.UUID, string, int, int) int); ok {
+		r1 = rf(userId, search, page, limit)
+	} else {
+		r1 = ret.Get(1).(int)
+	}
+
+	if rf, ok := ret.Get(2).(func(uuid.UUID, string, int, int) error); ok {
+		r2 = rf(userId, search, page, limit)
+	} else {
+		r2 = ret.Error(2)
+	}
+
+	return r0, r1, r2
 }
 
 // Save provides a mock function with given fields: shortenedUrl

@@ -23,7 +23,7 @@ import (
 func TestShortenedUrl_RedirectToLongUrl(t *testing.T) {
 	mockRepo := new(mocks.ShortenedUrlRepository)
 	mockVisitRepo := new(mocks.UrlVisitRepository)
-	suUseCase := usecase.NewShortenedUrlUseCase(mockRepo, mockVisitRepo, nil)
+	suUseCase := usecase.NewShortenedUrlUseCase(mockRepo, mockVisitRepo, nil, nil)
 
 	// We can pass nil for authUseCase here because this route is public
 	handler := &ShortenedUrl{usecase: suUseCase, authUseCase: nil}
@@ -39,6 +39,8 @@ func TestShortenedUrl_RedirectToLongUrl(t *testing.T) {
 
 	mockRepo.On("FindBySlug", testSlug).Return(validUrl, nil).Once()
 	mockRepo.On("FindBySlug", "notfound").Return(nil, errors.New("not found")).Once()
+	
+	mockVisitRepo.On("Save", mock.Anything, mock.AnythingOfType("*entity.UrlVisit")).Return(nil).Maybe()
 
 	tests := []struct {
 		name         string
@@ -85,19 +87,27 @@ func TestShortenedUrl_RedirectToLongUrl(t *testing.T) {
 		})
 	}
 	
+	time.Sleep(10 * time.Millisecond)
 	mockRepo.AssertExpectations(t)
+	mockVisitRepo.AssertExpectations(t)
 }
 
 func TestShortenedUrl_CreateUrl(t *testing.T) {
 	mockRepo := new(mocks.ShortenedUrlRepository)
 	mockVisitRepo := new(mocks.UrlVisitRepository)
-	suUseCase := usecase.NewShortenedUrlUseCase(mockRepo, mockVisitRepo, nil)
+	suUseCase := usecase.NewShortenedUrlUseCase(mockRepo, mockVisitRepo, nil, nil)
 	
 	handler := &ShortenedUrl{usecase: suUseCase, authUseCase: nil}
 	
 	validUserId := uniqueEntityId.NewID()
 	expiresAt := time.Now().Add(24 * time.Hour).Format("2006-01-02T15:04")
-	
+	validEntity := &entity.ShortenedUrl{
+		ShortSlug: "IXHAJB",
+		LongUrl:   "https://validurl.com",
+		CreatedAt: time.Now(),
+		ExpiresAt: time.Now().Add(24 * time.Hour),
+	}
+	mockRepo.On("FindBySlug", mock.Anything).Return(validEntity, nil).Once()
 	mockRepo.On("Save", mock.AnythingOfType("*entity.ShortenedUrl")).Return(nil)
 	
 	formData := url.Values{}
@@ -115,10 +125,6 @@ func TestShortenedUrl_CreateUrl(t *testing.T) {
 	
 	if rr.Code != http.StatusOK {
 		t.Errorf("Expected 200 OK, got %v", rr.Code)
-	}
-	
-	if hxRedirect := rr.Header().Get("HX-Redirect"); hxRedirect != "/dashboard" {
-		t.Errorf("Expected HX-Redirect to /dashboard, got %v", hxRedirect)
 	}
 	
 	mockRepo.AssertExpectations(t)

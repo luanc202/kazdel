@@ -13,6 +13,7 @@ import (
 	"kazdel/pkg/handlers"
 	"kazdel/pkg/infra/config"
 	"kazdel/pkg/infra/db"
+	"kazdel/pkg/infra/mail"
 	"kazdel/pkg/usecase"
 
 	"github.com/golang-migrate/migrate/v4"
@@ -93,9 +94,12 @@ func TestMain(m *testing.M) {
 	userRepo := db.NewUserRepository(dbConn)
 	sessionRepo := db.NewPostgresSessionRepository(dbConn)
 
+	userTokenRepo := db.NewUserTokenRepository(dbConn)
+	emailService := mail.NewSMTPMailService()
+
 	urlVisitRepo := db.NewUrlVisitRepository(dbConn)
-	shortenedURLUseCase := usecase.NewShortenedUrlUseCase(shortenedURLsRepo, urlVisitRepo, nil)
-	authUseCase := usecase.NewAuthUseCase(userRepo, sessionRepo)
+	shortenedURLUseCase := usecase.NewShortenedUrlUseCase(shortenedURLsRepo, urlVisitRepo, nil, emailService)
+	authUseCase := usecase.NewAuthUseCase(userRepo, sessionRepo, userTokenRepo, emailService)
 
 	deps := &handlers.Dependencies{
 		ShortenedUrlUseCase: shortenedURLUseCase,
