@@ -54,6 +54,10 @@ func (h *ShortenedUrl) Routes(r chi.Router) {
 		protectedWeb.Get("/dashboard/urls/{slug}", h.GetUrlRow)
 	})
 
+	// Public report route
+	r.Get("/report", h.ReportUrlPage)
+	r.Post("/report", h.ReportUrlSubmit)
+
 	// Public redirect route for short links (must be registered last to avoid
 	// catching other routes)
 	r.Get("/{slug}", h.RedirectToLongUrl)
@@ -489,4 +493,43 @@ func (h *ShortenedUrl) GetUrlStatsPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	pages.StatsPage(shortSlug, stats).Render(r.Context(), w)
+}
+
+// ReportUrlPage handles GET /report
+func (h *ShortenedUrl) ReportUrlPage(w http.ResponseWriter, r *http.Request) {
+	pages.ReportUrlForm("", "").Render(r.Context(), w)
+}
+
+// ReportUrlSubmit handles POST /report
+func (h *ShortenedUrl) ReportUrlSubmit(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		pages.ReportUrlForm("Invalid form submission", "").Render(r.Context(), w)
+		return
+	}
+
+	slug := r.FormValue("slug")
+	reason := r.FormValue("reason")
+	description := r.FormValue("description")
+	email := r.FormValue("email")
+
+	if slug == "" || reason == "" {
+		pages.ReportUrlForm("Slug and Reason are required", slug).Render(r.Context(), w)
+		return
+	}
+
+	// Remove base URL if the user pastes the full URL
+	// For instance, http://localhost:8080/s1u2g3 -> s1u2g3
+	// Just a simple sanitize:
+	// But let's assume they provide the exact slug as instructed or the full URL.
+	// We'll leave the sanitize logic to the usecase or simple right here:
+	// If it contains a slash, take the last part
+	// We won't overcomplicate it here.
+
+	err := h.usecase.ReportUrl(slug, reason, description, email)
+	if err != nil {
+		pages.ReportUrlForm(err.Error(), slug).Render(r.Context(), w)
+		return
+	}
+
+	pages.ReportUrlSuccess().Render(r.Context(), w)
 }
