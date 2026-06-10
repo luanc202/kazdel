@@ -158,3 +158,16 @@ services:
       - .env.example
     networks:
       - shorturl-integration-tests
+
+  mailpit:
+    image: axllent/mailpit
+    profiles:
+      - development
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    networks:
+      - shorturl-dev
