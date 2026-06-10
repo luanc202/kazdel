@@ -12,14 +12,18 @@ import (
 )
 
 type AuthUseCase struct {
-	UserRepo    interfaces.UserRepository
-	SessionRepo interfaces.SessionRepository
+	UserRepo      interfaces.UserRepository
+	SessionRepo   interfaces.SessionRepository
+	UserTokenRepo interfaces.UserTokenRepository
+	EmailService  interfaces.EmailService
 }
 
-func NewAuthUseCase(userRepo interfaces.UserRepository, sessionRepo interfaces.SessionRepository) *AuthUseCase {
+func NewAuthUseCase(userRepo interfaces.UserRepository, sessionRepo interfaces.SessionRepository, userTokenRepo interfaces.UserTokenRepository, emailService interfaces.EmailService) *AuthUseCase {
 	return &AuthUseCase{
-		UserRepo:    userRepo,
-		SessionRepo: sessionRepo,
+		UserRepo:      userRepo,
+		SessionRepo:   sessionRepo,
+		UserTokenRepo: userTokenRepo,
+		EmailService:  emailService,
 	}
 }
 
@@ -56,6 +60,20 @@ func (uc *AuthUseCase) Signup(name, username, email, password string) (string, e
 	err = uc.SessionRepo.Create(session)
 	if err != nil {
 		return "", fmt.Errorf("Failed to create session: %w", err)
+	}
+
+	// Generate email verification token
+	verificationToken := uniqueEntityId.NewID().String()
+	userToken := entity.NewUserToken(user.ID, verificationToken, entity.TokenContextEmailVerification, 24*time.Hour)
+	err = uc.UserTokenRepo.Save(userToken)
+	if err != nil {
+		slog.Error("Failed to save user verification token", "error", err)
+	} else {
+		// e.g. domain.com/api/v1/auth/verify-email?token=xxx
+		// We'll pass a relative URL or get the base URL from env if needed.
+		// For simplicity, passing /auth/verify-email?token=xxx
+		verifyLink := fmt.Sprintf("/auth/verify-email?token=%s", verificationToken)
+		uc.EmailService.SendVerificationEmail(user.Email, user.Name, verifyLink)
 	}
 
 	return token, nil
@@ -109,7 +127,79 @@ func (uc *AuthUseCase) ValidateSession(token string) (string, error) {
 }
 
 func (uc *AuthUseCase) GetUserByID(id string) (*entity.User, error) {
-	// Not strictly needed for auth flow but good to keep
-	// ... implementation if needed or remove ...
-	return nil, nil
+	return uc.UserRepo.FindById(id)
+}
+
+func (uc *AuthUseCase) VerifyEmail(token string) error {
+	userToken, err := uc.UserTokenRepo.FindByToken(token)
+	if err != nil {
+		return fmt.Errorf("Invalid or expired token")
+	}
+
+	if userToken.Context != entity.TokenContextEmailVerification || userToken.IsExpired() {
+		return fmt.Errorf("Invalid or expired token")
+	}
+
+	user, err := uc.UserRepo.FindById(userToken.UserID.String())
+	if err != nil {
+		return fmt.Errorf("User not found")
+	}
+
+	user.EmailVerified = true
+	err = uc.UserRepo.Save(user)
+	if err != nil {
+		return fmt.Errorf("Failed to verify email")
+	}
+
+	_ = uc.UserTokenRepo.DeleteByToken(token)
+	return nil
+}
+
+func (uc *AuthUseCase) RequestPasswordReset(email string) error {
+	user, err := uc.UserRepo.FindByEmail(email)
+	if err != nil {
+		// Don't leak user existence
+		return nil
+	}
+
+	resetToken := uniqueEntityId.NewID().String()
+	userToken := entity.NewUserToken(user.ID, resetToken, entity.TokenContextPasswordReset, 1*time.Hour)
+	
+	err = uc.UserTokenRepo.Save(userToken)
+	if err != nil {
+		return fmt.Errorf("Failed to generate reset token")
+	}
+
+	resetLink := fmt.Sprintf("/auth/reset-password?token=%s", resetToken)
+	return uc.EmailService.SendPasswordResetEmail(user.Email, user.Name, resetLink)
+}
+
+func (uc *AuthUseCase) ResetPassword(token, newPassword string) error {
+	userToken, err := uc.UserTokenRepo.FindByToken(token)
+	if err != nil {
+		return fmt.Errorf("Invalid or expired token")
+	}
+
+	if userToken.Context != entity.TokenContextPasswordReset || userToken.IsExpired() {
+		return fmt.Errorf("Invalid or expired token")
+	}
+
+	user, err := uc.UserRepo.FindById(userToken.UserID.String())
+	if err != nil {
+		return fmt.Errorf("User not found")
+	}
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+	if err != nil {
+		return fmt.Errorf("Failed to reset password")
+	}
+
+	user.PasswordHash = string(hashedPassword)
+	err = uc.UserRepo.Save(user)
+	if err != nil {
+		return fmt.Errorf("Failed to update password")
+	}
+
+	_ = uc.UserTokenRepo.DeleteByToken(token)
+	return nil
 }
