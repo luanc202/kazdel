@@ -1,9 +1,12 @@
 package mail
 
 import (
+	"bytes"
+	"context"
 	"crypto/tls"
 	"fmt"
 	"kazdel/pkg/infra/config"
+	"kazdel/pkg/ui/emails"
 	"log/slog"
 	"net/smtp"
 	"strings"
@@ -127,40 +130,43 @@ func (s *SMTPMailService) SendEmail(to []string, subject string, body string) er
 
 func (s *SMTPMailService) SendVerificationEmail(to, username, verificationLink string) error {
 	subject := "Verify your email address"
-	body := fmt.Sprintf(`
-		<h1>Welcome to Kazdel, %s!</h1>
-		<p>Please click the link below to verify your email address:</p>
-		<p><a href="%s">%s</a></p>
-	`, username, verificationLink, verificationLink)
 	
-	s.sendAsync([]string{to}, subject, body)
+	var buf bytes.Buffer
+	err := emails.VerificationEmail(username, verificationLink).Render(context.Background(), &buf)
+	if err != nil {
+		slog.Error("Failed to render verification email template", "error", err)
+		return err
+	}
+	
+	s.sendAsync([]string{to}, subject, buf.String())
 	return nil
 }
 
 func (s *SMTPMailService) SendPasswordResetEmail(to, username, resetLink string) error {
 	subject := "Reset your password"
-	body := fmt.Sprintf(`
-		<h1>Hello %s,</h1>
-		<p>You requested a password reset. Please click the link below to set a new password:</p>
-		<p><a href="%s">%s</a></p>
-		<p>If you did not request this, please ignore this email.</p>
-	`, username, resetLink, resetLink)
+	
+	var buf bytes.Buffer
+	err := emails.PasswordResetEmail(username, resetLink).Render(context.Background(), &buf)
+	if err != nil {
+		slog.Error("Failed to render password reset email template", "error", err)
+		return err
+	}
 
-	s.sendAsync([]string{to}, subject, body)
+	s.sendAsync([]string{to}, subject, buf.String())
 	return nil
 }
 
 func (s *SMTPMailService) SendReportEmail(reportedURL, reason, description, reporterEmail string) error {
 	subject := "New Malicious URL Report"
-	body := fmt.Sprintf(`
-		<h1>New Malicious URL Report</h1>
-		<p><strong>Reported URL:</strong> %s</p>
-		<p><strong>Reason:</strong> %s</p>
-		<p><strong>Description:</strong> %s</p>
-		<p><strong>Reporter Email:</strong> %s</p>
-	`, reportedURL, reason, description, reporterEmail)
+	
+	var buf bytes.Buffer
+	err := emails.ReportEmail(reportedURL, reason, description, reporterEmail).Render(context.Background(), &buf)
+	if err != nil {
+		slog.Error("Failed to render report email template", "error", err)
+		return err
+	}
 
 	// Here it sends to the admin's email. We'll use MAIL_FROM as the admin's destination for now.
-	s.sendAsync([]string{s.env.MAIL_FROM}, subject, body)
+	s.sendAsync([]string{s.env.MAIL_FROM}, subject, buf.String())
 	return nil
 }

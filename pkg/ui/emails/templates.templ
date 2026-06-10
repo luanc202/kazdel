@@ -1,0 +1,115 @@
+package emails
+
+templ BaseEmail(title string) {
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>{ title }</title>
+			<style>
+				body {
+					font-family: monospace;
+					background-color: #0f172a;
+					color: #e2e8f0;
+					margin: 0;
+					padding: 20px;
+					line-height: 1.5;
+				}
+				.container {
+					max-width: 600px;
+					margin: 0 auto;
+					background-color: #1e293b;
+					border: 1px solid #334155;
+					padding: 30px;
+					box-shadow: 4px 4px 0px 0px #94a3b8;
+				}
+				h1 {
+					color: #f8fafc;
+					text-transform: uppercase;
+					border-bottom: 1px solid #334155;
+					padding-bottom: 10px;
+					font-size: 24px;
+				}
+				a {
+					color: #38bdf8;
+					text-decoration: none;
+				}
+				a:hover {
+					text-decoration: underline;
+				}
+				.button {
+					display: inline-block;
+					background-color: #38bdf8;
+					color: #0f172a !important;
+					padding: 10px 20px;
+					text-transform: uppercase;
+					font-weight: bold;
+					text-decoration: none;
+					border: 1px solid #38bdf8;
+					margin-top: 20px;
+					margin-bottom: 20px;
+					box-shadow: 2px 2px 0px 0px #cbd5e1;
+				}
+				.button:hover {
+					text-decoration: none;
+					background-color: #7dd3fc;
+				}
+				.footer {
+					margin-top: 30px;
+					font-size: 12px;
+					color: #64748b;
+					text-align: center;
+				}
+			</style>
+		</head>
+		<body>
+			<div class="container">
+				{ children... }
+				<div class="footer">
+					<p>KAZDEL URL SHORTENER // AUTOMATED TRANSMISSION</p>
+				</div>
+			</div>
+		</body>
+	</html>
+}
+
+templ VerificationEmail(username, verificationLink string) {
+	@BaseEmail("Verify your email address") {
+		<h1>Welcome to Kazdel, { username }!</h1>
+		<p>Your registration is almost complete. Please confirm your access by clicking the button below:</p>
+		<a href={ templ.SafeURL(verificationLink) } class="button">VERIFY EMAIL ADDRESS</a>
+		<p>If the button doesn't work, you can copy and paste this link into your browser:</p>
+		<p><a href={ templ.SafeURL(verificationLink) }>{ verificationLink }</a></p>
+	}
+}
+
+templ PasswordResetEmail(username, resetLink string) {
+	@BaseEmail("Reset your password") {
+		<h1>Password Reset Request</h1>
+		<p>Hello { username },</p>
+		<p>We received a request to reset your password. You can set a new password by clicking the button below:</p>
+		<a href={ templ.SafeURL(resetLink) } class="button">RESET PASSWORD</a>
+		<p>If the button doesn't work, you can copy and paste this link into your browser:</p>
+		<p><a href={ templ.SafeURL(resetLink) }>{ resetLink }</a></p>
+		<p>If you did not request this, please ignore this email. Your credentials will remain safe.</p>
+	}
+}
+
+templ ReportEmail(reportedURL, reason, description, reporterEmail string) {
+	@BaseEmail("New Malicious URL Report") {
+		<h1 style="color: #ef4444; border-bottom-color: #ef4444;">INCIDENT REPORT: MALICIOUS URL</h1>
+		<p>A new report has been filed regarding a potentially malicious shortened URL.</p>
+		<div style="background-color: #0f172a; padding: 15px; border-left: 4px solid #ef4444; margin-bottom: 20px;">
+			<p style="margin: 5px 0;"><strong>Reported URL:</strong> { reportedURL }</p>
+			<p style="margin: 5px 0;"><strong>Reason:</strong> <span style="text-transform: uppercase;">{ reason }</span></p>
+			<p style="margin: 5px 0;"><strong>Description:</strong> { description }</p>
+			if reporterEmail != "" {
+				<p style="margin: 5px 0;"><strong>Reporter Email:</strong> { reporterEmail }</p>
+			} else {
+				<p style="margin: 5px 0;"><strong>Reporter Email:</strong> [ANONYMOUS]</p>
+			}
+		</div>
+		<p>Please review this link and take appropriate action immediately.</p>
+	}
+}
