@@ -18,6 +18,7 @@ type User struct {
 	Username     string
 	Role         Role
 	Email        string
+	EmailVerified bool
 	PasswordHash string
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
@@ -30,6 +31,7 @@ func NewUser(name, username string, role Role, email, passwordHash string) *User
 		Username:     username,
 		Role:         role,
 		Email:        email,
+		EmailVerified: false,
 		PasswordHash: passwordHash,
 		CreatedAt:    time.Now(),
 		UpdatedAt:    time.Now(),
