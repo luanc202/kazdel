@@ -8,4 +8,5 @@ type UserRepository interface {
 	FindByUsername(username string) (*entity.User, error)
 	ExistsByEmail(email string) (bool, error)
 	ExistsByUsername(username string) (bool, error)
+	FindById(id string) (*entity.User, error)
 }
