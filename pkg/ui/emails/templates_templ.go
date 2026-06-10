@@ -42,7 +42,7 @@ func BaseEmail(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</title><style>\n\t\t\t\tbody {\n\t\t\t\t\tfont-family: monospace;\n\t\t\t\t\tbackground-color: #0f172a;\n\t\t\t\t\tcolor: #e2e8f0;\n\t\t\t\t\tmargin: 0;\n\t\t\t\t\tpadding: 20px;\n\t\t\t\t\tline-height: 1.5;\n\t\t\t\t}\n\t\t\t\t.container {\n\t\t\t\t\tmax-width: 600px;\n\t\t\t\t\tmargin: 0 auto;\n\t\t\t\t\tbackground-color: #1e293b;\n\t\t\t\t\tborder: 1px solid #334155;\n\t\t\t\t\tpadding: 30px;\n\t\t\t\t\tbox-shadow: 4px 4px 0px 0px #94a3b8;\n\t\t\t\t}\n\t\t\t\th1 {\n\t\t\t\t\tcolor: #f8fafc;\n\t\t\t\t\ttext-transform: uppercase;\n\t\t\t\t\tborder-bottom: 1px solid #334155;\n\t\t\t\t\tpadding-bottom: 10px;\n\t\t\t\t\tfont-size: 24px;\n\t\t\t\t}\n\t\t\t\ta {\n\t\t\t\t\tcolor: #38bdf8;\n\t\t\t\t\ttext-decoration: none;\n\t\t\t\t}\n\t\t\t\ta:hover {\n\t\t\t\t\ttext-decoration: underline;\n\t\t\t\t}\n\t\t\t\t.button {\n\t\t\t\t\tdisplay: inline-block;\n\t\t\t\t\tbackground-color: #38bdf8;\n\t\t\t\t\tcolor: #0f172a !important;\n\t\t\t\t\tpadding: 10px 20px;\n\t\t\t\t\ttext-transform: uppercase;\n\t\t\t\t\tfont-weight: bold;\n\t\t\t\t\ttext-decoration: none;\n\t\t\t\t\tborder: 1px solid #38bdf8;\n\t\t\t\t\tmargin-top: 20px;\n\t\t\t\t\tmargin-bottom: 20px;\n\t\t\t\t\tbox-shadow: 2px 2px 0px 0px #cbd5e1;\n\t\t\t\t}\n\t\t\t\t.button:hover {\n\t\t\t\t\ttext-decoration: none;\n\t\t\t\t\tbackground-color: #7dd3fc;\n\t\t\t\t}\n\t\t\t\t.footer {\n\t\t\t\t\tmargin-top: 30px;\n\t\t\t\t\tfont-size: 12px;\n\t\t\t\t\tcolor: #64748b;\n\t\t\t\t\ttext-align: center;\n\t\t\t\t}\n\t\t\t</style></head><body><div class=\"container\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</title><style>\n\t\t\t\tbody {\n\t\t\t\t\tfont-family: monospace;\n\t\t\t\t\tbackground-color: #1A1A1B;\n\t\t\t\t\tcolor: #B0B0B0;\n\t\t\t\t\tmargin: 0;\n\t\t\t\t\tpadding: 20px;\n\t\t\t\t\tline-height: 1.5;\n\t\t\t\t}\n\t\t\t\t.container {\n\t\t\t\t\tmax-width: 600px;\n\t\t\t\t\tmargin: 0 auto;\n\t\t\t\t\tbackground-color: #2b2b2d;\n\t\t\t\t\tborder: 1px solid #3C3F41;\n\t\t\t\t\tpadding: 30px;\n\t\t\t\t\tbox-shadow: 4px 4px 0px 0px #B0B0B0;\n\t\t\t\t}\n\t\t\t\th1 {\n\t\t\t\t\tcolor: #ffffff;\n\t\t\t\t\ttext-transform: uppercase;\n\t\t\t\t\tborder-bottom: 1px solid #3C3F41;\n\t\t\t\t\tpadding-bottom: 10px;\n\t\t\t\t\tfont-size: 24px;\n\t\t\t\t}\n\t\t\t\ta {\n\t\t\t\t\tcolor: #D45500;\n\t\t\t\t\ttext-decoration: none;\n\t\t\t\t}\n\t\t\t\ta:hover {\n\t\t\t\t\ttext-decoration: underline;\n\t\t\t\t}\n\t\t\t\t.button {\n\t\t\t\t\tdisplay: inline-block;\n\t\t\t\t\tbackground-color: #D45500;\n\t\t\t\t\tcolor: #1A1A1B !important;\n\t\t\t\t\tpadding: 10px 20px;\n\t\t\t\t\ttext-transform: uppercase;\n\t\t\t\t\tfont-weight: bold;\n\t\t\t\t\ttext-decoration: none;\n\t\t\t\t\tborder: 1px solid #D45500;\n\t\t\t\t\tmargin-top: 20px;\n\t\t\t\t\tmargin-bottom: 20px;\n\t\t\t\t\tbox-shadow: 2px 2px 0px 0px #B0B0B0;\n\t\t\t\t}\n\t\t\t\t.button:hover {\n\t\t\t\t\ttext-decoration: none;\n\t\t\t\t\tbackground-color: #FF2D00;\n\t\t\t\t\tborder-color: #FF2D00;\n\t\t\t\t}\n\t\t\t\t.footer {\n\t\t\t\t\tmargin-top: 30px;\n\t\t\t\t\tfont-size: 12px;\n\t\t\t\t\tcolor: #3C3F41;\n\t\t\t\t\ttext-align: center;\n\t\t\t\t}\n\t\t\t</style></head><body><div class=\"container\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -98,7 +98,7 @@ func VerificationEmail(username, verificationLink string) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(username)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 79, Col: 35}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 80, Col: 35}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -111,7 +111,7 @@ func VerificationEmail(username, verificationLink string) templ.Component {
 			var templ_7745c5c3_Var6 templ.SafeURL
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(verificationLink))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 81, Col: 43}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 82, Col: 43}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -124,7 +124,7 @@ func VerificationEmail(username, verificationLink string) templ.Component {
 			var templ_7745c5c3_Var7 templ.SafeURL
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(verificationLink))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 83, Col: 46}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 84, Col: 46}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -137,7 +137,7 @@ func VerificationEmail(username, verificationLink string) templ.Component {
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(verificationLink)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 83, Col: 67}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 84, Col: 67}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
@@ -197,7 +197,7 @@ func PasswordResetEmail(username, resetLink string) templ.Component {
 			var templ_7745c5c3_Var11 string
 			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(username)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 90, Col: 21}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 91, Col: 21}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 			if templ_7745c5c3_Err != nil {
@@ -210,7 +210,7 @@ func PasswordResetEmail(username, resetLink string) templ.Component {
 			var templ_7745c5c3_Var12 templ.SafeURL
 			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(resetLink))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 92, Col: 36}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 93, Col: 36}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
@@ -223,7 +223,7 @@ func PasswordResetEmail(username, resetLink string) templ.Component {
 			var templ_7745c5c3_Var13 templ.SafeURL
 			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(resetLink))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 94, Col: 39}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 95, Col: 39}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 			if templ_7745c5c3_Err != nil {
@@ -236,7 +236,7 @@ func PasswordResetEmail(username, resetLink string) templ.Component {
 			var templ_7745c5c3_Var14 string
 			templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(resetLink)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 94, Col: 53}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 95, Col: 53}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 			if templ_7745c5c3_Err != nil {
@@ -289,14 +289,14 @@ func ReportEmail(reportedURL, reason, description, reporterEmail string) templ.C
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<h1 style=\"color: #ef4444; border-bottom-color: #ef4444;\">INCIDENT REPORT: MALICIOUS URL</h1><p>A new report has been filed regarding a potentially malicious shortened URL.</p><div style=\"background-color: #0f172a; padding: 15px; border-left: 4px solid #ef4444; margin-bottom: 20px;\"><p style=\"margin: 5px 0;\"><strong>Reported URL:</strong> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<h1 style=\"color: #FF2D00; border-bottom-color: #FF2D00;\">INCIDENT REPORT: MALICIOUS URL</h1><p>A new report has been filed regarding a potentially malicious shortened URL.</p><div style=\"background-color: #1A1A1B; padding: 15px; border-left: 4px solid #FF2D00; margin-bottom: 20px;\"><p style=\"margin: 5px 0;\"><strong>Reported URL:</strong> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var17 string
 			templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(reportedURL)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 104, Col: 73}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 105, Col: 73}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 			if templ_7745c5c3_Err != nil {
@@ -309,7 +309,7 @@ func ReportEmail(reportedURL, reason, description, reporterEmail string) templ.C
 			var templ_7745c5c3_Var18 string
 			templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(reason)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 105, Col: 103}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 106, Col: 103}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 			if templ_7745c5c3_Err != nil {
@@ -322,7 +322,7 @@ func ReportEmail(reportedURL, reason, description, reporterEmail string) templ.C
 			var templ_7745c5c3_Var19 string
 			templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(description)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 106, Col: 72}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 107, Col: 72}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 			if templ_7745c5c3_Err != nil {
@@ -340,7 +340,7 @@ func ReportEmail(reportedURL, reason, description, reporterEmail string) templ.C
 				var templ_7745c5c3_Var20 string
 				templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(reporterEmail)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 108, Col: 78}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/emails/templates.templ`, Line: 109, Col: 78}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 				if templ_7745c5c3_Err != nil {
