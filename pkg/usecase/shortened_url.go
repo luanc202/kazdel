@@ -27,14 +27,16 @@ type ShortenedUrlUsecase struct {
 	visitRepo  interfaces.UrlVisitRepository
 	geoipDb    *geoip2.Reader
 	logger     slog.Logger
+	emailService interfaces.EmailService
 }
 
-func NewShortenedUrlUseCase(repo interfaces.ShortenedUrlRepository, visitRepo interfaces.UrlVisitRepository, geoipDb *geoip2.Reader) *ShortenedUrlUsecase {
+func NewShortenedUrlUseCase(repo interfaces.ShortenedUrlRepository, visitRepo interfaces.UrlVisitRepository, geoipDb *geoip2.Reader, emailService interfaces.EmailService) *ShortenedUrlUsecase {
 	return &ShortenedUrlUsecase{
 		repo:       repo,
 		visitRepo:  visitRepo,
 		geoipDb:    geoipDb,
 		logger:     *config.GetLogger("shortened-url-usecase"),
+		emailService: emailService,
 	}
 }
 
@@ -210,4 +212,24 @@ func (su *ShortenedUrlUsecase) GetUrlStats(ctx context.Context, slug string, use
 	}
 
 	return su.visitRepo.GetStatsByUrlId(ctx, url.ID)
+}
+
+func (su *ShortenedUrlUsecase) ReportUrl(slug, reason, description, reporterEmail string) error {
+	// First check if the URL exists
+	_, err := su.FindBySlug(slug)
+	if err != nil {
+		return fmt.Errorf("URL not found")
+	}
+
+	// We assume a base URL like domain.com/s/slug
+	// But simply returning the slug or formatting it is fine.
+	reportedUrl := fmt.Sprintf("/s/%s", slug)
+
+	err = su.emailService.SendReportEmail(reportedUrl, reason, description, reporterEmail)
+	if err != nil {
+		su.logger.Error("Failed to send report email", "error", err)
+		return fmt.Errorf("Failed to submit report")
+	}
+
+	return nil
 }
