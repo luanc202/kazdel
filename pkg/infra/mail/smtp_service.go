@@ -40,8 +40,10 @@ func (s *SMTPMailService) sendAsync(to []string, subject, body string) {
 		}
 		message += "\r\n" + body
 
-		auth := smtp.PlainAuth("", s.env.MAIL_USER, s.env.MAIL_PASSWORD, s.env.MAIL_HOST)
-
+		var auth smtp.Auth
+		if s.env.MAIL_USER != "" {
+			auth = smtp.PlainAuth("", s.env.MAIL_USER, s.env.MAIL_PASSWORD, s.env.MAIL_HOST)
+		}
 		var err error
 		addr := fmt.Sprintf("%s:%s", s.env.MAIL_HOST, s.env.MAIL_PORT)
 
@@ -66,9 +68,11 @@ func (s *SMTPMailService) sendAsync(to []string, subject, body string) {
 				return
 			}
 
-			if err = client.Auth(auth); err != nil {
-				slog.Error("Failed to authenticate with SMTP server", "error", err)
-				return
+			if auth != nil {
+				if err = client.Auth(auth); err != nil {
+					slog.Error("Failed to authenticate with SMTP server", "error", err)
+					return
+				}
 			}
 
 			if err = client.Mail(s.env.MAIL_FROM); err != nil {
