@@ -11,6 +11,13 @@ type EnvConfig struct {
 	ENV             string `mapstructure:"ENVIRONMENT"`
 	MIGRATIONS_PATH string `mapstructure:"MIGRATIONS_PATH"`
 	JWT_SECRET      string `mapstructure:"JWT_SECRET"`
+	MAIL_ENABLED    bool   `mapstructure:"MAIL_ENABLED"`
+	MAIL_HOST       string `mapstructure:"MAIL_HOST"`
+	MAIL_PORT       string `mapstructure:"MAIL_PORT"`
+	MAIL_USER       string `mapstructure:"MAIL_USER"`
+	MAIL_PASSWORD   string `mapstructure:"MAIL_PASSWORD"`
+	MAIL_FROM       string `mapstructure:"MAIL_FROM"`
+	MAIL_SECURE     bool   `mapstructure:"MAIL_SECURE"`
 }
 
 func GetEnvConfig() *EnvConfig {
@@ -31,6 +38,13 @@ func LoadEnv(path string) (*EnvConfig, error) {
 	viper.BindEnv("ENVIRONMENT")
 	viper.BindEnv("MIGRATIONS_PATH")
 	viper.BindEnv("JWT_SECRET")
+	viper.BindEnv("MAIL_ENABLED")
+	viper.BindEnv("MAIL_HOST")
+	viper.BindEnv("MAIL_PORT")
+	viper.BindEnv("MAIL_USER")
+	viper.BindEnv("MAIL_PASSWORD")
+	viper.BindEnv("MAIL_FROM")
+	viper.BindEnv("MAIL_SECURE")
 
 	err := viper.ReadInConfig()
 	if err != nil {
