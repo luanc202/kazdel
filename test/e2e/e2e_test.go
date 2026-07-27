@@ -67,6 +67,7 @@ func TestMain(m *testing.M) {
 	os.Setenv("ENVIRONMENT", "testing")
 	os.Setenv("MIGRATIONS_PATH", "migrations")
 	os.Setenv("JWT_SECRET", "supersekret")
+	os.Setenv("MAIL_ENABLED", "false")
 
 	// 3. Initialize app configs
 	_, err = config.LoadEnv(".") // Now at project root
@@ -271,6 +272,112 @@ func TestUserJourneyFlow(t *testing.T) {
 		})
 		if err != nil {
 			t.Fatalf("URL did not disappear after deletion: %v", err)
+		}
+	})
+}
+
+func TestEmailVerificationFlow(t *testing.T) {
+	page, err := browser.NewPage()
+	if err != nil {
+		t.Fatalf("could not create page: %v", err)
+	}
+	defer page.Close()
+
+	username := fmt.Sprintf("veriftest%d", time.Now().Unix())
+	email := fmt.Sprintf("verif_%d@example.com", time.Now().Unix())
+	password := "Password123!"
+
+	t.Run("Signup User", func(t *testing.T) {
+		if _, err = page.Goto(ts.URL + "/signup"); err != nil {
+			t.Fatalf("could not goto: %v", err)
+		}
+
+		err = page.Locator("form[hx-post='/api/v1/auth/signup']").WaitFor(playwright.LocatorWaitForOptions{
+			Timeout: playwright.Float(5000),
+		})
+		if err != nil {
+			t.Fatalf("failed to find signup form: %v", err)
+		}
+
+		_ = page.Locator("input[name='name']").Fill("Unverified User")
+		_ = page.Locator("input[name='username']").Fill(username)
+		_ = page.Locator("input[name='email']").Fill(email)
+		_ = page.Locator("input[name='password']").Fill(password)
+		_ = page.Locator("input[id='confirm-password']").Fill(password)
+
+		_ = page.Locator("button[type='submit']").Click()
+
+		err = page.WaitForURL(ts.URL+"/dashboard", playwright.PageWaitForURLOptions{
+			Timeout: playwright.Float(5000),
+		})
+		if err != nil {
+			t.Fatalf("expected redirect to dashboard: %v", err)
+		}
+	})
+
+	t.Run("Logout User", func(t *testing.T) {
+		err := page.Locator("a[hx-post='/api/v1/auth/logout']").Click()
+		if err != nil {
+			t.Fatalf("failed to click logout: %v", err)
+		}
+
+		err = page.WaitForURL(ts.URL+"/login", playwright.PageWaitForURLOptions{
+			Timeout: playwright.Float(5000),
+		})
+		if err != nil {
+			t.Fatalf("expected redirect to login: %v", err)
+		}
+	})
+
+	t.Run("Enable Mail And Try Login", func(t *testing.T) {
+		origEnv := config.GetEnvConfig()
+		testEnv := *origEnv
+		testEnv.MAIL_ENABLED = true
+		config.SetEnvConfigForTest(&testEnv)
+		defer config.SetEnvConfigForTest(origEnv)
+
+		err = page.Locator("form[hx-post='/api/v1/auth/login']").WaitFor(playwright.LocatorWaitForOptions{
+			Timeout: playwright.Float(5000),
+		})
+		if err != nil {
+			t.Fatalf("failed to find login form: %v", err)
+		}
+
+		_ = page.Locator("input[name='username']").Fill(username)
+		_ = page.Locator("input[name='password']").Fill(password)
+		_ = page.Locator("button[type='submit']").Click()
+
+		// Should see "Your email is not verified." message
+		err = page.Locator("text=Your email is not verified.").WaitFor(playwright.LocatorWaitForOptions{
+			Timeout: playwright.Float(5000),
+		})
+		if err != nil {
+			t.Fatalf("expected 'Your email is not verified.' alert: %v", err)
+		}
+
+		// Click on "Verify your email" link
+		err = page.Locator("a:has-text('Verify your email')").Click()
+		if err != nil {
+			t.Fatalf("failed to click verify email link: %v", err)
+		}
+
+		// Wait for verify email prompt page
+		err = page.WaitForURL(fmt.Sprintf("%s/verify-email?email=%s", ts.URL, email), playwright.PageWaitForURLOptions{
+			Timeout: playwright.Float(5000),
+		})
+		if err != nil {
+			t.Fatalf("expected redirect to verify-email prompt: %v", err)
+		}
+
+		// Submit resend verification email form
+		_ = page.Locator("button[type='submit']").Click()
+
+		// Wait for success alert
+		err = page.Locator(".alert-success").WaitFor(playwright.LocatorWaitForOptions{
+			Timeout: playwright.Float(5000),
+		})
+		if err != nil {
+			t.Fatalf("expected success alert after resend verification: %v", err)
 		}
 	})
 }
