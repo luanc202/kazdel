@@ -9,6 +9,7 @@ import (
 
 	"kazdel/pkg/constants"
 	"kazdel/pkg/entity"
+	"kazdel/pkg/infra/config"
 	"kazdel/pkg/mocks"
 	"kazdel/pkg/usecase"
 
@@ -153,3 +154,108 @@ func TestAuth_LoginSubmit(t *testing.T) {
 	mockUserRepo.AssertExpectations(t)
 	mockSessionRepo.AssertExpectations(t)
 }
+
+func TestAuth_LoginSubmit_EmailNotVerified(t *testing.T) {
+	mockUserRepo := new(mocks.UserRepository)
+	mockSessionRepo := new(mocks.SessionRepository)
+	mockUserTokenRepo := new(mocks.UserTokenRepository)
+	mockEmailService := new(mocks.EmailService)
+
+	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
+	authHandler := &Auth{authUseCase: authUseCase}
+
+	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("Password1!"), bcrypt.DefaultCost)
+	testUser := entity.NewUser("Test User", "testuser", entity.RoleUser, "test@example.com", string(hashedPassword))
+	testUser.EmailVerified = false
+
+	config.SetEnvConfigForTest(&config.EnvConfig{MAIL_ENABLED: true})
+	defer config.SetEnvConfigForTest(nil)
+
+	mockUserRepo.On("FindByUsername", "testuser").Return(testUser, nil)
+
+	formData := "username=testuser&password=Password1%21"
+	req := httptest.NewRequest(http.MethodPost, "/api/v1/auth/login", strings.NewReader(formData))
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	rr := httptest.NewRecorder()
+	authHandler.LoginSubmit(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Errorf("Expected status 200 OK, got %v", rr.Code)
+	}
+
+	if hxRedirect := rr.Header().Get("HX-Redirect"); hxRedirect != "" {
+		t.Errorf("Expected empty HX-Redirect, got %v", hxRedirect)
+	}
+
+	body := rr.Body.String()
+	if !strings.Contains(body, "Your email is not verified.") {
+		t.Errorf("Expected response body to contain 'Your email is not verified.', got %v", body)
+	}
+
+	mockUserRepo.AssertExpectations(t)
+}
+
+func TestAuth_VerifyEmailPage(t *testing.T) {
+	mockUserRepo := new(mocks.UserRepository)
+	mockSessionRepo := new(mocks.SessionRepository)
+	mockUserTokenRepo := new(mocks.UserTokenRepository)
+	mockEmailService := new(mocks.EmailService)
+
+	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
+	authHandler := &Auth{authUseCase: authUseCase}
+
+	req := httptest.NewRequest(http.MethodGet, "/verify-email?email=test%40example.com", nil)
+	rr := httptest.NewRecorder()
+	authHandler.VerifyEmailPage(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Errorf("Expected status 200 OK, got %v", rr.Code)
+	}
+
+	body := rr.Body.String()
+	if !strings.Contains(body, "VERIFY EMAIL") {
+		t.Errorf("Expected response body to contain 'VERIFY EMAIL', got %v", body)
+	}
+	if !strings.Contains(body, "test@example.com") {
+		t.Errorf("Expected response body to contain 'test@example.com', got %v", body)
+	}
+}
+
+func TestAuth_ResendVerificationSubmit(t *testing.T) {
+	mockUserRepo := new(mocks.UserRepository)
+	mockSessionRepo := new(mocks.SessionRepository)
+	mockUserTokenRepo := new(mocks.UserTokenRepository)
+	mockEmailService := new(mocks.EmailService)
+
+	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
+	authHandler := &Auth{authUseCase: authUseCase}
+
+	testUser := entity.NewUser("Test User", "testuser", entity.RoleUser, "test@example.com", "hash")
+	testUser.EmailVerified = false
+
+	mockUserRepo.On("FindByEmail", "test@example.com").Return(testUser, nil)
+	mockUserTokenRepo.On("Save", mock.AnythingOfType("*entity.UserToken")).Return(nil)
+	mockEmailService.On("SendVerificationEmail", "test@example.com", "Test User", mock.AnythingOfType("string")).Return(nil)
+
+	formData := "email=test%40example.com"
+	req := httptest.NewRequest(http.MethodPost, "/api/v1/auth/resend-verification", strings.NewReader(formData))
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	rr := httptest.NewRecorder()
+	authHandler.ResendVerificationSubmit(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Errorf("Expected status 200 OK, got %v", rr.Code)
+	}
+
+	body := rr.Body.String()
+	if !strings.Contains(body, "alert-success") {
+		t.Errorf("Expected success message alert in body, got %v", body)
+	}
+
+	mockUserRepo.AssertExpectations(t)
+	mockUserTokenRepo.AssertExpectations(t)
+	mockEmailService.AssertExpectations(t)
+}
+
