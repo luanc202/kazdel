@@ -36,6 +36,7 @@ func (h *Auth) Routes(r chi.Router) {
 	r.Get("/login", h.LoginPage)
 	r.Get("/forgot-password", h.ForgotPasswordPage)
 	r.Get("/reset-password", h.ResetPasswordPage)
+	r.Get("/verify-email", h.VerifyEmailPage)
 
 	// Public auth API routes
 	r.Route("/api", func(r chi.Router) {
@@ -45,6 +46,7 @@ func (h *Auth) Routes(r chi.Router) {
 				auth.Post("/auth/signup", h.SignupSubmit)
 				auth.Post("/auth/login", h.LoginSubmit)
 				auth.Get("/auth/verify-email", h.VerifyEmail)
+				auth.Post("/auth/resend-verification", h.ResendVerificationSubmit)
 				auth.Post("/auth/forgot-password", h.ForgotPasswordSubmit)
 				auth.Post("/auth/reset-password", h.ResetPasswordSubmit)
 			})
@@ -118,23 +120,27 @@ func (h *Auth) LoginSubmit(w http.ResponseWriter, r *http.Request) {
 	decoder := form.NewDecoder()
 
 	if err := r.ParseForm(); err != nil {
-		pages.LoginForm("Failed to parse form data", "").Render(r.Context(), w)
+		pages.LoginForm("Failed to parse form data", "", "").Render(r.Context(), w)
 		return
 	}
 
 	if err := decoder.Decode(&req, r.Form); err != nil {
-		pages.LoginForm("Invalid request form", req.Username).Render(r.Context(), w)
+		pages.LoginForm("Invalid request form", req.Username, "").Render(r.Context(), w)
 		return
 	}
 
 	if err := req.Validate(); err != nil {
-		pages.LoginForm(err.Error(), req.Username).Render(r.Context(), w)
+		pages.LoginForm(err.Error(), req.Username, "").Render(r.Context(), w)
 		return
 	}
 
 	token, err := h.authUseCase.Login(req.Username, req.Password)
 	if err != nil {
-		pages.LoginForm("Invalid credentials", req.Username).Render(r.Context(), w)
+		if err == usecase.ErrEmailNotVerified {
+			pages.LoginForm("Your email is not verified.", req.Username, req.Username).Render(r.Context(), w)
+			return
+		}
+		pages.LoginForm("Invalid credentials", req.Username, "").Render(r.Context(), w)
 		return
 	}
 
@@ -195,6 +201,36 @@ func (h *Auth) VerifyEmail(w http.ResponseWriter, r *http.Request) {
 	// Assuming a simple success message or redirect
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Email successfully verified! You can now login."))
+}
+
+// VerifyEmailPage handles GET /verify-email
+func (h *Auth) VerifyEmailPage(w http.ResponseWriter, r *http.Request) {
+	_, ok := appctx.GetAuthUser(r)
+	if ok {
+		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+		return
+	}
+
+	email := r.URL.Query().Get("email")
+	pages.VerifyEmailPrompt(email, "", "").Render(r.Context(), w)
+}
+
+// ResendVerificationSubmit handles POST /api/v1/auth/resend-verification
+func (h *Auth) ResendVerificationSubmit(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	email := r.FormValue("email")
+	if email == "" {
+		pages.VerifyEmailPromptForm(email, "Email is required", "").Render(r.Context(), w)
+		return
+	}
+
+	_ = h.authUseCase.ResendVerificationEmail(email)
+
+	pages.VerifyEmailPromptForm(email, "", EMAIL_VERIFICATION_RESEND).Render(r.Context(), w)
 }
 
 // ForgotPasswordSubmit handles POST /api/v1/auth/forgot-password
@@ -286,7 +322,7 @@ func (h *Auth) ResetPasswordPage(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 		return
 	}
-	
+
 	token := r.URL.Query().Get("token")
 	if token == "" {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
