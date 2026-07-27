@@ -50,7 +50,7 @@ ui-build:
 
 build: ui-build
 	mkdir -p bin/app/static/
-	cp pkg/ui/static/* bin/app/static/
+	cp -r pkg/ui/static/* bin/app/static/
 	go build -o bin/app cmd/web/main.go
 
 docker-build:
