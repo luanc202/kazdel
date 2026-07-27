@@ -139,6 +139,10 @@ func (uc *AuthUseCase) GetUserByID(id string) (*entity.User, error) {
 	return uc.UserRepo.FindById(id)
 }
 
+func (uc *AuthUseCase) GetUserByUsername(username string) (*entity.User, error) {
+	return uc.UserRepo.FindByUsername(username)
+}
+
 func (uc *AuthUseCase) VerifyEmail(token string) error {
 	userToken, err := uc.UserTokenRepo.FindByToken(token)
 	if err != nil {

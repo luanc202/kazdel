@@ -137,7 +137,11 @@ func (h *Auth) LoginSubmit(w http.ResponseWriter, r *http.Request) {
 	token, err := h.authUseCase.Login(req.Username, req.Password)
 	if err != nil {
 		if err == usecase.ErrEmailNotVerified {
-			pages.LoginForm("Your email is not verified.", req.Username, req.Username).Render(r.Context(), w)
+			email := req.Username
+			if u, err := h.authUseCase.GetUserByUsername(req.Username); err == nil && u != nil {
+				email = u.Email
+			}
+			pages.LoginForm("Your email is not verified.", req.Username, email).Render(r.Context(), w)
 			return
 		}
 		pages.LoginForm("Invalid credentials", req.Username, "").Render(r.Context(), w)
