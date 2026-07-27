@@ -24,6 +24,10 @@ func GetEnvConfig() *EnvConfig {
 	return env
 }
 
+func SetEnvConfigForTest(e *EnvConfig) {
+	env = e
+}
+
 func LoadEnv(path string) (*EnvConfig, error) {
 	viper.SetConfigName("app_config")
 	viper.SetConfigType("env")
