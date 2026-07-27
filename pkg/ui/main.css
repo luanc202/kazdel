@@ -209,32 +209,52 @@
     @apply relative font-inter cursor-pointer z-10 block bg-base-100 text-base-content px-8 py-4 font-bold text-xl border-2 border-base-content transition-all duration-150 shadow-3d shadow-base-content uppercase;
   }
 
-  .btn-solid-3d:hover {
+  .btn-solid-3d:not(:disabled):hover {
     @apply bg-base-content text-base-100 shadow-3d-hover -translate-x-[4px] -translate-y-[4px];
   }
 
-  .btn-solid-3d:active {
+  .btn-solid-3d:not(:disabled):active {
     @apply bg-base-content text-base-100 shadow-3d-active translate-x-[4px] translate-y-[4px];
+  }
+
+  .btn-solid-3d:disabled {
+    @apply cursor-not-allowed opacity-60 bg-base-200 text-base-content/60 border-base-content/40 shadow-none translate-x-0 translate-y-0;
   }
 
   .btn-action-3d {
     @apply relative font-inter cursor-pointer z-10 block bg-base-200 text-base-content px-8 py-4 font-bold text-xl border-2 border-base-content transition-all duration-150 shadow-3d shadow-base-content uppercase;
   }
 
-  .btn-action-3d:hover {
+  .btn-action-3d:not(:disabled):hover {
     @apply bg-base-content text-base-100 shadow-3d-hover -translate-x-[4px] -translate-y-[4px];
   }
 
-  .btn-action-3d:active {
+  .btn-action-3d:not(:disabled):active {
     @apply bg-base-content text-base-100 shadow-3d-active translate-x-[4px] translate-y-[4px];
+  }
+
+  .btn-action-3d:disabled {
+    @apply cursor-not-allowed opacity-60 bg-base-200 text-base-content/60 border-base-content/40 shadow-none translate-x-0 translate-y-0;
   }
 
   .btn-danger-3d {
     @apply relative font-inter cursor-pointer z-10 block bg-accent text-accent-content px-8 py-4 font-bold border-2 border-accent transition-all duration-150 shadow-3d shadow-accent uppercase;
   }
 
-  .btn-danger-3d:hover {
+  .btn-danger-3d:not(:disabled):hover {
     @apply bg-accent-content text-accent shadow-3d-hover -translate-x-[4px] -translate-y-[4px];
+  }
+
+  .btn-danger-3d:not(:disabled):active {
+    @apply bg-error-content text-error shadow-3d-active translate-x-[4px] translate-y-[4px];
+  }
+
+  .btn-danger-3d:disabled {
+    @apply cursor-not-allowed opacity-60 bg-base-200 text-accent-content/60 border-accent/40 shadow-none translate-x-0 translate-y-0;
+  }
+
+  input:disabled, textarea:disabled, select:disabled {
+    @apply opacity-60 bg-base-200 cursor-not-allowed border-base-content/20 text-base-content/60 pointer-events-none;
   }
 
   .brutalist-row {
@@ -250,10 +270,6 @@
   /* Brutalist fade-in for newly created rows */
   .brutalist-row-enter {
     animation: brutalist-snap-in 150ms steps(3, end) backwards;
-  }
-
-  .btn-danger-3d:active {
-    @apply bg-error-content text-error shadow-3d-active translate-x-[4px] translate-y-[4px];
   }
 
   /* Glitch Fade Effect for Dropdown */
