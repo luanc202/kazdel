@@ -1,8 +1,10 @@
 package usecase
 
 import (
+	"errors"
 	"fmt"
 	"kazdel/pkg/entity"
+	"kazdel/pkg/infra/config"
 	interfaces "kazdel/pkg/interface"
 	"kazdel/pkg/uniqueEntityId"
 	"log/slog"
@@ -10,6 +12,8 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 )
+
+var ErrEmailNotVerified = errors.New("email_not_verified")
 
 type AuthUseCase struct {
 	UserRepo      interfaces.UserRepository
@@ -90,6 +94,11 @@ func (uc *AuthUseCase) Login(username, password string) (string, error) {
 		return "", fmt.Errorf("Invalid credentials")
 	}
 
+	env := config.GetEnvConfig()
+	if env != nil && env.MAIL_ENABLED && !user.EmailVerified {
+		return "", ErrEmailNotVerified
+	}
+
 	// Generate a session token (using UUID for simplicity and uniqueness)
 	token := uniqueEntityId.NewID().String()
 	expiresAt := time.Now().Add(24 * time.Hour)
@@ -153,6 +162,28 @@ func (uc *AuthUseCase) VerifyEmail(token string) error {
 
 	_ = uc.UserTokenRepo.DeleteByToken(token)
 	return nil
+}
+
+func (uc *AuthUseCase) ResendVerificationEmail(email string) error {
+	user, err := uc.UserRepo.FindByEmail(email)
+	if err != nil {
+		return fmt.Errorf("User not found")
+	}
+
+	if user.EmailVerified {
+		return fmt.Errorf("Email already verified")
+	}
+
+	verificationToken := uniqueEntityId.NewID().String()
+	userToken := entity.NewUserToken(user.ID, verificationToken, entity.TokenContextEmailVerification, 24*time.Hour)
+	err = uc.UserTokenRepo.Save(userToken)
+	if err != nil {
+		slog.Error("Failed to save user verification token", "error", err)
+		return fmt.Errorf("Failed to generate verification token")
+	}
+
+	verifyLink := fmt.Sprintf("/auth/verify-email?token=%s", verificationToken)
+	return uc.EmailService.SendVerificationEmail(user.Email, user.Name, verifyLink)
 }
 
 func (uc *AuthUseCase) RequestPasswordReset(email string) error {
