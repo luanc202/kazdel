@@ -1,0 +1,81 @@
+package pages
+
+import (
+	"kazdel/pkg/ui/components"
+	"kazdel/pkg/ui/icons"
+)
+
+templ VerifyEmailPrompt(email string, errMessage string, successMessage string) {
+	@components.Base() {
+		<div class="min-h-screen bg-base-100 text-base-content flex items-center justify-center p-6 font-sans">
+			<div class="max-w-md w-full">
+				<a
+					hx-get="/login"
+					hx-target="body"
+					hx-push-url="true"
+					class="cursor-pointer inline-flex items-center gap-2 text-base-content/50 hover:text-base-content transition-colors mb-8 font-bold tracking-widest text-xs uppercase"
+				>
+					@icons.ArrowLeft(24)
+					Back to Login
+				</a>
+				<div
+					id="verify-email-prompt-div"
+					class="bg-base-200 border border-base-content/10 p-10 shadow-[8px_8px_0px_0px_var(--color-base-content)]"
+				>
+					<h2 class="text-4xl font-bold tracking-tighter mb-4 uppercase">
+						VERIFY EMAIL
+					</h2>
+					<p class="text-sm text-base-content/70 mb-8 font-mono">
+						You must verify your email address before you can log in.
+					</p>
+					@VerifyEmailPromptForm(email, errMessage, successMessage)
+				</div>
+			</div>
+		</div>
+	}
+}
+
+templ VerifyEmailPromptForm(email string, errMessage string, successMessage string) {
+	<form
+		class="space-y-6"
+		hx-post="/api/v1/auth/resend-verification"
+		hx-swap="outerHTML"
+		hx-disabled-elt="find input, find button"
+	>
+		if errMessage != "" {
+			<div class="alert alert-error text-sm py-2 px-4 border border-error/20 bg-error/10 text-error rounded-none">
+				{ errMessage }
+			</div>
+		}
+		if successMessage != "" {
+			<div class="alert alert-success text-sm py-2 px-4 border border-success/20 bg-success/10 text-success rounded-none">
+				{ successMessage }
+			</div>
+		}
+		<div>
+			<label class="block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2">
+				Email Address
+			</label>
+			<input
+				type="email"
+				name="email"
+				value={ email }
+				placeholder="[EMAIL_ADDRESS]"
+				class="peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success"
+				required
+			/>
+			<p class="mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block">
+				Please enter a valid email address.
+			</p>
+		</div>
+		<div class="relative group mt-4">
+			<button
+				type="submit"
+				class="w-full relative z-10 btn-solid-3d flex items-center justify-center gap-2"
+			>
+				<span class="in-[.htmx-request]:hidden">RESEND VERIFICATION EMAIL</span>
+				<span class="hidden in-[.htmx-request]:block loading loading-spinner loading-sm"></span>
+			</button>
+		</div>
+	</form>
+}
