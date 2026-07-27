@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"kazdel/pkg/entity"
+	"kazdel/pkg/infra/config"
 	"kazdel/pkg/mocks"
 	"kazdel/pkg/uniqueEntityId"
 
@@ -94,6 +95,13 @@ func TestAuthUseCase_Login(t *testing.T) {
 		PasswordHash: string(hashedPassword),
 	}
 
+	verifiedUser := &entity.User{
+		ID:            uniqueEntityId.NewID(),
+		Username:      "verifieduser",
+		PasswordHash:  string(hashedPassword),
+		EmailVerified: true,
+	}
+
 	tests := map[string]struct {
 		username      string
 		password      string
@@ -125,10 +133,30 @@ func TestAuthUseCase_Login(t *testing.T) {
 			},
 			expectedError: "",
 		},
+		"Email Not Verified When Mail Enabled": {
+			username: "testuser",
+			password: validPassword,
+			setupMock: func(u *mocks.UserRepository, s *mocks.SessionRepository) {
+				config.SetEnvConfigForTest(&config.EnvConfig{MAIL_ENABLED: true})
+				u.On("FindByUsername", "testuser").Return(validUser, nil)
+			},
+			expectedError: "email_not_verified",
+		},
+		"Success When Mail Enabled And Verified": {
+			username: "verifieduser",
+			password: validPassword,
+			setupMock: func(u *mocks.UserRepository, s *mocks.SessionRepository) {
+				config.SetEnvConfigForTest(&config.EnvConfig{MAIL_ENABLED: true})
+				u.On("FindByUsername", "verifieduser").Return(verifiedUser, nil)
+				s.On("Create", mock.AnythingOfType("*entity.Session")).Return(nil)
+			},
+			expectedError: "",
+		},
 	}
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
+			defer config.SetEnvConfigForTest(nil)
 			mockUserRepo := new(mocks.UserRepository)
 			mockSessionRepo := new(mocks.SessionRepository)
 			mockUserTokenRepo := new(mocks.UserTokenRepository)
@@ -235,3 +263,67 @@ func TestAuthUseCase_ValidateSession(t *testing.T) {
 		})
 	}
 }
+
+func TestAuthUseCase_ResendVerificationEmail(t *testing.T) {
+	userId := uniqueEntityId.NewID()
+	tests := map[string]struct {
+		name          string
+		email         string
+		setupMock     func(u *mocks.UserRepository, ut *mocks.UserTokenRepository, e *mocks.EmailService)
+		expectedError string
+	}{
+		"User Not Found": {
+			email: "missing@example.com",
+			setupMock: func(u *mocks.UserRepository, ut *mocks.UserTokenRepository, e *mocks.EmailService) {
+				u.On("FindByEmail", "missing@example.com").Return(nil, errors.New("not found"))
+			},
+			expectedError: "User not found",
+		},
+		"Email Already Verified": {
+			email: "verified@example.com",
+			setupMock: func(u *mocks.UserRepository, ut *mocks.UserTokenRepository, e *mocks.EmailService) {
+				u.On("FindByEmail", "verified@example.com").Return(&entity.User{ID: userId, Email: "verified@example.com", EmailVerified: true}, nil)
+			},
+			expectedError: "Email already verified",
+		},
+		"Success": {
+			email: "unverified@example.com",
+			setupMock: func(u *mocks.UserRepository, ut *mocks.UserTokenRepository, e *mocks.EmailService) {
+				u.On("FindByEmail", "unverified@example.com").Return(&entity.User{
+					ID:            userId,
+					Name:          "Test User",
+					Email:         "unverified@example.com",
+					EmailVerified: false,
+				}, nil)
+				ut.On("Save", mock.AnythingOfType("*entity.UserToken")).Return(nil)
+				e.On("SendVerificationEmail", "unverified@example.com", "Test User", mock.AnythingOfType("string")).Return(nil)
+			},
+			expectedError: "",
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			mockUserRepo := new(mocks.UserRepository)
+			mockSessionRepo := new(mocks.SessionRepository)
+			mockUserTokenRepo := new(mocks.UserTokenRepository)
+			mockEmailService := new(mocks.EmailService)
+
+			tt.setupMock(mockUserRepo, mockUserTokenRepo, mockEmailService)
+
+			uc := NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
+			err := uc.ResendVerificationEmail(tt.email)
+
+			if tt.expectedError != "" {
+				assert.EqualError(t, err, tt.expectedError)
+			} else {
+				assert.NoError(t, err)
+			}
+
+			mockUserRepo.AssertExpectations(t)
+			mockUserTokenRepo.AssertExpectations(t)
+			mockEmailService.AssertExpectations(t)
+		})
+	}
+}
+
