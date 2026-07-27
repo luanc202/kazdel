@@ -58,7 +58,7 @@ func Login() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = LoginForm("", "").Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = LoginForm("", "", "").Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -76,7 +76,7 @@ func Login() templ.Component {
 	})
 }
 
-func LoginForm(errMessage string, username string) templ.Component {
+func LoginForm(errMessage string, username string, unverifiedEmail string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -102,38 +102,61 @@ func LoginForm(errMessage string, username string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if errMessage != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<div class=\"alert alert-error text-sm py-2 px-4 border border-error/20 bg-error/10 text-error rounded-none\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<div class=\"alert alert-error text-sm py-2 px-4 border border-error/20 bg-error/10 text-error rounded-none flex flex-col items-start gap-2\"><span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(errMessage)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/login.templ`, Line: 52, Col: 16}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/login.templ`, Line: 52, Col: 22}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</span> ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if unverifiedEmail != "" {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<a href=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var5 templ.SafeURL
+				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL("/verify-email?email=" + unverifiedEmail))
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/login.templ`, Line: 54, Col: 70}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" class=\"text-xs underline hover:text-error-content transition-colors font-bold uppercase tracking-wider\">Verify your email</a>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<div><label class=\"block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2\">Username</label> <input type=\"text\" name=\"username\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<div><label class=\"block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2\">Username</label> <input type=\"text\" name=\"username\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var5 string
-		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(username)
+		var templ_7745c5c3_Var6 string
+		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(username)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/login.templ`, Line: 62, Col: 20}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/login.templ`, Line: 67, Col: 20}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" placeholder=\"[USERNAME]\" class=\"peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success\" required><p class=\"mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block\">Please enter a valid username.</p></div><div><label class=\"block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2\">Password</label> <input id=\"password\" name=\"password\" type=\"password\" placeholder=\"••••••••\" minlength=\"8\" pattern=\"(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}\" title=\"Must contain at least 8 characters, including uppercase, lowercase, numbers and special characters\" class=\"peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success\" required><p class=\"mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block\">Must contain at least 8 characters, including uppercase, lowercase, number, and special character.</p></div><div class=\"relative group mt-4\"><button type=\"submit\" class=\"w-full relative z-10 btn-solid-3d\">LOG IN</button></div></form>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\" placeholder=\"[USERNAME]\" class=\"peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success\" required><p class=\"mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block\">Please enter a valid username.</p></div><div><div class=\"flex items-center justify-between mb-2\"><label class=\"block text-xs font-bold text-base-content/70 uppercase tracking-widest\">Password</label> <a href=\"/forgot-password\" class=\"text-xs font-bold text-base-content/50 hover:text-base-content uppercase tracking-widest transition-colors\">Forgot Password?</a></div><input id=\"password\" name=\"password\" type=\"password\" placeholder=\"••••••••\" minlength=\"8\" pattern=\"(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}\" title=\"Must contain at least 8 characters, including uppercase, lowercase, numbers and special characters\" class=\"peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success\" required><p class=\"mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block\">Must contain at least 8 characters, including uppercase, lowercase, number, and special character.</p></div><div class=\"relative group mt-4\"><button type=\"submit\" class=\"w-full relative z-10 btn-solid-3d flex items-center justify-center gap-2\"><span>LOG IN</span> <span class=\"htmx-indicator loading loading-spinner loading-sm\"></span></button></div></form>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

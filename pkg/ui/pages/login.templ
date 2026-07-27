@@ -25,7 +25,7 @@ templ Login() {
 					<h2 class="text-4xl font-bold tracking-tighter mb-8 uppercase">
 						Access Protocol
 					</h2>
-					@LoginForm("", "")
+					@LoginForm("", "", "")
 					<div
 						id="signup-form-footer"
 						class="mt-8 text-center text-sm text-base-content/70"
@@ -41,15 +41,20 @@ templ Login() {
 	}
 }
 
-templ LoginForm(errMessage string, username string) {
+templ LoginForm(errMessage string, username string, unverifiedEmail string) {
 	<form
 		class="space-y-6"
 		hx-post="/api/v1/auth/login"
 		hx-swap="outerHTML"
 	>
 		if errMessage != "" {
-			<div class="alert alert-error text-sm py-2 px-4 border border-error/20 bg-error/10 text-error rounded-none">
-				{ errMessage }
+			<div class="alert alert-error text-sm py-2 px-4 border border-error/20 bg-error/10 text-error rounded-none flex flex-col items-start gap-2">
+				<span>{ errMessage }</span>
+				if unverifiedEmail != "" {
+					<a href={ templ.SafeURL("/verify-email?email=" + unverifiedEmail) } class="text-xs underline hover:text-error-content transition-colors font-bold uppercase tracking-wider">
+						Verify your email
+					</a>
+				}
 			</div>
 		}
 		<div>
@@ -69,9 +74,14 @@ templ LoginForm(errMessage string, username string) {
 			</p>
 		</div>
 		<div>
-			<label class="block text-xs font-bold text-base-content/70 uppercase tracking-widest mb-2">
-				Password
-			</label>
+			<div class="flex items-center justify-between mb-2">
+				<label class="block text-xs font-bold text-base-content/70 uppercase tracking-widest">
+					Password
+				</label>
+				<a href="/forgot-password" class="text-xs font-bold text-base-content/50 hover:text-base-content uppercase tracking-widest transition-colors">
+					Forgot Password?
+				</a>
+			</div>
 			<input
 				id="password"
 				name="password"
@@ -92,9 +102,10 @@ templ LoginForm(errMessage string, username string) {
 		>
 			<button
 				type="submit"
-				class="w-full relative z-10 btn-solid-3d"
+				class="w-full relative z-10 btn-solid-3d flex items-center justify-center gap-2"
 			>
-				LOG IN
+				<span>LOG IN</span>
+				<span class="htmx-indicator loading loading-spinner loading-sm"></span>
 			</button>
 		</div>
 	</form>

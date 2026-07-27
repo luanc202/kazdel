@@ -147,9 +147,10 @@ templ SignUpForm(errMessage string, name string, username string, email string) 
 		>
 			<button
 				type="submit"
-				class="w-full relative z-10 btn-solid-3d"
+				class="w-full relative z-10 btn-solid-3d flex items-center justify-center gap-2"
 			>
-				SIGN UP
+				<span>SIGN UP</span>
+				<span class="htmx-indicator loading loading-spinner loading-sm"></span>
 			</button>
 		</div>
 	</form>
