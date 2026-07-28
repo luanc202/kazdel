@@ -105,14 +105,14 @@ func TestSQLiteRepositories(t *testing.T) {
 	// 2. Test ShortenedUrlRepository
 	urlRepo := sqlite.NewShortenedUrlRepository(db)
 	shortUrl := &entity.ShortenedUrl{
-		ID:           1,
-		LongUrl:      "https://example.com/long-url",
-		ShortSlug:    "sqltst",
-		UserId:       userId,
-		Views:        0,
-		CreatedAt:    now,
-		UpdatedAt:    now,
-		ExpiresAt:    now.Add(24 * time.Hour),
+		ID:        1,
+		LongUrl:   "https://example.com/long-url",
+		ShortSlug: "sqltst",
+		UserId:    userId,
+		Views:     0,
+		CreatedAt: now,
+		UpdatedAt: now,
+		ExpiresAt: now.Add(24 * time.Hour),
 	}
 
 	err = urlRepo.Save(shortUrl)
