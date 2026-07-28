@@ -20,17 +20,17 @@ import (
 func TestAuthMiddleware(t *testing.T) {
 	mockSessionRepo := new(mocks.SessionRepository)
 	mockUserRepo := new(mocks.UserRepository)
-	
+
 	validUserId := uniqueEntityId.NewID()
 	validToken := "valid-session-token"
 	expiredToken := "expired-session-token"
 
 	mockSessionRepo.On("FindByToken", validToken).Return(entity.NewSession(validUserId, validToken, time.Now().Add(1*time.Hour)), nil)
-	
+
 	expiredSession := entity.NewSession(validUserId, expiredToken, time.Now().Add(-1*time.Hour))
 	mockSessionRepo.On("FindByToken", expiredToken).Return(expiredSession, nil)
 	mockSessionRepo.On("DeleteByToken", expiredToken).Return(nil)
-	
+
 	mockSessionRepo.On("FindByToken", mock.Anything).Return(nil, errors.New("Session not found"))
 
 	mockUserTokenRepo := new(mocks.UserTokenRepository)
@@ -57,9 +57,9 @@ func TestAuthMiddleware(t *testing.T) {
 	handlerToTest := mw(nextHandler)
 
 	tests := []struct {
-		name           string
-		cookieValue    string
-		expectStatus   int
+		name         string
+		cookieValue  string
+		expectStatus int
 	}{
 		{
 			name:         "valid token",
@@ -86,7 +86,7 @@ func TestAuthMiddleware(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			req := httptest.NewRequest(http.MethodGet, "/dashboard", nil)
-			
+
 			if tt.cookieValue != "" {
 				req.AddCookie(&http.Cookie{
 					Name:  constants.SessionCookieName,
@@ -101,7 +101,7 @@ func TestAuthMiddleware(t *testing.T) {
 			if rr.Code != tt.expectStatus {
 				t.Errorf("expected status %d, got %d", tt.expectStatus, rr.Code)
 			}
-			
+
 			if tt.expectStatus == http.StatusSeeOther {
 				loc := rr.Header().Get("Location")
 				if loc != "/login" {

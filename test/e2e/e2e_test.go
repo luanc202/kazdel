@@ -19,16 +19,16 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	"github.com/playwright-community/playwright-go"
+	"github.com/mxschmitt/playwright-go"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/modules/postgres"
 	"github.com/testcontainers/testcontainers-go/wait"
 )
 
 var (
-	pw      *playwright.Playwright
-	browser playwright.Browser
-	ts      *httptest.Server
+	pw          *playwright.Playwright
+	browser     playwright.Browser
+	ts          *httptest.Server
 	dbContainer *postgres.PostgresContainer
 )
 
@@ -62,6 +62,7 @@ func TestMain(m *testing.M) {
 
 	// 2. Setup env vars
 	os.Setenv("DATABASE_URL", connStr)
+	os.Setenv("DATABASE_TYPE", "postgres")
 	os.Setenv("MIGRATION_DATABASE_URL", connStr)
 	os.Setenv("PORT", "8080")
 	os.Setenv("ENVIRONMENT", "testing")
@@ -70,18 +71,18 @@ func TestMain(m *testing.M) {
 	os.Setenv("MAIL_ENABLED", "false")
 
 	// 3. Initialize app configs
-	_, err = config.LoadEnv(".") // Now at project root
+	env, err := config.LoadEnv(".") // Now at project root
 	if err != nil {
 		fmt.Printf("Note: %v\n", err)
 	}
-	
+
 	err = config.InitConfigs()
 	if err != nil {
 		log.Fatalf("could not initialize configs: %v", err)
 	}
 
 	// 4. Run migrations
-	mi, err := migrate.New("file://migrations", connStr)
+	mi, err := migrate.New("file://migrations/"+env.GetDatabaseType(), connStr)
 	if err != nil {
 		log.Fatalf("failed to initialize migration: %v", err)
 	}
@@ -93,7 +94,7 @@ func TestMain(m *testing.M) {
 	dbConn := config.GetDbConnection()
 	shortenedURLsRepo := db.NewShortenedUrlRepository(dbConn)
 	userRepo := db.NewUserRepository(dbConn)
-	sessionRepo := db.NewPostgresSessionRepository(dbConn)
+	sessionRepo := db.NewSessionRepository(dbConn)
 
 	userTokenRepo := db.NewUserTokenRepository(dbConn)
 	emailService := mail.NewSMTPMailService()
@@ -229,7 +230,7 @@ func TestUserJourneyFlow(t *testing.T) {
 
 	t.Run("Create URL", func(t *testing.T) {
 		_ = page.Locator("input[name='originalUrl']").Fill(testUrl)
-		
+
 		_ = page.Locator("form[hx-post='/dashboard/urls/shorten'] button[type='submit']").Click()
 
 		// Wait for the URL list to update
@@ -244,7 +245,7 @@ func TestUserJourneyFlow(t *testing.T) {
 	t.Run("Delete URL", func(t *testing.T) {
 		// Wait for the delete button
 		deleteBtn := page.Locator("button[title='Delete']").First()
-		
+
 		err = deleteBtn.WaitFor(playwright.LocatorWaitForOptions{
 			Timeout: playwright.Float(5000),
 		})
@@ -254,7 +255,7 @@ func TestUserJourneyFlow(t *testing.T) {
 
 		// Click the delete button to reveal confirmation
 		_ = deleteBtn.Click()
-		
+
 		yesBtn := page.Locator("button:has-text('YES')").First()
 		err = yesBtn.WaitFor(playwright.LocatorWaitForOptions{
 			Timeout: playwright.Float(3000),
@@ -267,7 +268,7 @@ func TestUserJourneyFlow(t *testing.T) {
 
 		// Wait for the item to disappear
 		err = page.Locator(fmt.Sprintf("text=%s", testUrl)).WaitFor(playwright.LocatorWaitForOptions{
-			State: playwright.WaitForSelectorStateHidden,
+			State:   playwright.WaitForSelectorStateHidden,
 			Timeout: playwright.Float(5000),
 		})
 		if err != nil {

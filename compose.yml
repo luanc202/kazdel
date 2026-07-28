@@ -17,15 +17,17 @@ services:
     hostname: api
     working_dir: /app
     environment:
-      - DATABASE_URL=postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}?sslmode=disable
+      - DATABASE_URL=${DATABASE_URL}
       - PORT=${PORT}
       - ENVIRONMENT=${ENVIRONMENT}
       - MIGRATIONS_PATH=${MIGRATIONS_PATH}
+      - DATABASE_TYPE=${DATABASE_TYPE}
     ports:
       - "${PORT}:${PORT}"
     volumes:
       - ./:/app
       - ./pkg/ui/static:/app/pkg/ui/static
+      - ./data:/app/data
     depends_on:
       cache:
         condition: service_started
@@ -48,11 +50,14 @@ services:
       - ENVIRONMENT
       - MIGRATIONS_PATH
       - JWT_SECRET
+      - DATABASE_TYPE
     depends_on:
       cache:
         condition: service_started
       db:
         condition: service_started
+    volumes:
+      - ./data:/app/data
     networks:
       - shorturl-dev
 

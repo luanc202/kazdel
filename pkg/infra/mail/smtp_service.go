@@ -130,21 +130,21 @@ func (s *SMTPMailService) SendEmail(to []string, subject string, body string) er
 
 func (s *SMTPMailService) SendVerificationEmail(to, username, verificationLink string) error {
 	subject := "Verify your email address"
-	
+
 	var buf bytes.Buffer
 	err := emails.VerificationEmail(username, verificationLink).Render(context.Background(), &buf)
 	if err != nil {
 		slog.Error("Failed to render verification email template", "error", err)
 		return err
 	}
-	
+
 	s.sendAsync([]string{to}, subject, buf.String())
 	return nil
 }
 
 func (s *SMTPMailService) SendPasswordResetEmail(to, username, resetLink string) error {
 	subject := "Reset your password"
-	
+
 	var buf bytes.Buffer
 	err := emails.PasswordResetEmail(username, resetLink).Render(context.Background(), &buf)
 	if err != nil {
@@ -158,7 +158,7 @@ func (s *SMTPMailService) SendPasswordResetEmail(to, username, resetLink string)
 
 func (s *SMTPMailService) SendReportEmail(reportedURL, reason, description, reporterEmail string) error {
 	subject := "New Malicious URL Report"
-	
+
 	var buf bytes.Buffer
 	err := emails.ReportEmail(reportedURL, reason, description, reporterEmail).Render(context.Background(), &buf)
 	if err != nil {

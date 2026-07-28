@@ -1,8 +1,8 @@
 package mocks
 
 import (
-	"kazdel/pkg/entity"
 	"github.com/stretchr/testify/mock"
+	"kazdel/pkg/entity"
 )
 
 type UserTokenRepository struct {

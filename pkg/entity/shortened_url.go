@@ -1,8 +1,8 @@
 package entity
 
 import (
-	"time"
 	"kazdel/pkg/uniqueEntityId"
+	"time"
 )
 
 type ShortenedUrl struct {

@@ -1,4 +1,4 @@
-package db
+package postgres
 
 import (
 	"context"
@@ -78,7 +78,7 @@ func (r *UrlVisitRepository) aggregateMap(ctx context.Context, urlId uint64, col
 	// Query to group and count
 	// Note: We use string formatting for the column name because it's an internal trusted string
 	query := "SELECT COALESCE(" + column + ", 'Unknown'), COUNT(*) FROM url_visits WHERE url_id = $1 GROUP BY " + column
-	
+
 	rows, err := r.db.Query(ctx, query, urlId)
 	if err != nil {
 		return err

@@ -199,7 +199,7 @@ func (uc *AuthUseCase) RequestPasswordReset(email string) error {
 
 	resetToken := uniqueEntityId.NewID().String()
 	userToken := entity.NewUserToken(user.ID, resetToken, entity.TokenContextPasswordReset, 1*time.Hour)
-	
+
 	err = uc.UserTokenRepo.Save(userToken)
 	if err != nil {
 		return fmt.Errorf("Failed to generate reset token")

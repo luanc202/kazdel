@@ -34,7 +34,7 @@ func TestIsCanceledError(t *testing.T) {
 	if !IsCanceledError(context.Canceled) {
 		t.Error("Expected true for context.Canceled")
 	}
-	
+
 	if IsCanceledError(http.ErrServerClosed) {
 		t.Error("Expected false for non-canceled error")
 	}

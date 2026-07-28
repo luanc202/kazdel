@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS shortened_urls (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    short_slug TEXT UNIQUE NOT NULL,
+    long_url TEXT NOT NULL,
+    user_id TEXT REFERENCES users(id) ON DELETE CASCADE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    expires_at DATETIME NULL
+);

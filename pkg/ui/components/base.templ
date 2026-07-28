@@ -1,11 +1,17 @@
 package components
 
 import "kazdel/pkg/ui/icons"
+import "kazdel/pkg/infra/config"
 
 templ Base() {
 	<!DOCTYPE html>
 	<html data-theme="kazdel-dark">
 		<head>
+			if config.GetEnvConfig().BASE_PATH != "" {
+				<base href={ config.GetEnvConfig().BASE_PATH + "/" }/>
+			} else {
+				<base href="/"/>
+			}
 			<title>Kazdel - a url shortener</title>
 			<link rel="icon" type="image/svg+xml" href="/static/kazdel.svg"/>
 			<meta charset="UTF-8"/>
