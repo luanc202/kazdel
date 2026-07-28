@@ -70,7 +70,7 @@ func TestMain(m *testing.M) {
 	os.Setenv("MAIL_ENABLED", "false")
 
 	// 3. Initialize app configs
-	_, err = config.LoadEnv(".") // Now at project root
+	env, err := config.LoadEnv(".") // Now at project root
 	if err != nil {
 		fmt.Printf("Note: %v\n", err)
 	}
@@ -81,7 +81,7 @@ func TestMain(m *testing.M) {
 	}
 
 	// 4. Run migrations
-	mi, err := migrate.New("file://migrations", connStr)
+	mi, err := migrate.New("file://migrations/"+env.GetDatabaseType(), connStr)
 	if err != nil {
 		log.Fatalf("failed to initialize migration: %v", err)
 	}
@@ -93,7 +93,7 @@ func TestMain(m *testing.M) {
 	dbConn := config.GetDbConnection()
 	shortenedURLsRepo := db.NewShortenedUrlRepository(dbConn)
 	userRepo := db.NewUserRepository(dbConn)
-	sessionRepo := db.NewPostgresSessionRepository(dbConn)
+	sessionRepo := db.NewSessionRepository(dbConn)
 
 	userTokenRepo := db.NewUserTokenRepository(dbConn)
 	emailService := mail.NewSMTPMailService()
