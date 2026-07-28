@@ -1,5 +1,4 @@
 title := "add_needed_care"
-include .env
 
 .PHONY: dev prod run test migration migration-up migration-down migration-force
 
