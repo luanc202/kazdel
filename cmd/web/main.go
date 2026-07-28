@@ -43,7 +43,7 @@ func main() {
 	shortenedURLsRepo := db.NewShortenedUrlRepository(dbConn)
 	urlVisitRepo := db.NewUrlVisitRepository(dbConn)
 	userRepo := db.NewUserRepository(dbConn)
-	sessionRepo := db.NewPostgresSessionRepository(dbConn)
+	sessionRepo := db.NewSessionRepository(dbConn)
 	userTokenRepo := db.NewUserTokenRepository(dbConn)
 
 	// Create services
