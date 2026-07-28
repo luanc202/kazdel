@@ -87,7 +87,7 @@ jobs:
           cache: true
 
       - name: Install Playwright Driver and Browsers
-        run: go run github.com/playwright-community/playwright-go/cmd/playwright@latest install --with-deps
+        run: go run github.com/mxschmitt/playwright-go/cmd/playwright@v0.6100.0 install --with-deps
 
       - name: Install Go dependencies
         run: go mod download
