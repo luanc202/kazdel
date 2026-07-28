@@ -13,27 +13,27 @@ const (
 )
 
 type User struct {
-	ID           uniqueEntityId.ID
-	Name         string
-	Username     string
-	Role         Role
-	Email        string
+	ID            uniqueEntityId.ID
+	Name          string
+	Username      string
+	Role          Role
+	Email         string
 	EmailVerified bool
-	PasswordHash string
-	CreatedAt    time.Time
-	UpdatedAt    time.Time
+	PasswordHash  string
+	CreatedAt     time.Time
+	UpdatedAt     time.Time
 }
 
 func NewUser(name, username string, role Role, email, passwordHash string) *User {
 	return &User{
-		ID:           uniqueEntityId.NewID(),
-		Name:         name,
-		Username:     username,
-		Role:         role,
-		Email:        email,
+		ID:            uniqueEntityId.NewID(),
+		Name:          name,
+		Username:      username,
+		Role:          role,
+		Email:         email,
 		EmailVerified: false,
-		PasswordHash: passwordHash,
-		CreatedAt:    time.Now(),
-		UpdatedAt:    time.Now(),
+		PasswordHash:  passwordHash,
+		CreatedAt:     time.Now(),
+		UpdatedAt:     time.Now(),
 	}
 }

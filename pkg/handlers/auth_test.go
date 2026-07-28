@@ -107,7 +107,7 @@ func TestAuth_SignupSubmit(t *testing.T) {
 	if len(cookies) != 1 {
 		t.Fatalf("Expected 1 cookie set, got %v", len(cookies))
 	}
-	
+
 	if cookies[0].Name != constants.SessionCookieName {
 		t.Errorf("Expected cookie name %s, got %s", constants.SessionCookieName, cookies[0].Name)
 	}
@@ -258,4 +258,3 @@ func TestAuth_ResendVerificationSubmit(t *testing.T) {
 	mockUserTokenRepo.AssertExpectations(t)
 	mockEmailService.AssertExpectations(t)
 }
-

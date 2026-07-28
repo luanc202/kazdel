@@ -10,8 +10,8 @@ import (
 
 	"kazdel/pkg/entity"
 	"kazdel/pkg/entity/dto"
-	"kazdel/pkg/uniqueEntityId"
 	"kazdel/pkg/mocks"
+	"kazdel/pkg/uniqueEntityId"
 )
 
 func TestShortenedUrlUsecase_Save(t *testing.T) {

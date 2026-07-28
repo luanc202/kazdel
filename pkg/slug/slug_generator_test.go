@@ -19,7 +19,7 @@ func TestGenerateSlug(t *testing.T) {
 			t.Errorf("Slug contains invalid character: %c", char)
 		}
 	}
-	
+
 	// Test randomness by generating another one and ensuring it's different
 	// (Flaky by nature if length is extremely small, but extremely unlikely to fail for length 8)
 	slug2 := GenerateSlug(length)

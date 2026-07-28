@@ -3,9 +3,9 @@ package db
 import (
 	"context"
 	"fmt"
-	"time"
 	"kazdel/pkg/entity"
 	"kazdel/pkg/uniqueEntityId"
+	"time"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"

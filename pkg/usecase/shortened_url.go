@@ -23,19 +23,19 @@ import (
 )
 
 type ShortenedUrlUsecase struct {
-	repo       interfaces.ShortenedUrlRepository
-	visitRepo  interfaces.UrlVisitRepository
-	geoipDb    *geoip2.Reader
-	logger     slog.Logger
+	repo         interfaces.ShortenedUrlRepository
+	visitRepo    interfaces.UrlVisitRepository
+	geoipDb      *geoip2.Reader
+	logger       slog.Logger
 	emailService interfaces.EmailService
 }
 
 func NewShortenedUrlUseCase(repo interfaces.ShortenedUrlRepository, visitRepo interfaces.UrlVisitRepository, geoipDb *geoip2.Reader, emailService interfaces.EmailService) *ShortenedUrlUsecase {
 	return &ShortenedUrlUsecase{
-		repo:       repo,
-		visitRepo:  visitRepo,
-		geoipDb:    geoipDb,
-		logger:     *config.GetLogger("shortened-url-usecase"),
+		repo:         repo,
+		visitRepo:    visitRepo,
+		geoipDb:      geoipDb,
+		logger:       *config.GetLogger("shortened-url-usecase"),
 		emailService: emailService,
 	}
 }

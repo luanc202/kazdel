@@ -32,7 +32,7 @@ func TestErrorPage(t *testing.T) {
 				if h2 != "Not Found" {
 					t.Errorf("expected 'Not Found' in h2, got %q", h2)
 				}
-				
+
 				p := doc.Find("p").Text()
 				if p != "The requested resource could not be found." {
 					t.Errorf("expected paragraph message, got %q", p)
@@ -57,7 +57,7 @@ func TestErrorPage(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			// Arrange: Create a buffer to capture the templ component output
 			var buf bytes.Buffer
-			
+
 			// Act: Render the component
 			err := ErrorPage(tt.code, tt.title, tt.message).Render(context.Background(), &buf)
 			if err != nil {

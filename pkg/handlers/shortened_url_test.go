@@ -31,7 +31,7 @@ func TestShortenedUrl_RedirectToLongUrl(t *testing.T) {
 	// Create test dependencies
 	testSlug := "myslug"
 	testLongUrl := "https://example.com/very/long/path"
-	
+
 	validUrl := &entity.ShortenedUrl{
 		ShortSlug: testSlug,
 		LongUrl:   testLongUrl,
@@ -39,7 +39,7 @@ func TestShortenedUrl_RedirectToLongUrl(t *testing.T) {
 
 	mockRepo.On("FindBySlug", testSlug).Return(validUrl, nil).Once()
 	mockRepo.On("FindBySlug", "notfound").Return(nil, errors.New("not found")).Once()
-	
+
 	mockVisitRepo.On("Save", mock.Anything, mock.AnythingOfType("*entity.UrlVisit")).Return(nil).Maybe()
 
 	tests := []struct {
@@ -65,7 +65,7 @@ func TestShortenedUrl_RedirectToLongUrl(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			req := httptest.NewRequest(http.MethodGet, "/"+tt.slug, nil)
-			
+
 			// Setup chi router context so chi.URLParam works
 			rctx := chi.NewRouteContext()
 			rctx.URLParams.Add("slug", tt.slug)
@@ -77,7 +77,7 @@ func TestShortenedUrl_RedirectToLongUrl(t *testing.T) {
 			if rr.Code != tt.expectStatus {
 				t.Errorf("Expected status %v, got %v", tt.expectStatus, rr.Code)
 			}
-			
+
 			if tt.expectLoc != "" {
 				loc := rr.Header().Get("Location")
 				if loc != tt.expectLoc {
@@ -86,7 +86,7 @@ func TestShortenedUrl_RedirectToLongUrl(t *testing.T) {
 			}
 		})
 	}
-	
+
 	time.Sleep(10 * time.Millisecond)
 	mockRepo.AssertExpectations(t)
 	mockVisitRepo.AssertExpectations(t)
@@ -96,9 +96,9 @@ func TestShortenedUrl_CreateUrl(t *testing.T) {
 	mockRepo := new(mocks.ShortenedUrlRepository)
 	mockVisitRepo := new(mocks.UrlVisitRepository)
 	suUseCase := usecase.NewShortenedUrlUseCase(mockRepo, mockVisitRepo, nil, nil)
-	
+
 	handler := &ShortenedUrl{usecase: suUseCase, authUseCase: nil}
-	
+
 	validUserId := uniqueEntityId.NewID()
 	expiresAt := time.Now().Add(24 * time.Hour).Format("2006-01-02T15:04")
 	validEntity := &entity.ShortenedUrl{
@@ -109,23 +109,23 @@ func TestShortenedUrl_CreateUrl(t *testing.T) {
 	}
 	mockRepo.On("FindBySlug", mock.Anything).Return(validEntity, nil).Once()
 	mockRepo.On("Save", mock.AnythingOfType("*entity.ShortenedUrl")).Return(nil)
-	
+
 	formData := url.Values{}
 	formData.Add("originalUrl", "https://validurl.com")
 	formData.Add("expiresAt", expiresAt)
 
 	req := httptest.NewRequest(http.MethodPost, "/dashboard/urls/shorten", strings.NewReader(formData.Encode()))
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	
+
 	// Inject user id into context to simulate authenticated user
 	req = appctx.SetAuthUser(req, validUserId.String())
-	
+
 	rr := httptest.NewRecorder()
 	handler.CreateUrl(rr, req)
-	
+
 	if rr.Code != http.StatusOK {
 		t.Errorf("Expected 200 OK, got %v", rr.Code)
 	}
-	
+
 	mockRepo.AssertExpectations(t)
 }

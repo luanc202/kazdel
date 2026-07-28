@@ -100,7 +100,7 @@ func TestShortenedUrlInsert_Validate(t *testing.T) {
 			if tt.expectError && err == nil {
 				t.Errorf("Expected an error but got nil")
 			}
-			
+
 			if !tt.expectError && err != nil {
 				t.Errorf("Expected no error but got %v", err)
 			}

@@ -26,9 +26,9 @@ import (
 )
 
 var (
-	pw      *playwright.Playwright
-	browser playwright.Browser
-	ts      *httptest.Server
+	pw          *playwright.Playwright
+	browser     playwright.Browser
+	ts          *httptest.Server
 	dbContainer *postgres.PostgresContainer
 )
 
@@ -74,7 +74,7 @@ func TestMain(m *testing.M) {
 	if err != nil {
 		fmt.Printf("Note: %v\n", err)
 	}
-	
+
 	err = config.InitConfigs()
 	if err != nil {
 		log.Fatalf("could not initialize configs: %v", err)
@@ -229,7 +229,7 @@ func TestUserJourneyFlow(t *testing.T) {
 
 	t.Run("Create URL", func(t *testing.T) {
 		_ = page.Locator("input[name='originalUrl']").Fill(testUrl)
-		
+
 		_ = page.Locator("form[hx-post='/dashboard/urls/shorten'] button[type='submit']").Click()
 
 		// Wait for the URL list to update
@@ -244,7 +244,7 @@ func TestUserJourneyFlow(t *testing.T) {
 	t.Run("Delete URL", func(t *testing.T) {
 		// Wait for the delete button
 		deleteBtn := page.Locator("button[title='Delete']").First()
-		
+
 		err = deleteBtn.WaitFor(playwright.LocatorWaitForOptions{
 			Timeout: playwright.Float(5000),
 		})
@@ -254,7 +254,7 @@ func TestUserJourneyFlow(t *testing.T) {
 
 		// Click the delete button to reveal confirmation
 		_ = deleteBtn.Click()
-		
+
 		yesBtn := page.Locator("button:has-text('YES')").First()
 		err = yesBtn.WaitFor(playwright.LocatorWaitForOptions{
 			Timeout: playwright.Float(3000),
@@ -267,7 +267,7 @@ func TestUserJourneyFlow(t *testing.T) {
 
 		// Wait for the item to disappear
 		err = page.Locator(fmt.Sprintf("text=%s", testUrl)).WaitFor(playwright.LocatorWaitForOptions{
-			State: playwright.WaitForSelectorStateHidden,
+			State:   playwright.WaitForSelectorStateHidden,
 			Timeout: playwright.Float(5000),
 		})
 		if err != nil {
