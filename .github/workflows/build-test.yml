@@ -65,6 +65,9 @@ jobs:
             exit 1
           fi
 
+      - name: UI Build
+        run: make ui-build
+
       - name: Build
         run: make build
 
