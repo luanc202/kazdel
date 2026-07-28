@@ -168,8 +168,9 @@ func TestAuth_LoginSubmit_EmailNotVerified(t *testing.T) {
 	testUser := entity.NewUser("Test User", "testuser", entity.RoleUser, "test@example.com", string(hashedPassword))
 	testUser.EmailVerified = false
 
+	oldConfig := config.GetEnvConfig()
 	config.SetEnvConfigForTest(&config.EnvConfig{MAIL_ENABLED: true})
-	defer config.SetEnvConfigForTest(nil)
+	defer config.SetEnvConfigForTest(oldConfig)
 
 	mockUserRepo.On("FindByUsername", "testuser").Return(testUser, nil)
 

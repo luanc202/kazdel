@@ -62,6 +62,7 @@ func TestMain(m *testing.M) {
 
 	// 2. Setup env vars
 	os.Setenv("DATABASE_URL", connStr)
+	os.Setenv("DATABASE_TYPE", "postgres")
 	os.Setenv("MIGRATION_DATABASE_URL", connStr)
 	os.Setenv("PORT", "8080")
 	os.Setenv("ENVIRONMENT", "testing")
