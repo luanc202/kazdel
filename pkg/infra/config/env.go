@@ -13,6 +13,7 @@ type EnvConfig struct {
 	DBUrl           string `mapstructure:"DATABASE_URL"`
 	DBUrl_Migration string `mapstructure:"MIGRATION_DATABASE_URL"`
 	PORT            string `mapstructure:"PORT"`
+	BASE_PATH       string `mapstructure:"BASE_PATH"`
 	ENV             string `mapstructure:"ENVIRONMENT"`
 	MIGRATIONS_PATH string `mapstructure:"MIGRATIONS_PATH"`
 	JWT_SECRET      string `mapstructure:"JWT_SECRET"`
@@ -58,6 +59,7 @@ func LoadEnv(path string) (*EnvConfig, error) {
 	viper.BindEnv("DATABASE_URL")
 	viper.BindEnv("MIGRATION_DATABASE_URL")
 	viper.BindEnv("PORT")
+	viper.BindEnv("BASE_PATH")
 	viper.BindEnv("ENVIRONMENT")
 	viper.BindEnv("MIGRATIONS_PATH")
 	viper.BindEnv("JWT_SECRET")
@@ -82,4 +84,3 @@ func LoadEnv(path string) (*EnvConfig, error) {
 
 	return env, nil
 }
-
