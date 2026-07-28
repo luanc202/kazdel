@@ -13,7 +13,7 @@ require (
 	github.com/golang-cz/devslog v0.0.15
 	github.com/golang-migrate/migrate/v4 v4.19.1
 	github.com/google/uuid v1.6.0
-	github.com/jackc/pgx/v5 v5.8.0
+	github.com/jackc/pgx/v5 v5.9.2
 	github.com/mssola/user_agent v0.6.0
 	github.com/mxschmitt/playwright-go v0.6100.0
 	github.com/oschwald/geoip2-golang v1.13.0
