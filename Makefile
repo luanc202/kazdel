@@ -54,4 +54,4 @@ build: ui-build
 	go build -o bin/app cmd/web/main.go
 
 docker-build:
-	docker build -t kazdel .
+	docker build -t ghcr.io/luanc202/kazdel:latest .
