@@ -1,4 +1,4 @@
-package internal
+package migration
 
 import (
 	"database/sql"
