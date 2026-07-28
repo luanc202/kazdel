@@ -1,10 +1,15 @@
 package config
 
-import "github.com/spf13/viper"
+import (
+	"strings"
+
+	"github.com/spf13/viper"
+)
 
 var env *EnvConfig
 
 type EnvConfig struct {
+	DBType          string `mapstructure:"DATABASE_TYPE"`
 	DBUrl           string `mapstructure:"DATABASE_URL"`
 	DBUrl_Migration string `mapstructure:"MIGRATION_DATABASE_URL"`
 	PORT            string `mapstructure:"PORT"`
@@ -28,6 +33,19 @@ func SetEnvConfigForTest(e *EnvConfig) {
 	env = e
 }
 
+func (e *EnvConfig) GetDatabaseType() string {
+	if e == nil {
+		return "sqlite"
+	}
+	if e.DBType != "" {
+		return strings.ToLower(e.DBType)
+	}
+	if strings.HasPrefix(strings.ToLower(e.DBUrl), "postgres") {
+		return "postgres"
+	}
+	return "sqlite"
+}
+
 func LoadEnv(path string) (*EnvConfig, error) {
 	viper.SetConfigName("app_config")
 	viper.SetConfigType("env")
@@ -36,6 +54,7 @@ func LoadEnv(path string) (*EnvConfig, error) {
 	viper.AutomaticEnv()
 
 	// Explicitly bind the OS environment variables to the keys expected by mapstructure
+	viper.BindEnv("DATABASE_TYPE")
 	viper.BindEnv("DATABASE_URL")
 	viper.BindEnv("MIGRATION_DATABASE_URL")
 	viper.BindEnv("PORT")
@@ -63,3 +82,4 @@ func LoadEnv(path string) (*EnvConfig, error) {
 
 	return env, nil
 }
+
