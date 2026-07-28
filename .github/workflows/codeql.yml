@@ -42,6 +42,24 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+          cache: true
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install UI dependencies
+        working-directory: ./pkg/ui
+        run: bun install
+
+      - name: Install Templ
+        run: go install github.com/a-h/templ/cmd/templ@v0.3.1001
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
         with:

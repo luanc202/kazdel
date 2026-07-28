@@ -15,18 +15,23 @@ import (
 // BuildRouter builds and returns the configured chi.Mux router.
 // All handlers registered via Register() are initialized and their routes mounted.
 func BuildRouter(deps *Dependencies) (*chi.Mux, error) {
-	router := chi.NewRouter()
+	rootRouter := chi.NewRouter()
 
 	// Global middleware
-	router.Use(middleware.Recoverer)
+	rootRouter.Use(middleware.Recoverer)
 
 	logger := config.GetLogger("http")
-	router.Use(customMiddleware.LoggerMiddleware(logger))
+	rootRouter.Use(customMiddleware.LoggerMiddleware(logger))
 
-	router.Use(middleware.Heartbeat("/health"))
+	// Create sub-router for the app
+	// this enables a chi router to be mounted on a specific path
+	// and support subpath
+	appRouter := chi.NewRouter()
+
+	rootRouter.Use(middleware.Heartbeat("/health"))
 
 	// Serve static files (HTMX, CSS, etc.)
-	router.Handle("/static/*", http.StripPrefix("/static/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	appRouter.Handle("/static/*", http.StripPrefix("/static/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		env := config.GetEnvConfig()
 		disableCacheOnLocalEnvironment(env, w)
 		http.FileServer(http.Dir("pkg/ui/static")).ServeHTTP(w, r)
@@ -38,11 +43,19 @@ func BuildRouter(deps *Dependencies) (*chi.Mux, error) {
 			return nil, err
 		}
 
-		h.Routes(router)
+		h.Routes(appRouter)
+	}
+
+	// Mount under BASE_PATH if configured (e.g., "/url")
+	basePath := config.GetEnvConfig().BASE_PATH
+	if basePath != "" && basePath != "/" {
+		rootRouter.Mount(basePath, appRouter)
+	} else {
+		rootRouter.Mount("/", appRouter)
 	}
 
 	// Custom error pages
-	router.NotFound(func(w http.ResponseWriter, r *http.Request) {
+	rootRouter.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		pages.ErrorPage(
 			http.StatusNotFound,
@@ -51,7 +64,7 @@ func BuildRouter(deps *Dependencies) (*chi.Mux, error) {
 		).Render(r.Context(), w)
 	})
 
-	router.MethodNotAllowed(func(w http.ResponseWriter, r *http.Request) {
+	rootRouter.MethodNotAllowed(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		pages.ErrorPage(
 			http.StatusMethodNotAllowed,
@@ -60,7 +73,7 @@ func BuildRouter(deps *Dependencies) (*chi.Mux, error) {
 		).Render(r.Context(), w)
 	})
 
-	return router, nil
+	return rootRouter, nil
 }
 
 func disableCacheOnLocalEnvironment(env *config.EnvConfig, w http.ResponseWriter) {

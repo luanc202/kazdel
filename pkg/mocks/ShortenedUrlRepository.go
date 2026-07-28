@@ -3,8 +3,8 @@
 package mocks
 
 import (
-	"time"
 	entity "kazdel/pkg/entity"
+	"time"
 
 	mock "github.com/stretchr/testify/mock"
 

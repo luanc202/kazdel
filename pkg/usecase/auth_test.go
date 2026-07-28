@@ -326,4 +326,3 @@ func TestAuthUseCase_ResendVerificationEmail(t *testing.T) {
 		})
 	}
 }
-

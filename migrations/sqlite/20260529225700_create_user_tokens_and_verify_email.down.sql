@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS user_tokens;
+ALTER TABLE users DROP COLUMN email_verified;

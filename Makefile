@@ -1,5 +1,4 @@
 title := "add_needed_care"
-include .env
 
 .PHONY: dev prod run test migration migration-up migration-down migration-force
 
@@ -54,4 +53,4 @@ build: ui-build
 	go build -o bin/app cmd/web/main.go
 
 docker-build:
-	docker build -t kazdel .
+	docker build -t ghcr.io/luanc202/kazdel:latest .

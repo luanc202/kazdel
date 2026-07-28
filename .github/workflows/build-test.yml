@@ -86,6 +86,9 @@ jobs:
           go-version-file: 'go.mod'
           cache: true
 
+      - name: Install Playwright Driver and Browsers
+        run: go run github.com/playwright-community/playwright-go/cmd/playwright@latest install --with-deps
+
       - name: Install Go dependencies
         run: go mod download
 
@@ -93,8 +96,6 @@ jobs:
         run: go install github.com/jstemmer/go-junit-report/v2@latest
 
       - name: Run tests
-        env:
-          CI: true
         run: |
           go test -v -coverprofile=coverage.out ./... 2>&1 | tee go-test.log
           $(go env GOPATH)/bin/go-junit-report -in go-test.log -out report.xml -set-exit-code
@@ -167,12 +168,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
         with:
@@ -185,7 +180,6 @@ jobs:
         uses: docker/metadata-action@80c7e94dd9b9319bd5eb7a0e0fe9291e23a2a2e9 # v6
         with:
           images: |
-            ${{ env.DOCKER_HUB }}
             ghcr.io/${{ github.repository }}
           tags: |
             type=raw,value=develop

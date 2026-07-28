@@ -3,11 +3,18 @@ data/
 data-teste/
 cache/
 tmp/
+dist
 
 # Exclude git
 .git/
 .husky/
 .github/
+**/*.md
+**/.gitkeep
+**/.vscode
+.github
+.gitignore
+.vscode
 
 # Exclude IDE settings
 .vscode/
@@ -18,6 +25,7 @@ tmp/
 .env.example
 
 # Exclude helper files
+.dockerignore
 docker-compose.yml
 compose.yml
 *.yaml
@@ -25,7 +33,8 @@ compose.yml
 *.md
 .gitignore
 Makefile
-Dockerfile
+Dockerfile*
+LICENSE
 README.md
 bin/
 artifacts/

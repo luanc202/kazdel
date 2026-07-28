@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"os"
 	"time"
 
 	"kazdel/pkg/handlers"
 	"kazdel/pkg/infra/config"
 	"kazdel/pkg/infra/db"
 	"kazdel/pkg/infra/mail"
+	"kazdel/pkg/migration"
 	"kazdel/pkg/usecase"
 
 	"github.com/oschwald/geoip2-golang"
@@ -25,6 +27,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	// ---> AUTOMATIC MIGRATION ON STARTUP <---
+	slog.Info("Checking and applying database migrations...", "database_type", env.GetDatabaseType())
+	if err := migration.Up(); err != nil {
+		slog.Error("Failed to apply database migrations", "error", err)
+		os.Exit(1)
+	}
+	slog.Info("Database schema is up to date")
 
 	dbConn := config.GetDbConnection()
 
@@ -43,7 +53,7 @@ func main() {
 	shortenedURLsRepo := db.NewShortenedUrlRepository(dbConn)
 	urlVisitRepo := db.NewUrlVisitRepository(dbConn)
 	userRepo := db.NewUserRepository(dbConn)
-	sessionRepo := db.NewPostgresSessionRepository(dbConn)
+	sessionRepo := db.NewSessionRepository(dbConn)
 	userTokenRepo := db.NewUserTokenRepository(dbConn)
 
 	// Create services
