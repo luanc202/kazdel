@@ -7,6 +7,7 @@ import (
 	"kazdel/pkg/constants"
 	appctx "kazdel/pkg/context"
 	"kazdel/pkg/entity/dto"
+	"kazdel/pkg/infra/config"
 	"kazdel/pkg/middleware"
 	"kazdel/pkg/ui/pages"
 	"kazdel/pkg/usecase"
@@ -175,6 +176,11 @@ func (h *Auth) Logout(w http.ResponseWriter, r *http.Request) {
 
 // setSessionCookie sets or clears the session cookie.
 func setSessionCookie(w http.ResponseWriter, token string, expires time.Time) {
+	path := "/"
+	if base := config.GetEnvConfig().BASE_PATH; base != "" {
+		path = base
+	}
+
 	http.SetCookie(w, &http.Cookie{
 		Name:     constants.SessionCookieName,
 		Value:    token,
@@ -182,7 +188,7 @@ func setSessionCookie(w http.ResponseWriter, token string, expires time.Time) {
 		HttpOnly: true,
 		Secure:   false, // Set to true in production with HTTPS
 		SameSite: http.SameSiteStrictMode,
-		Path:     "/",
+		Path:     path,
 	})
 }
 
