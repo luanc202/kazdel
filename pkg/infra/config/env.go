@@ -27,6 +27,9 @@ type EnvConfig struct {
 }
 
 func GetEnvConfig() *EnvConfig {
+	if env == nil {
+		return &EnvConfig{}
+	}
 	return env
 }
 
