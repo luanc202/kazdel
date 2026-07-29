@@ -16,6 +16,7 @@ FROM alpine:3.19
 WORKDIR /usr/src/app
 
 COPY --from=builder /usr/src/app/pkg/ui/static ./pkg/ui/static
+COPY --from=builder /usr/src/app/migrations ./migrations
 COPY --from=builder /usr/src/app/app ./
 
 # Add execution permission just to be safe
