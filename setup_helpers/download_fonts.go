@@ -12,7 +12,7 @@ import (
 
 const (
 	fontsDir  = "../pkg/ui/static/fonts"
-	cssFile   = "../pkg/ui/static/fonts.css"
+	cssFile   = "../pkg/ui/fonts.css"
 	userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
 )
 
@@ -65,7 +65,7 @@ func DownloadFonts() {
 			}
 
 			// Replace the remote URL with the local relative path inside the CSS
-			localCSSPath := fmt.Sprintf("url(/static/fonts/%s)", fileName)
+			localCSSPath := fmt.Sprintf("url(./fonts/%s)", fileName)
 			newCSS = strings.Replace(newCSS, fullMatch, localCSSPath, -1)
 		}
 
