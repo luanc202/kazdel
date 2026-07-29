@@ -20,6 +20,7 @@ COPY --from=builder /usr/src/app/app ./
 
 # Add execution permission just to be safe
 RUN chmod +x ./app
+RUN mkdir -p data
 
 EXPOSE 3000
 CMD ["./app"]
