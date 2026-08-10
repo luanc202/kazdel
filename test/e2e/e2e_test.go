@@ -63,6 +63,7 @@ func TestMain(m *testing.M) {
 	// 2. Setup env vars
 	os.Setenv("DATABASE_URL", connStr)
 	os.Setenv("MIGRATION_DATABASE_URL", connStr)
+	os.Setenv("DATABASE_TYPE", "postgres")
 	os.Setenv("PORT", "8080")
 	os.Setenv("ENVIRONMENT", "testing")
 	os.Setenv("MIGRATIONS_PATH", "migrations")
@@ -164,7 +165,7 @@ func TestUserJourneyFlow(t *testing.T) {
 			t.Fatalf("could not goto: %v", err)
 		}
 
-		err = page.Locator("form[hx-post='/api/v1/auth/signup']").WaitFor(playwright.LocatorWaitForOptions{
+		err = page.Locator("form[hx-post='api/v1/auth/signup']").WaitFor(playwright.LocatorWaitForOptions{
 			Timeout: playwright.Float(5000),
 		})
 		if err != nil {
@@ -190,7 +191,7 @@ func TestUserJourneyFlow(t *testing.T) {
 
 	t.Run("Logout", func(t *testing.T) {
 		// Click on logout button
-		err := page.Locator("a[hx-post='/api/v1/auth/logout']").Click()
+		err := page.Locator("a[hx-post='api/v1/auth/logout']").Click()
 		if err != nil {
 			t.Fatalf("failed to click logout: %v", err)
 		}
@@ -204,7 +205,7 @@ func TestUserJourneyFlow(t *testing.T) {
 	})
 
 	t.Run("Login", func(t *testing.T) {
-		err = page.Locator("form[hx-post='/api/v1/auth/login']").WaitFor(playwright.LocatorWaitForOptions{
+		err = page.Locator("form[hx-post='api/v1/auth/login']").WaitFor(playwright.LocatorWaitForOptions{
 			Timeout: playwright.Float(5000),
 		})
 		if err != nil {
@@ -230,7 +231,7 @@ func TestUserJourneyFlow(t *testing.T) {
 	t.Run("Create URL", func(t *testing.T) {
 		_ = page.Locator("input[name='originalUrl']").Fill(testUrl)
 
-		_ = page.Locator("form[hx-post='/dashboard/urls/shorten'] button[type='submit']").Click()
+		_ = page.Locator("form[hx-post='dashboard/urls/shorten'] button[type='submit']").Click()
 
 		// Wait for the URL list to update
 		err = page.Locator(fmt.Sprintf("text=%s", testUrl)).WaitFor(playwright.LocatorWaitForOptions{
@@ -292,7 +293,7 @@ func TestEmailVerificationFlow(t *testing.T) {
 			t.Fatalf("could not goto: %v", err)
 		}
 
-		err = page.Locator("form[hx-post='/api/v1/auth/signup']").WaitFor(playwright.LocatorWaitForOptions{
+		err = page.Locator("form[hx-post='api/v1/auth/signup']").WaitFor(playwright.LocatorWaitForOptions{
 			Timeout: playwright.Float(5000),
 		})
 		if err != nil {
@@ -316,7 +317,7 @@ func TestEmailVerificationFlow(t *testing.T) {
 	})
 
 	t.Run("Logout User", func(t *testing.T) {
-		err := page.Locator("a[hx-post='/api/v1/auth/logout']").Click()
+		err := page.Locator("a[hx-post='api/v1/auth/logout']").Click()
 		if err != nil {
 			t.Fatalf("failed to click logout: %v", err)
 		}
@@ -336,7 +337,7 @@ func TestEmailVerificationFlow(t *testing.T) {
 		config.SetEnvConfigForTest(&testEnv)
 		defer config.SetEnvConfigForTest(origEnv)
 
-		err = page.Locator("form[hx-post='/api/v1/auth/login']").WaitFor(playwright.LocatorWaitForOptions{
+		err = page.Locator("form[hx-post='api/v1/auth/login']").WaitFor(playwright.LocatorWaitForOptions{
 			Timeout: playwright.Float(5000),
 		})
 		if err != nil {

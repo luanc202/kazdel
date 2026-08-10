@@ -1,0 +1,18 @@
+# Use the official Golang Debian image
+FROM golang:1.25-bookworm
+
+# Set working directory
+WORKDIR /app
+
+# Copy module files and download dependencies
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy the rest of the application
+COPY . .
+
+# Install playwright dependencies (browser and OS dependencies)
+RUN go run github.com/mxschmitt/playwright-go/cmd/playwright@v0.6100.0 install --with-deps
+
+# Provide a default command to run tests
+CMD ["go", "test", "-v", "./test/e2e/..."]
