@@ -1674,8 +1674,8 @@
   .h-full {
     height: 100%;
   }
-  .min-h-\[40px\] {
-    min-height: 40px;
+  .min-h-10 {
+    min-height: calc(var(--spacing) * 10);
   }
   .min-h-screen {
     min-height: 100vh;
