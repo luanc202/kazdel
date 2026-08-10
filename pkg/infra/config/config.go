@@ -73,7 +73,6 @@ func GetSqliteDB() *sql.DB {
 	return sqliteDB
 }
 
-
 func GetLogger(scope string) *slog.Logger {
 	if logger == nil {
 		return slog.Default().With(slog.String("scope", scope))
