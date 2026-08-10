@@ -74,7 +74,7 @@ func StatsPage(slug string, stats *dto.UrlStats) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</span></p></div><a href=\"/dashboard\" class=\"btn-solid-3d px-6 py-3 font-bold flex items-center gap-2\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</span></p></div><a href=\"dashboard\" class=\"btn-solid-3d px-6 py-3 font-bold flex items-center gap-2\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

@@ -9,7 +9,7 @@ import (
 )
 
 templ CreateUrlForm(errMessage string, originalUrl string, defaultExpiresAt string, customSlug string, description string) {
-	<form id="shorten-form" x-data="{ showOptional: false }" hx-post="/dashboard/urls/shorten" hx-swap="outerHTML" class="flex flex-col gap-4 mb-12">
+	<form id="shorten-form" x-data="{ showOptional: false }" hx-post="dashboard/urls/shorten" hx-swap="outerHTML" class="flex flex-col gap-4 mb-12">
 		if errMessage != "" {
 			<div class="alert alert-error text-sm py-2 px-4 border border-error/20 bg-error/10 text-error rounded-none">
 				{ errMessage }
@@ -125,7 +125,7 @@ templ NewUrlRow(url dto.ShortenedUrlView) {
 		<div class="col-span-1 font-mono text-base-content/50 text-sm text-center">
 			{ url.Views }
 		</div>
-		<div class="col-span-2 flex justify-end items-center relative min-h-[40px] w-full" x-data="{ confirmingDelete: false }">
+		<div class="col-span-2 flex justify-end items-center relative min-h-10 w-full" x-data="{ confirmingDelete: false }">
 			<div
 				x-show="!confirmingDelete"
 				x-transition:enter="transition-transform duration-150 ease-out delay-100"
@@ -237,7 +237,7 @@ templ UrlRow(url dto.ShortenedUrlView) {
 		<div class="col-span-1 font-mono text-base-content/50 text-sm text-center">
 			{ url.Views }
 		</div>
-		<div class="col-span-2 flex justify-end items-center relative min-h-[40px] w-full" x-data="{ confirmingDelete: false }">
+		<div class="col-span-2 flex justify-end items-center relative min-h-10 w-full" x-data="{ confirmingDelete: false }">
 			<div
 				x-show="!confirmingDelete"
 				x-transition:enter="transition-transform duration-150 ease-out delay-100"
@@ -388,13 +388,13 @@ templ Dashboard(urls []dto.ShortenedUrlView, search string, page, limit, totalPa
 						<p class="text-base-content/50 text-sm font-mono mt-1">USER_SESSION: ACTIVE</p>
 					</div>
 					<div class="flex items-center gap-4">
-						<form hx-get="/dashboard" hx-target="body" hx-push-url="true" class="flex gap-2">
+						<form hx-get="dashboard" hx-target="body" hx-push-url="true" class="flex gap-2">
 							<input type="hidden" name="limit" value={ fmt.Sprint(limit) }/>
 							<input type="text" name="search" value={ search } placeholder="SEARCH_URLS" class="bg-base-200 border-2 border-base-content/10 px-4 py-2 font-bold focus:outline-none focus:border-base-content transition-colors"/>
 							<button type="submit" class="btn-action-3d px-4 py-2 text-sm">SEARCH</button>
 						</form>
 						<a
-							hx-post="/api/v1/auth/logout"
+							hx-post="api/v1/auth/logout"
 							hx-target="body"
 							hx-swap="innerHTML"
 							class="text-base-content/50 hover:text-base-content transition-colors uppercase text-xs font-bold tracking-widest cursor-pointer"
@@ -425,7 +425,7 @@ templ Dashboard(urls []dto.ShortenedUrlView, search string, page, limit, totalPa
 						}
 					</div>
 					<div class="flex flex-col sm:flex-row justify-between items-center mt-8 gap-4 bg-base-200/50 p-4 border border-base-content/10">
-						<form hx-get="/dashboard" hx-target="body" hx-push-url="true" class="flex items-center gap-3">
+						<form hx-get="dashboard" hx-target="body" hx-push-url="true" class="flex items-center gap-3">
 							<input type="hidden" name="search" value={ search }/>
 							<label class="text-xs font-bold text-base-content/50 tracking-widest">PER PAGE:</label>
 							<select name="limit" onchange="this.form.submit()" class="bg-base-100 border border-base-content/20 px-2 py-1 text-sm font-bold focus:outline-none focus:border-base-content cursor-pointer">

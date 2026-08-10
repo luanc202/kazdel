@@ -10,7 +10,7 @@ templ Login() {
 		<div class="min-h-screen bg-base-100 text-base-content flex items-center justify-center p-6 font-sans">
 			<div class="max-w-md w-full">
 				<a
-					hx-get="/"
+					hx-get="./"
 					hx-target="body"
 					hx-push-url="true"
 					class="cursor-pointer inline-flex items-center gap-2 text-base-content/50 hover:text-base-content transition-colors mb-8 font-bold tracking-widest text-xs uppercase"
@@ -31,7 +31,7 @@ templ Login() {
 						class="mt-8 text-center text-sm text-base-content/70"
 					>
 						New user?
-						<a href="/signup" class="text-base-content hover:underline">
+						<a href="signup" class="text-base-content hover:underline">
 							Create an account
 						</a>
 					</div>
@@ -44,7 +44,7 @@ templ Login() {
 templ LoginForm(errMessage string, username string, unverifiedEmail string) {
 	<form
 		class="space-y-6"
-		hx-post="/api/v1/auth/login"
+		hx-post="api/v1/auth/login"
 		hx-swap="outerHTML"
 	>
 		if errMessage != "" {
@@ -78,7 +78,7 @@ templ LoginForm(errMessage string, username string, unverifiedEmail string) {
 				<label class="block text-xs font-bold text-base-content/70 uppercase tracking-widest">
 					Password
 				</label>
-				<a href="/forgot-password" class="text-xs font-bold text-base-content/50 hover:text-base-content uppercase tracking-widest transition-colors">
+				<a href="forgot-password" class="text-xs font-bold text-base-content/50 hover:text-base-content uppercase tracking-widest transition-colors">
 					Forgot Password?
 				</a>
 			</div>

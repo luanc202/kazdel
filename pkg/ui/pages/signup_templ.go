@@ -46,7 +46,7 @@ func SignUp() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"min-h-screen bg-base-100 text-base-content flex items-center justify-center p-6 font-sans\"><div class=\"max-w-md w-full\"><a hx-get=\"/\" hx-target=\"body\" hx-push-url=\"true\" class=\"cursor-pointer inline-flex items-center gap-2 text-base-content/50 hover:text-base-content transition-colors mb-8 font-bold tracking-widest text-xs uppercase\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"min-h-screen bg-base-100 text-base-content flex items-center justify-center p-6 font-sans\"><div class=\"max-w-md w-full\"><a hx-get=\"./\" hx-target=\"body\" hx-push-url=\"true\" class=\"cursor-pointer inline-flex items-center gap-2 text-base-content/50 hover:text-base-content transition-colors mb-8 font-bold tracking-widest text-xs uppercase\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -62,7 +62,7 @@ func SignUp() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div id=\"signup-form-footer\" class=\"mt-8 text-center text-sm text-base-content/70\">Already registered? <a href=\"/login\" class=\"text-base-content hover:underline\">Log in</a></div></div></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div id=\"signup-form-footer\" class=\"mt-8 text-center text-sm text-base-content/70\">Already registered? <a href=\"login\" class=\"text-base-content hover:underline\">Log in</a></div></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -97,7 +97,7 @@ func SignUpForm(errMessage string, name string, username string, email string) t
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<form class=\"space-y-6\" hx-post=\"/api/v1/auth/signup\" hx-swap=\"outerHTML\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<form class=\"space-y-6\" hx-post=\"api/v1/auth/signup\" hx-swap=\"outerHTML\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

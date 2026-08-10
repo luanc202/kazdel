@@ -46,7 +46,7 @@ func VerifyEmailPrompt(email string, errMessage string, successMessage string) t
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"min-h-screen bg-base-100 text-base-content flex items-center justify-center p-6 font-sans\"><div class=\"max-w-md w-full\"><a hx-get=\"/login\" hx-target=\"body\" hx-push-url=\"true\" class=\"cursor-pointer inline-flex items-center gap-2 text-base-content/50 hover:text-base-content transition-colors mb-8 font-bold tracking-widest text-xs uppercase\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"min-h-screen bg-base-100 text-base-content flex items-center justify-center p-6 font-sans\"><div class=\"max-w-md w-full\"><a hx-get=\"login\" hx-target=\"body\" hx-push-url=\"true\" class=\"cursor-pointer inline-flex items-center gap-2 text-base-content/50 hover:text-base-content transition-colors mb-8 font-bold tracking-widest text-xs uppercase\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -97,7 +97,7 @@ func VerifyEmailPromptForm(email string, errMessage string, successMessage strin
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<form class=\"space-y-6\" hx-post=\"/api/v1/auth/resend-verification\" hx-swap=\"outerHTML\" hx-disabled-elt=\"find input, find button\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<form class=\"space-y-6\" hx-post=\"api/v1/auth/resend-verification\" hx-swap=\"outerHTML\" hx-disabled-elt=\"find input, find button\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
