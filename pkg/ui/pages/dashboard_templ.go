@@ -310,7 +310,7 @@ func NewUrlRow(url dto.ShortenedUrlView) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</div><div class=\"col-span-2 flex justify-end items-center relative min-h-[40px] w-full\" x-data=\"{ confirmingDelete: false }\"><div x-show=\"!confirmingDelete\" x-transition:enter=\"transition-transform duration-150 ease-out delay-100\" x-transition:enter-start=\"-translate-x-4 -translate-y-4\" x-transition:enter-end=\"translate-x-0 translate-y-0\" x-transition:leave=\"transition-transform duration-100 ease-in\" x-transition:leave-start=\"translate-x-0 translate-y-0\" x-transition:leave-end=\"translate-x-4 translate-y-4\" class=\"absolute right-0 flex justify-end gap-3\"><a href=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</div><div class=\"col-span-2 flex justify-end items-center relative min-h-10 w-full\" x-data=\"{ confirmingDelete: false }\"><div x-show=\"!confirmingDelete\" x-transition:enter=\"transition-transform duration-150 ease-out delay-100\" x-transition:enter-start=\"-translate-x-4 -translate-y-4\" x-transition:enter-end=\"translate-x-0 translate-y-0\" x-transition:leave=\"transition-transform duration-100 ease-in\" x-transition:leave-start=\"translate-x-0 translate-y-0\" x-transition:leave-end=\"translate-x-4 translate-y-4\" class=\"absolute right-0 flex justify-end gap-3\"><a href=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -543,7 +543,7 @@ func UrlRow(url dto.ShortenedUrlView) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "</div><div class=\"col-span-2 flex justify-end items-center relative min-h-[40px] w-full\" x-data=\"{ confirmingDelete: false }\"><div x-show=\"!confirmingDelete\" x-transition:enter=\"transition-transform duration-150 ease-out delay-100\" x-transition:enter-start=\"-translate-x-4 -translate-y-4\" x-transition:enter-end=\"translate-x-0 translate-y-0\" x-transition:leave=\"transition-transform duration-100 ease-in\" x-transition:leave-start=\"translate-x-0 translate-y-0\" x-transition:leave-end=\"translate-x-4 translate-y-4\" class=\"absolute right-0 flex justify-end gap-3\"><a href=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "</div><div class=\"col-span-2 flex justify-end items-center relative min-h-10 w-full\" x-data=\"{ confirmingDelete: false }\"><div x-show=\"!confirmingDelete\" x-transition:enter=\"transition-transform duration-150 ease-out delay-100\" x-transition:enter-start=\"-translate-x-4 -translate-y-4\" x-transition:enter-end=\"translate-x-0 translate-y-0\" x-transition:leave=\"transition-transform duration-100 ease-in\" x-transition:leave-start=\"translate-x-0 translate-y-0\" x-transition:leave-end=\"translate-x-4 translate-y-4\" class=\"absolute right-0 flex justify-end gap-3\"><a href=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
