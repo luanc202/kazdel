@@ -70,8 +70,14 @@ jobs:
         if: matrix.build-mode == 'manual'
         shell: bash
         run: |
-          make build
+          # 1. Generate templ files
+          templ generate
 
+          # 2. Conditional build logic based on the matrix language
+          if [ "${{ matrix.language }}" = "go" ]; then
+            echo "Compiling all Go code for CodeQL tracing..."
+            go build ./...
+          fi
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
         with:
