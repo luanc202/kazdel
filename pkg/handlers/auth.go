@@ -102,7 +102,7 @@ func (h *Auth) SignupSubmit(w http.ResponseWriter, r *http.Request) {
 
 	setSessionCookie(w, token, time.Now().Add(24*time.Hour))
 
-	w.Header().Set("HX-Redirect", "/dashboard")
+	w.Header().Set("HX-Redirect", "dashboard")
 	w.WriteHeader(http.StatusOK)
 }
 
@@ -152,7 +152,7 @@ func (h *Auth) LoginSubmit(w http.ResponseWriter, r *http.Request) {
 	// Set HttpOnly cookie
 	setSessionCookie(w, token, time.Now().Add(24*time.Hour))
 
-	w.Header().Set("HX-Redirect", "/dashboard")
+	w.Header().Set("HX-Redirect", "dashboard")
 	w.WriteHeader(http.StatusOK)
 }
 
@@ -170,7 +170,7 @@ func (h *Auth) Logout(w http.ResponseWriter, r *http.Request) {
 	// Clear the cookie
 	setSessionCookie(w, "", time.Now().Add(-1*time.Hour))
 
-	w.Header().Set("HX-Redirect", "/login")
+	w.Header().Set("HX-Redirect", "login")
 	w.WriteHeader(http.StatusOK)
 }
 
@@ -217,7 +217,7 @@ func (h *Auth) VerifyEmail(w http.ResponseWriter, r *http.Request) {
 func (h *Auth) VerifyEmailPage(w http.ResponseWriter, r *http.Request) {
 	_, ok := appctx.GetAuthUser(r)
 	if ok {
-		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+		http.Redirect(w, r, "dashboard", http.StatusSeeOther)
 		return
 	}
 
@@ -291,7 +291,7 @@ func (h *Auth) ResetPasswordSubmit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("HX-Redirect", "/login")
+	w.Header().Set("HX-Redirect", "login")
 	w.WriteHeader(http.StatusOK)
 }
 
@@ -299,7 +299,7 @@ func (h *Auth) ResetPasswordSubmit(w http.ResponseWriter, r *http.Request) {
 func (h *Auth) SignupPage(w http.ResponseWriter, r *http.Request) {
 	_, ok := appctx.GetAuthUser(r)
 	if ok {
-		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+		http.Redirect(w, r, "dashboard", http.StatusSeeOther)
 		return
 	}
 	pages.SignUp().Render(r.Context(), w)
@@ -309,7 +309,7 @@ func (h *Auth) SignupPage(w http.ResponseWriter, r *http.Request) {
 func (h *Auth) LoginPage(w http.ResponseWriter, r *http.Request) {
 	_, ok := appctx.GetAuthUser(r)
 	if ok {
-		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+		http.Redirect(w, r, "dashboard", http.StatusSeeOther)
 		return
 	}
 	pages.Login().Render(r.Context(), w)
@@ -319,7 +319,7 @@ func (h *Auth) LoginPage(w http.ResponseWriter, r *http.Request) {
 func (h *Auth) ForgotPasswordPage(w http.ResponseWriter, r *http.Request) {
 	_, ok := appctx.GetAuthUser(r)
 	if ok {
-		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+		http.Redirect(w, r, "dashboard", http.StatusSeeOther)
 		return
 	}
 	pages.ForgotPassword().Render(r.Context(), w)
@@ -329,13 +329,13 @@ func (h *Auth) ForgotPasswordPage(w http.ResponseWriter, r *http.Request) {
 func (h *Auth) ResetPasswordPage(w http.ResponseWriter, r *http.Request) {
 	_, ok := appctx.GetAuthUser(r)
 	if ok {
-		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+		http.Redirect(w, r, "dashboard", http.StatusSeeOther)
 		return
 	}
 
 	token := r.URL.Query().Get("token")
 	if token == "" {
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		http.Redirect(w, r, "login", http.StatusSeeOther)
 		return
 	}
 
