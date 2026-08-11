@@ -46,7 +46,7 @@ func Login() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"min-h-screen bg-base-100 text-base-content flex items-center justify-center p-6 font-sans\"><div class=\"max-w-md w-full\"><a hx-get=\"/\" hx-target=\"body\" hx-push-url=\"true\" class=\"cursor-pointer inline-flex items-center gap-2 text-base-content/50 hover:text-base-content transition-colors mb-8 font-bold tracking-widest text-xs uppercase\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"min-h-screen bg-base-100 text-base-content flex items-center justify-center p-6 font-sans\"><div class=\"max-w-md w-full\"><a hx-get=\"./\" hx-target=\"body\" hx-push-url=\"true\" class=\"cursor-pointer inline-flex items-center gap-2 text-base-content/50 hover:text-base-content transition-colors mb-8 font-bold tracking-widest text-xs uppercase\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -62,7 +62,7 @@ func Login() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div id=\"signup-form-footer\" class=\"mt-8 text-center text-sm text-base-content/70\">New user? <a href=\"/signup\" class=\"text-base-content hover:underline\">Create an account</a></div></div></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div id=\"signup-form-footer\" class=\"mt-8 text-center text-sm text-base-content/70\">New user? <a href=\"signup\" class=\"text-base-content hover:underline\">Create an account</a></div></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -97,7 +97,7 @@ func LoginForm(errMessage string, username string, unverifiedEmail string) templ
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<form class=\"space-y-6\" hx-post=\"/api/v1/auth/login\" hx-swap=\"outerHTML\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<form class=\"space-y-6\" hx-post=\"api/v1/auth/login\" hx-swap=\"outerHTML\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -156,7 +156,7 @@ func LoginForm(errMessage string, username string, unverifiedEmail string) templ
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\" placeholder=\"[USERNAME]\" class=\"peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success\" required><p class=\"mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block\">Please enter a valid username.</p></div><div><div class=\"flex items-center justify-between mb-2\"><label class=\"block text-xs font-bold text-base-content/70 uppercase tracking-widest\">Password</label> <a href=\"/forgot-password\" class=\"text-xs font-bold text-base-content/50 hover:text-base-content uppercase tracking-widest transition-colors\">Forgot Password?</a></div><input id=\"password\" name=\"password\" type=\"password\" placeholder=\"••••••••\" minlength=\"8\" pattern=\"(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}\" title=\"Must contain at least 8 characters, including uppercase, lowercase, numbers and special characters\" class=\"peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success\" required><p class=\"mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block\">Must contain at least 8 characters, including uppercase, lowercase, number, and special character.</p></div><div class=\"relative group mt-4\"><button type=\"submit\" class=\"w-full relative z-10 btn-solid-3d flex items-center justify-center gap-2\"><span>LOG IN</span> <span class=\"htmx-indicator loading loading-spinner loading-sm\"></span></button></div></form>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\" placeholder=\"[USERNAME]\" class=\"peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success\" required><p class=\"mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block\">Please enter a valid username.</p></div><div><div class=\"flex items-center justify-between mb-2\"><label class=\"block text-xs font-bold text-base-content/70 uppercase tracking-widest\">Password</label> <a href=\"forgot-password\" class=\"text-xs font-bold text-base-content/50 hover:text-base-content uppercase tracking-widest transition-colors\">Forgot Password?</a></div><input id=\"password\" name=\"password\" type=\"password\" placeholder=\"••••••••\" minlength=\"8\" pattern=\"(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}\" title=\"Must contain at least 8 characters, including uppercase, lowercase, numbers and special characters\" class=\"peer w-full bg-base-100 border border-base-content/10 px-4 py-3 focus:outline-none focus:border-base-content transition-colors font-mono [&:not(:placeholder-shown):invalid]:border-error [&:not(:placeholder-shown):valid]:border-success\" required><p class=\"mt-2 text-sm text-error hidden peer-[:not(:placeholder-shown):invalid]:block\">Must contain at least 8 characters, including uppercase, lowercase, number, and special character.</p></div><div class=\"relative group mt-4\"><button type=\"submit\" class=\"w-full relative z-10 btn-solid-3d flex items-center justify-center gap-2\"><span>LOG IN</span> <span class=\"htmx-indicator loading loading-spinner loading-sm\"></span></button></div></form>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

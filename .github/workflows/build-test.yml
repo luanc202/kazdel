@@ -51,7 +51,7 @@ jobs:
         run: bun install
 
       - name: Install Templ
-        run: go install github.com/a-h/templ/cmd/templ@latest
+        run: go install github.com/a-h/templ/cmd/templ@v0.3.1001
 
       - name: Lint
         run: go vet ./...
@@ -87,7 +87,7 @@ jobs:
           cache: true
 
       - name: Install Playwright Driver and Browsers
-        run: go run github.com/playwright-community/playwright-go/cmd/playwright@latest install --with-deps
+        run: go run github.com/mxschmitt/playwright-go/cmd/playwright@latest install --with-deps
 
       - name: Install Go dependencies
         run: go mod download

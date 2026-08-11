@@ -30,8 +30,15 @@ func BuildRouter(deps *Dependencies) (*chi.Mux, error) {
 
 	rootRouter.Use(middleware.Heartbeat("/health"))
 
+	// Calculate the correct prefix to strip based on BASE_PATH
+	staticPrefix := "/static/"
+	basePath := config.GetEnvConfig().BASE_PATH
+	if basePath != "" && basePath != "/" {
+		staticPrefix = basePath + "/static/"
+	}
+
 	// Serve static files (HTMX, CSS, etc.)
-	appRouter.Handle("/static/*", http.StripPrefix("/static/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	appRouter.Handle("/static/*", http.StripPrefix(staticPrefix, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		env := config.GetEnvConfig()
 		disableCacheOnLocalEnvironment(env, w)
 		http.FileServer(http.Dir("pkg/ui/static")).ServeHTTP(w, r)
@@ -47,7 +54,7 @@ func BuildRouter(deps *Dependencies) (*chi.Mux, error) {
 	}
 
 	// Mount under BASE_PATH if configured (e.g., "/url")
-	basePath := config.GetEnvConfig().BASE_PATH
+	basePath = config.GetEnvConfig().BASE_PATH
 	if basePath != "" && basePath != "/" {
 		rootRouter.Mount(basePath, appRouter)
 	} else {

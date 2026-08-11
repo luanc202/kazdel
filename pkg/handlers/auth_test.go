@@ -46,8 +46,8 @@ func TestAuth_Logout(t *testing.T) {
 	}
 
 	// It should set HX-Redirect header
-	if hxRedirect := rr.Header().Get("HX-Redirect"); hxRedirect != "/login" {
-		t.Errorf("Expected HX-Redirect to /login, got %v", hxRedirect)
+	if hxRedirect := rr.Header().Get("HX-Redirect"); hxRedirect != "login" {
+		t.Errorf("Expected HX-Redirect to login, got %v", hxRedirect)
 	}
 
 	// It should set a cookie that expires in the past
@@ -99,8 +99,8 @@ func TestAuth_SignupSubmit(t *testing.T) {
 		t.Errorf("Expected status 200 OK, got %v", rr.Code)
 	}
 
-	if hxRedirect := rr.Header().Get("HX-Redirect"); hxRedirect != "/dashboard" {
-		t.Errorf("Expected HX-Redirect to /dashboard, got %v", hxRedirect)
+	if hxRedirect := rr.Header().Get("HX-Redirect"); hxRedirect != "dashboard" {
+		t.Errorf("Expected HX-Redirect to dashboard, got %v", hxRedirect)
 	}
 
 	cookies := rr.Result().Cookies()
@@ -142,8 +142,8 @@ func TestAuth_LoginSubmit(t *testing.T) {
 		t.Errorf("Expected status 200 OK, got %v", rr.Code)
 	}
 
-	if hxRedirect := rr.Header().Get("HX-Redirect"); hxRedirect != "/dashboard" {
-		t.Errorf("Expected HX-Redirect to /dashboard, got %v", hxRedirect)
+	if hxRedirect := rr.Header().Get("HX-Redirect"); hxRedirect != "dashboard" {
+		t.Errorf("Expected HX-Redirect to dashboard, got %v", hxRedirect)
 	}
 
 	cookies := rr.Result().Cookies()

@@ -24,6 +24,8 @@ func main() {
 	}
 
 	err = config.InitConfigs()
+
+	slog.Info(fmt.Sprintf("Base path is currently set as: %s", env.BASE_PATH))
 	if err != nil {
 		panic(err)
 	}

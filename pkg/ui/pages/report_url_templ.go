@@ -46,7 +46,7 @@ func ReportUrl(slug string) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"min-h-screen bg-base-100 text-base-content flex items-center justify-center p-6 font-sans\"><div class=\"max-w-md w-full\"><a href=\"/\" class=\"cursor-pointer inline-flex items-center gap-2 text-base-content/50 hover:text-base-content transition-colors mb-8 font-bold tracking-widest text-xs uppercase\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"min-h-screen bg-base-100 text-base-content flex items-center justify-center p-6 font-sans\"><div class=\"max-w-md w-full\"><a href=\"./\" class=\"cursor-pointer inline-flex items-center gap-2 text-base-content/50 hover:text-base-content transition-colors mb-8 font-bold tracking-widest text-xs uppercase\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -97,7 +97,7 @@ func ReportUrlForm(errMessage string, slug string) templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<form class=\"space-y-6\" hx-post=\"/report\" hx-swap=\"outerHTML\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<form class=\"space-y-6\" hx-post=\"report\" hx-swap=\"outerHTML\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -162,7 +162,7 @@ func ReportUrlSuccess() templ.Component {
 			templ_7745c5c3_Var6 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"text-center\"><div class=\"mb-6 flex justify-center text-success\"><svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-16 w-16\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z\"></path></svg></div><h3 class=\"text-2xl font-bold mb-2 uppercase tracking-tighter\">Report Submitted</h3><p class=\"text-base-content/70 mb-6\">Thank you for helping keep our platform safe. We will review this link shortly.</p><a href=\"/\" class=\"btn-solid-3d inline-block w-full text-center\">RETURN TO HOME</a></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"text-center\"><div class=\"mb-6 flex justify-center text-success\"><svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-16 w-16\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z\"></path></svg></div><h3 class=\"text-2xl font-bold mb-2 uppercase tracking-tighter\">Report Submitted</h3><p class=\"text-base-content/70 mb-6\">Thank you for helping keep our platform safe. We will review this link shortly.</p><a href=\"./\" class=\"btn-solid-3d inline-block w-full text-center\">RETURN TO HOME</a></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -9,15 +9,18 @@ templ Base() {
 		<head>
 			if config.GetEnvConfig().BASE_PATH != "" {
 				<base href={ config.GetEnvConfig().BASE_PATH + "/" }/>
+				<link rel="icon" type="image/svg+xml" href={ config.GetEnvConfig().BASE_PATH + "/static/kazdel.svg" }/>
+				<link href={ config.GetEnvConfig().BASE_PATH + "/static/main.css" } rel="stylesheet"/>
+				<script src={ config.GetEnvConfig().BASE_PATH + "/static/bundle.js" }></script>
 			} else {
 				<base href="/"/>
+				<link rel="icon" type="image/svg+xml" href="/static/kazdel.svg"/>
+				<link href="/static/main.css" rel="stylesheet"/>
+				<script src="/static/bundle.js"></script>
 			}
 			<title>Kazdel - a url shortener</title>
-			<link rel="icon" type="image/svg+xml" href="/static/kazdel.svg"/>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<link href="/static/main.css" rel="stylesheet"/>
-			<script src="/static/bundle.js"></script>
 		</head>
 		<body id="main-body">
 			<!-- Theme Controller Toggle -->

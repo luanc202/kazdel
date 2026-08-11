@@ -10,7 +10,7 @@ templ ReportUrl(slug string) {
 		<div class="min-h-screen bg-base-100 text-base-content flex items-center justify-center p-6 font-sans">
 			<div class="max-w-md w-full">
 				<a
-					href="/"
+					href="./"
 					class="cursor-pointer inline-flex items-center gap-2 text-base-content/50 hover:text-base-content transition-colors mb-8 font-bold tracking-widest text-xs uppercase"
 				>
 					@icons.ArrowLeft(24)
@@ -36,7 +36,7 @@ templ ReportUrl(slug string) {
 templ ReportUrlForm(errMessage string, slug string) {
 	<form
 		class="space-y-6"
-		hx-post="/report"
+		hx-post="report"
 		hx-swap="outerHTML"
 	>
 		if errMessage != "" {
@@ -118,7 +118,7 @@ templ ReportUrlSuccess() {
 		<p class="text-base-content/70 mb-6">
 			Thank you for helping keep our platform safe. We will review this link shortly.
 		</p>
-		<a href="/" class="btn-solid-3d inline-block w-full text-center">
+		<a href="./" class="btn-solid-3d inline-block w-full text-center">
 			RETURN TO HOME
 		</a>
 	</div>

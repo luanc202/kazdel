@@ -131,13 +131,13 @@ func (h *ShortenedUrl) HandlePasswordSubmission(w http.ResponseWriter, r *http.R
 func (h *ShortenedUrl) DashboardPage(w http.ResponseWriter, r *http.Request) {
 	userIdStr, ok := appctx.GetAuthUser(r)
 	if !ok {
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		http.Redirect(w, r, "login", http.StatusSeeOther)
 		return
 	}
 
 	userId, err := uniqueEntityId.ParseID(userIdStr)
 	if err != nil {
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		http.Redirect(w, r, "login", http.StatusSeeOther)
 		return
 	}
 
