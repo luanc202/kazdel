@@ -51,7 +51,7 @@ jobs:
         run: bun install
 
       - name: Install Templ
-        run: go install github.com/a-h/templ/cmd/templ@latest
+        run: go install github.com/a-h/templ/cmd/templ@v0.3.1001
 
       - name: Lint
         run: go vet ./...
