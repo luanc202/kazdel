@@ -48,7 +48,7 @@ func AdminLayout(title string) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"min-h-screen bg-base-100 text-base-content font-sans flex flex-col md:flex-row\"><nav class=\"w-full md:w-64 bg-base-200 border-r border-base-content/10 p-6 flex flex-col gap-8\"><div><h1 class=\"text-2xl font-bold tracking-tighter\">ADMIN PANEL</h1><p class=\"text-base-content/50 text-xs font-mono mt-1\">SYS_OP_MODE</p></div><ul class=\"flex flex-col gap-2 flex-1\"><li><a href=\"/admin/users\" class=\"flex items-center gap-3 p-3 hover:bg-base-content/10 transition-colors font-bold text-sm tracking-widest\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"min-h-screen bg-base-100 text-base-content font-sans flex flex-col md:flex-row\"><nav class=\"w-full md:w-64 bg-base-200 border-r border-base-content/10 p-6 flex flex-col gap-8\"><div><h1 class=\"text-2xl font-bold tracking-tighter\">ADMIN PANEL</h1><p class=\"text-base-content/50 text-xs font-mono mt-1\">SYS_OP_MODE</p></div><ul class=\"flex flex-col gap-2 flex-1\"><li><a href=\"admin/users\" class=\"flex items-center gap-3 p-3 hover:bg-base-content/10 transition-colors font-bold text-sm tracking-widest\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -56,7 +56,7 @@ func AdminLayout(title string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "USERS</a></li><li><a href=\"/admin/urls\" class=\"flex items-center gap-3 p-3 hover:bg-base-content/10 transition-colors font-bold text-sm tracking-widest\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "USERS</a></li><li><a href=\"admin/urls\" class=\"flex items-center gap-3 p-3 hover:bg-base-content/10 transition-colors font-bold text-sm tracking-widest\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -64,7 +64,7 @@ func AdminLayout(title string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "URLS</a></li><li><a href=\"/admin/settings\" class=\"flex items-center gap-3 p-3 hover:bg-base-content/10 transition-colors font-bold text-sm tracking-widest\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "URLS</a></li><li><a href=\"admin/settings\" class=\"flex items-center gap-3 p-3 hover:bg-base-content/10 transition-colors font-bold text-sm tracking-widest\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -72,7 +72,7 @@ func AdminLayout(title string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "SETTINGS</a></li></ul><div class=\"pt-8 border-t border-base-content/10 flex flex-col gap-2\"><a href=\"/dashboard\" class=\"flex items-center gap-3 p-3 hover:bg-base-content/10 transition-colors font-bold text-sm tracking-widest text-base-content/70\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "SETTINGS</a></li></ul><div class=\"pt-8 border-t border-base-content/10 flex flex-col gap-2\"><a href=\"dashboard\" class=\"flex items-center gap-3 p-3 hover:bg-base-content/10 transition-colors font-bold text-sm tracking-widest text-base-content/70\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -80,7 +80,7 @@ func AdminLayout(title string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "BACK TO APP</a> <a hx-post=\"/api/v1/auth/logout\" hx-target=\"body\" hx-swap=\"innerHTML\" class=\"flex items-center gap-3 p-3 hover:bg-error/10 text-error transition-colors font-bold text-sm tracking-widest cursor-pointer\">LOGOUT</a></div></nav><main class=\"flex-1 p-6 md:p-12 overflow-y-auto\"><div class=\"max-w-6xl mx-auto\"><header class=\"mb-12 border-b border-base-content/10 pb-8\"><h2 class=\"text-4xl font-bold tracking-tighter uppercase\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "BACK TO APP</a> <a hx-post=\"api/v1/auth/logout\" hx-target=\"body\" hx-swap=\"innerHTML\" class=\"flex items-center gap-3 p-3 hover:bg-error/10 text-error transition-colors font-bold text-sm tracking-widest cursor-pointer\">LOGOUT</a></div></nav><main class=\"flex-1 p-6 md:p-12 overflow-y-auto\"><div class=\"max-w-6xl mx-auto\"><header class=\"mb-12 border-b border-base-content/10 pb-8\"><h2 class=\"text-4xl font-bold tracking-tighter uppercase\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -179,7 +179,7 @@ func AdminSettings(settings []*entity.Setting) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</p></div><form hx-post=\"/admin/settings\" hx-target=\"closest .brutalist-row\" hx-swap=\"outerHTML\" class=\"flex gap-4 items-center\"><input type=\"hidden\" name=\"key\" value=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</p></div><form hx-post=\"admin/settings\" hx-target=\"closest .brutalist-row\" hx-swap=\"outerHTML\" class=\"flex gap-4 items-center\"><input type=\"hidden\" name=\"key\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -260,7 +260,7 @@ func AdminSettingRow(setting *entity.Setting) templ.Component {
 		var templ_7745c5c3_Var10 string
 		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(setting.Key)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 94, Col: 72}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 93, Col: 72}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 		if templ_7745c5c3_Err != nil {
@@ -273,20 +273,20 @@ func AdminSettingRow(setting *entity.Setting) templ.Component {
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(setting.Value)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 95, Col: 88}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 94, Col: 88}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</p></div><form hx-post=\"/admin/settings\" hx-target=\"closest .brutalist-row\" hx-swap=\"outerHTML\" class=\"flex gap-4 items-center\"><input type=\"hidden\" name=\"key\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</p></div><form hx-post=\"admin/settings\" hx-target=\"closest .brutalist-row\" hx-swap=\"outerHTML\" class=\"flex gap-4 items-center\"><input type=\"hidden\" name=\"key\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var12 string
 		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(setting.Key)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 98, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 97, Col: 54}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {
@@ -348,14 +348,14 @@ func AdminUsers(users []*entity.User, search string, page, limit, totalPages int
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<div class=\"flex flex-col md:flex-row justify-between md:items-center gap-4 mb-8\"><form hx-get=\"/admin/users\" hx-target=\"body\" hx-push-url=\"true\" class=\"flex gap-2\"><input type=\"hidden\" name=\"limit\" value=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<div class=\"flex flex-col md:flex-row justify-between md:items-center gap-4 mb-8\"><form hx-get=\"admin/users\" hx-target=\"body\" hx-push-url=\"true\" class=\"flex gap-2\"><input type=\"hidden\" name=\"limit\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var15 string
 			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprint(limit))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 114, Col: 63}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 113, Col: 63}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 			if templ_7745c5c3_Err != nil {
@@ -368,7 +368,7 @@ func AdminUsers(users []*entity.User, search string, page, limit, totalPages int
 			var templ_7745c5c3_Var16 string
 			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(search)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 115, Col: 51}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 114, Col: 51}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 			if templ_7745c5c3_Err != nil {
@@ -437,7 +437,7 @@ func AdminUserRow(user *entity.User) templ.Component {
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(user.Username)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 146, Col: 89}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 142, Col: 89}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
@@ -450,7 +450,7 @@ func AdminUserRow(user *entity.User) templ.Component {
 		var templ_7745c5c3_Var19 string
 		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(user.Username)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 146, Col: 107}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 142, Col: 107}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 		if templ_7745c5c3_Err != nil {
@@ -463,7 +463,7 @@ func AdminUserRow(user *entity.User) templ.Component {
 		var templ_7745c5c3_Var20 string
 		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(user.Email)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 147, Col: 92}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 143, Col: 92}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
@@ -476,7 +476,7 @@ func AdminUserRow(user *entity.User) templ.Component {
 		var templ_7745c5c3_Var21 string
 		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(user.Email)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 147, Col: 107}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 143, Col: 107}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 		if templ_7745c5c3_Err != nil {
@@ -489,7 +489,7 @@ func AdminUserRow(user *entity.User) templ.Component {
 		var templ_7745c5c3_Var22 string
 		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(string(user.Role))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 148, Col: 79}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 144, Col: 79}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 		if templ_7745c5c3_Err != nil {
@@ -515,9 +515,9 @@ func AdminUserRow(user *entity.User) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var23 string
-		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs("/admin/users/" + user.ID.String() + "/status")
+		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs("admin/users/" + user.ID.String() + "/status")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 157, Col: 65}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 153, Col: 64}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 		if templ_7745c5c3_Err != nil {
@@ -579,14 +579,14 @@ func AdminURLs(urls []*entity.ShortenedUrl, search string, page, limit, totalPag
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "<div class=\"flex flex-col md:flex-row justify-between md:items-center gap-4 mb-8\"><form hx-get=\"/admin/urls\" hx-target=\"body\" hx-push-url=\"true\" class=\"flex gap-2\"><input type=\"hidden\" name=\"limit\" value=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "<div class=\"flex flex-col md:flex-row justify-between md:items-center gap-4 mb-8\"><form hx-get=\"admin/urls\" hx-target=\"body\" hx-push-url=\"true\" class=\"flex gap-2\"><input type=\"hidden\" name=\"limit\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var26 string
 			templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprint(limit))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 174, Col: 63}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 170, Col: 63}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
 			if templ_7745c5c3_Err != nil {
@@ -599,7 +599,7 @@ func AdminURLs(urls []*entity.ShortenedUrl, search string, page, limit, totalPag
 			var templ_7745c5c3_Var27 string
 			templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(search)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 175, Col: 51}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 171, Col: 51}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
 			if templ_7745c5c3_Err != nil {
@@ -626,7 +626,7 @@ func AdminURLs(urls []*entity.ShortenedUrl, search string, page, limit, totalPag
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = AdminPagination("/admin/urls", search, page, limit, totalPages).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = AdminPagination("admin/urls", search, page, limit, totalPages).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -668,7 +668,7 @@ func AdminURLRow(url *entity.ShortenedUrl) templ.Component {
 		var templ_7745c5c3_Var29 string
 		templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.JoinStringErrs(url.LongUrl)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 205, Col: 93}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 198, Col: 93}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var29))
 		if templ_7745c5c3_Err != nil {
@@ -681,7 +681,7 @@ func AdminURLRow(url *entity.ShortenedUrl) templ.Component {
 		var templ_7745c5c3_Var30 string
 		templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs(url.LongUrl)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 205, Col: 109}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 198, Col: 109}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
 		if templ_7745c5c3_Err != nil {
@@ -692,9 +692,9 @@ func AdminURLRow(url *entity.ShortenedUrl) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var31 templ.SafeURL
-		templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL("/" + url.ShortSlug))
+		templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(url.ShortSlug))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 207, Col: 47}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 200, Col: 41}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var31))
 		if templ_7745c5c3_Err != nil {
@@ -707,7 +707,7 @@ func AdminURLRow(url *entity.ShortenedUrl) templ.Component {
 		var templ_7745c5c3_Var32 string
 		templ_7745c5c3_Var32, templ_7745c5c3_Err = templ.JoinStringErrs(url.ShortSlug)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 207, Col: 105}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 200, Col: 99}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var32))
 		if templ_7745c5c3_Err != nil {
@@ -720,7 +720,7 @@ func AdminURLRow(url *entity.ShortenedUrl) templ.Component {
 		var templ_7745c5c3_Var33 string
 		templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.JoinStringErrs(url.UserId.String())
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 209, Col: 101}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 202, Col: 101}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var33))
 		if templ_7745c5c3_Err != nil {
@@ -733,7 +733,7 @@ func AdminURLRow(url *entity.ShortenedUrl) templ.Component {
 		var templ_7745c5c3_Var34 string
 		templ_7745c5c3_Var34, templ_7745c5c3_Err = templ.JoinStringErrs(url.UserId.String())
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 209, Col: 125}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 202, Col: 125}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var34))
 		if templ_7745c5c3_Err != nil {
@@ -752,9 +752,9 @@ func AdminURLRow(url *entity.ShortenedUrl) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var35 string
-		templ_7745c5c3_Var35, templ_7745c5c3_Err = templ.JoinStringErrs("/admin/urls/" + url.ShortSlug)
+		templ_7745c5c3_Var35, templ_7745c5c3_Err = templ.JoinStringErrs("admin/urls/" + url.ShortSlug)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 231, Col: 47}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 224, Col: 46}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var35))
 		if templ_7745c5c3_Err != nil {
@@ -796,7 +796,7 @@ func AdminPagination(endpoint, search string, page, limit, totalPages int) templ
 		var templ_7745c5c3_Var37 string
 		templ_7745c5c3_Var37, templ_7745c5c3_Err = templ.JoinStringErrs(endpoint)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 252, Col: 25}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 245, Col: 25}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var37))
 		if templ_7745c5c3_Err != nil {
@@ -809,7 +809,7 @@ func AdminPagination(endpoint, search string, page, limit, totalPages int) templ
 		var templ_7745c5c3_Var38 string
 		templ_7745c5c3_Var38, templ_7745c5c3_Err = templ.JoinStringErrs(search)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 253, Col: 52}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 246, Col: 52}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var38))
 		if templ_7745c5c3_Err != nil {
@@ -867,7 +867,7 @@ func AdminPagination(endpoint, search string, page, limit, totalPages int) templ
 			var templ_7745c5c3_Var39 templ.SafeURL
 			templ_7745c5c3_Var39, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(fmt.Sprintf("%s?page=%d&limit=%d&search=%s", endpoint, page-1, limit, search)))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 264, Col: 106}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 257, Col: 106}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var39))
 			if templ_7745c5c3_Err != nil {
@@ -885,7 +885,7 @@ func AdminPagination(endpoint, search string, page, limit, totalPages int) templ
 		var templ_7745c5c3_Var40 string
 		templ_7745c5c3_Var40, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprint(page))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 266, Col: 126}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 259, Col: 126}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var40))
 		if templ_7745c5c3_Err != nil {
@@ -898,7 +898,7 @@ func AdminPagination(endpoint, search string, page, limit, totalPages int) templ
 		var templ_7745c5c3_Var41 string
 		templ_7745c5c3_Var41, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprint(totalPages))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 266, Col: 156}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 259, Col: 156}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var41))
 		if templ_7745c5c3_Err != nil {
@@ -916,7 +916,7 @@ func AdminPagination(endpoint, search string, page, limit, totalPages int) templ
 			var templ_7745c5c3_Var42 templ.SafeURL
 			templ_7745c5c3_Var42, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(fmt.Sprintf("%s?page=%d&limit=%d&search=%s", endpoint, page+1, limit, search)))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 268, Col: 106}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/admin.templ`, Line: 261, Col: 106}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var42))
 			if templ_7745c5c3_Err != nil {
