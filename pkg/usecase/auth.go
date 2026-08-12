@@ -20,18 +20,26 @@ type AuthUseCase struct {
 	SessionRepo   interfaces.SessionRepository
 	UserTokenRepo interfaces.UserTokenRepository
 	EmailService  interfaces.EmailService
+	SettingRepo   interfaces.SettingRepository
 }
 
-func NewAuthUseCase(userRepo interfaces.UserRepository, sessionRepo interfaces.SessionRepository, userTokenRepo interfaces.UserTokenRepository, emailService interfaces.EmailService) *AuthUseCase {
+func NewAuthUseCase(userRepo interfaces.UserRepository, sessionRepo interfaces.SessionRepository, userTokenRepo interfaces.UserTokenRepository, emailService interfaces.EmailService, settingRepo interfaces.SettingRepository) *AuthUseCase {
 	return &AuthUseCase{
 		UserRepo:      userRepo,
 		SessionRepo:   sessionRepo,
 		UserTokenRepo: userTokenRepo,
 		EmailService:  emailService,
+		SettingRepo:   settingRepo,
 	}
 }
 
 func (uc *AuthUseCase) Signup(name, username, email, password string) (string, error) {
+	// Check if signup is enabled
+	setting, err := uc.SettingRepo.FindByKey(entity.SettingSignupEnabled)
+	if err == nil && setting != nil && setting.Value == "false" {
+		return "", fmt.Errorf("Signups are currently disabled")
+	}
+
 	exists, _ := uc.UserRepo.ExistsByEmail(email)
 	if exists {
 		return "", fmt.Errorf("Email already registered")
@@ -94,8 +102,21 @@ func (uc *AuthUseCase) Login(username, password string) (string, error) {
 		return "", fmt.Errorf("Invalid credentials")
 	}
 
+	if !user.IsActive {
+		return "", fmt.Errorf("Your account is disabled")
+	}
+
 	env := config.GetEnvConfig()
-	if env != nil && env.MAIL_ENABLED && !user.EmailVerified {
+	emailValidationSetting, _ := uc.SettingRepo.FindByKey(entity.SettingEmailValidationEnabled)
+	
+	emailValidationEnabled := env != nil && env.MAIL_ENABLED
+	if emailValidationSetting != nil && emailValidationSetting.Value == "true" {
+		emailValidationEnabled = true
+	} else if emailValidationSetting != nil && emailValidationSetting.Value == "false" {
+		emailValidationEnabled = false
+	}
+
+	if emailValidationEnabled && !user.EmailVerified {
 		return "", ErrEmailNotVerified
 	}
 

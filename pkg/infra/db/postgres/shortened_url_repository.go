@@ -152,6 +152,71 @@ func (pr *ShortenedUrlRepository) FindByUserIdPaginated(userId uniqueEntityId.ID
 	return shortenedUrls, total, nil
 }
 
+func (pr *ShortenedUrlRepository) FindAllPaginated(search string, page, limit int) ([]*entity.ShortenedUrl, int, error) {
+	offset := (page - 1) * limit
+
+	baseQuery := `
+		FROM shortened_urls s
+		LEFT JOIN url_visits v ON s.id = v.url_id
+	`
+	args := pgx.NamedArgs{
+		"limit":  limit,
+		"offset": offset,
+	}
+
+	if search != "" {
+		baseQuery += ` WHERE s.short_slug ILIKE @search OR s.long_url ILIKE @search`
+		args["search"] = "%" + search + "%"
+	}
+
+	countSql := `SELECT COUNT(DISTINCT s.id) ` + baseQuery
+	var total int
+	err := pr.dbConnection.QueryRow(context.Background(), countSql, args).Scan(&total)
+	if err != nil {
+		slog.Error("failed to count all shortened urls", "error", err)
+		return nil, 0, err
+	}
+
+	sql := `
+		SELECT s.id, s.short_slug, s.long_url, s.description, s.password_hash, s.expires_at, s.user_id, s.created_at, COUNT(v.id) as views
+		` + baseQuery + `
+		GROUP BY s.id
+		ORDER BY s.created_at DESC
+		LIMIT @limit OFFSET @offset
+	`
+
+	rows, err := pr.dbConnection.Query(context.Background(), sql, args)
+	if err != nil {
+		slog.Error("failed to find all shortened urls", "error", err)
+		return nil, 0, err
+	}
+	defer rows.Close()
+
+	var shortenedUrls []*entity.ShortenedUrl
+
+	for rows.Next() {
+		var shortenedUrl entity.ShortenedUrl
+		err := rows.Scan(
+			&shortenedUrl.ID,
+			&shortenedUrl.ShortSlug,
+			&shortenedUrl.LongUrl,
+			&shortenedUrl.Description,
+			&shortenedUrl.PasswordHash,
+			&shortenedUrl.ExpiresAt,
+			&shortenedUrl.UserId,
+			&shortenedUrl.CreatedAt,
+			&shortenedUrl.Views,
+		)
+		if err != nil {
+			slog.Error("failed to scan shortened url", "error", err)
+			return nil, 0, err
+		}
+		shortenedUrls = append(shortenedUrls, &shortenedUrl)
+	}
+
+	return shortenedUrls, total, nil
+}
+
 func (pr *ShortenedUrlRepository) DeleteExpired(now time.Time) error {
 	sql := `DELETE FROM shortened_urls WHERE expires_at < @now`
 	slog.Info("Deleting expired shortened urls", "now", now)

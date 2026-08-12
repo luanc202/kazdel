@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 
+	interfaces "kazdel/pkg/interface"
 	"kazdel/pkg/usecase"
 
 	"github.com/go-chi/chi/v5"
@@ -25,6 +26,8 @@ type Handler interface {
 type Dependencies struct {
 	ShortenedUrlUseCase *usecase.ShortenedUrlUsecase
 	AuthUseCase         *usecase.AuthUseCase
+	AdminUseCase        *usecase.AdminUseCase
+	UserRepo            interfaces.UserRepository
 }
 
 // Register registers a handler for automatic initialization and routing.

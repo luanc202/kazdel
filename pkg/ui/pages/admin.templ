@@ -1,0 +1,272 @@
+package pages
+
+import (
+	"fmt"
+	"kazdel/pkg/entity"
+	"kazdel/pkg/ui/components"
+	"kazdel/pkg/ui/icons"
+)
+
+templ AdminLayout(title string) {
+	@components.Base() {
+		<div class="min-h-screen bg-base-100 text-base-content font-sans flex flex-col md:flex-row">
+			<nav class="w-full md:w-64 bg-base-200 border-r border-base-content/10 p-6 flex flex-col gap-8">
+				<div>
+					<h1 class="text-2xl font-bold tracking-tighter">ADMIN PANEL</h1>
+					<p class="text-base-content/50 text-xs font-mono mt-1">SYS_OP_MODE</p>
+				</div>
+				<ul class="flex flex-col gap-2 flex-1">
+					<li>
+						<a href="/admin/users" class="flex items-center gap-3 p-3 hover:bg-base-content/10 transition-colors font-bold text-sm tracking-widest">
+							@icons.Users("20")
+							USERS
+						</a>
+					</li>
+					<li>
+						<a href="/admin/urls" class="flex items-center gap-3 p-3 hover:bg-base-content/10 transition-colors font-bold text-sm tracking-widest">
+							@icons.Link("20")
+							URLS
+						</a>
+					</li>
+					<li>
+						<a href="/admin/settings" class="flex items-center gap-3 p-3 hover:bg-base-content/10 transition-colors font-bold text-sm tracking-widest">
+							@icons.Settings("20")
+							SETTINGS
+						</a>
+					</li>
+				</ul>
+				<div class="pt-8 border-t border-base-content/10 flex flex-col gap-2">
+					<a href="/dashboard" class="flex items-center gap-3 p-3 hover:bg-base-content/10 transition-colors font-bold text-sm tracking-widest text-base-content/70">
+						@icons.ArrowLeft(20)
+						BACK TO APP
+					</a>
+					<a hx-post="/api/v1/auth/logout" hx-target="body" hx-swap="innerHTML" class="flex items-center gap-3 p-3 hover:bg-error/10 text-error transition-colors font-bold text-sm tracking-widest cursor-pointer">
+						LOGOUT
+					</a>
+				</div>
+			</nav>
+			<main class="flex-1 p-6 md:p-12 overflow-y-auto">
+				<div class="max-w-6xl mx-auto">
+					<header class="mb-12 border-b border-base-content/10 pb-8">
+						<h2 class="text-4xl font-bold tracking-tighter uppercase">{ title }</h2>
+					</header>
+					{ children... }
+				</div>
+			</main>
+		</div>
+	}
+}
+
+templ AdminSettings(settings []*entity.Setting) {
+	@AdminLayout("Settings") {
+		<div class="space-y-6">
+			for _, setting := range settings {
+				<div class="flex items-center justify-between p-6 bg-base-200 border-2 border-base-content/10 brutalist-row">
+					<div>
+						<h3 class="font-bold text-lg tracking-widest uppercase">{ setting.Key }</h3>
+						<p class="text-base-content/50 text-sm font-mono mt-1">Current value: { setting.Value }</p>
+					</div>
+					<form hx-post="/admin/settings" hx-target="closest .brutalist-row" hx-swap="outerHTML" class="flex gap-4 items-center">
+						<input type="hidden" name="key" value={ setting.Key } />
+						if setting.Value == "true" {
+							<input type="hidden" name="value" value="false" />
+							<button type="submit" class="btn-danger-3d px-6 py-2 font-bold tracking-widest text-sm">DISABLE</button>
+						} else {
+							<input type="hidden" name="value" value="true" />
+							<button type="submit" class="btn-solid-3d px-6 py-2 font-bold tracking-widest text-sm">ENABLE</button>
+						}
+					</form>
+				</div>
+			}
+			
+			if len(settings) == 0 {
+				<div class="border border-dashed border-base-content/10 p-12 text-center text-base-content/20 font-bold text-xl uppercase tracking-widest">
+					No Settings Configured
+				</div>
+			}
+		</div>
+	}
+}
+
+templ AdminSettingRow(setting *entity.Setting) {
+	<div class="flex items-center justify-between p-6 bg-base-200 border-2 border-base-content/10 brutalist-row group [&.htmx-swapping]:opacity-0 [&.htmx-swapping]:scale-95 [&.htmx-swapping]:-translate-x-4">
+		<div>
+			<h3 class="font-bold text-lg tracking-widest uppercase">{ setting.Key }</h3>
+			<p class="text-base-content/50 text-sm font-mono mt-1">Current value: { setting.Value }</p>
+		</div>
+		<form hx-post="/admin/settings" hx-target="closest .brutalist-row" hx-swap="outerHTML" class="flex gap-4 items-center">
+			<input type="hidden" name="key" value={ setting.Key } />
+			if setting.Value == "true" {
+				<input type="hidden" name="value" value="false" />
+				<button type="submit" class="btn-danger-3d px-6 py-2 font-bold tracking-widest text-sm">DISABLE</button>
+			} else {
+				<input type="hidden" name="value" value="true" />
+				<button type="submit" class="btn-solid-3d px-6 py-2 font-bold tracking-widest text-sm">ENABLE</button>
+			}
+		</form>
+	</div>
+}
+
+templ AdminUsers(users []*entity.User, search string, page, limit, totalPages int) {
+	@AdminLayout("Users") {
+		<div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-8">
+			<form hx-get="/admin/users" hx-target="body" hx-push-url="true" class="flex gap-2">
+				<input type="hidden" name="limit" value={ fmt.Sprint(limit) }/>
+				<input type="text" name="search" value={ search } placeholder="SEARCH_USERS" class="bg-base-200 border-2 border-base-content/10 px-4 py-2 font-bold focus:outline-none focus:border-base-content transition-colors"/>
+				<button type="submit" class="btn-action-3d px-4 py-2 text-sm">SEARCH</button>
+			</form>
+		</div>
+		
+		<div class="grid grid-cols-12 gap-4 px-6 py-2 text-[0.65rem] font-bold text-base-content/50 uppercase tracking-widest">
+			<div class="col-span-3">Username</div>
+			<div class="col-span-3">Email</div>
+			<div class="col-span-2">Role</div>
+			<div class="col-span-2 text-center">Status</div>
+			<div class="col-span-2 text-right">Actions</div>
+		</div>
+		
+		<div class="space-y-4">
+			if len(users) == 0 {
+				<div class="border border-dashed border-base-content/10 p-12 text-center text-base-content/20 font-bold text-xl uppercase tracking-widest">
+					No Users Found
+				</div>
+			} else {
+				for _, user := range users {
+					@AdminUserRow(user)
+				}
+			}
+		</div>
+		
+		@AdminPagination("/admin/users", search, page, limit, totalPages)
+	}
+}
+
+templ AdminUserRow(user *entity.User) {
+	<div class="grid grid-cols-12 gap-4 p-6 items-center brutalist-row group [&.htmx-swapping]:opacity-0 [&.htmx-swapping]:scale-95 [&.htmx-swapping]:-translate-x-4">
+		<div class="col-span-3 font-bold text-sm tracking-tight truncate" title={ user.Username }>{ user.Username }</div>
+		<div class="col-span-3 font-mono text-sm text-base-content/70 truncate" title={ user.Email }>{ user.Email }</div>
+		<div class="col-span-2 text-xs font-bold tracking-widest">{ string(user.Role) }</div>
+		<div class="col-span-2 text-center">
+			if user.IsActive {
+				<span class="bg-success/20 text-success px-2 py-1 text-xs font-bold tracking-widest uppercase">Active</span>
+			} else {
+				<span class="bg-error/20 text-error px-2 py-1 text-xs font-bold tracking-widest uppercase">Disabled</span>
+			}
+		</div>
+		<div class="col-span-2 flex justify-end gap-2">
+			<form hx-post={ "/admin/users/" + user.ID.String() + "/status" } hx-target="closest .brutalist-row" hx-swap="outerHTML">
+				if user.IsActive {
+					<input type="hidden" name="isActive" value="false" />
+					<button type="submit" class="px-3 py-1 btn-danger-3d text-xs font-bold tracking-widest" title="Disable User">DISABLE</button>
+				} else {
+					<input type="hidden" name="isActive" value="true" />
+					<button type="submit" class="px-3 py-1 btn-solid-3d text-xs font-bold tracking-widest" title="Enable User">ENABLE</button>
+				}
+			</form>
+		</div>
+	</div>
+}
+
+templ AdminURLs(urls []*entity.ShortenedUrl, search string, page, limit, totalPages int) {
+	@AdminLayout("URLs") {
+		<div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-8">
+			<form hx-get="/admin/urls" hx-target="body" hx-push-url="true" class="flex gap-2">
+				<input type="hidden" name="limit" value={ fmt.Sprint(limit) }/>
+				<input type="text" name="search" value={ search } placeholder="SEARCH_URLS" class="bg-base-200 border-2 border-base-content/10 px-4 py-2 font-bold focus:outline-none focus:border-base-content transition-colors"/>
+				<button type="submit" class="btn-action-3d px-4 py-2 text-sm">SEARCH</button>
+			</form>
+		</div>
+		
+		<div class="grid grid-cols-12 gap-4 px-6 py-2 text-[0.65rem] font-bold text-base-content/50 uppercase tracking-widest">
+			<div class="col-span-4">Original URL</div>
+			<div class="col-span-3">Short Link</div>
+			<div class="col-span-3">User ID</div>
+			<div class="col-span-2 text-right">Actions</div>
+		</div>
+		
+		<div class="space-y-4">
+			if len(urls) == 0 {
+				<div class="border border-dashed border-base-content/10 p-12 text-center text-base-content/20 font-bold text-xl uppercase tracking-widest">
+					No URLs Found
+				</div>
+			} else {
+				for _, url := range urls {
+					@AdminURLRow(url)
+				}
+			}
+		</div>
+		
+		@AdminPagination("/admin/urls", search, page, limit, totalPages)
+	}
+}
+
+templ AdminURLRow(url *entity.ShortenedUrl) {
+	<div class="grid grid-cols-12 gap-4 p-6 items-center brutalist-row group [&.htmx-swapping]:opacity-0 [&.htmx-swapping]:scale-95 [&.htmx-swapping]:-translate-x-4" x-data="{ confirmingDelete: false }">
+		<div class="col-span-4 truncate font-mono text-sm text-base-content/70" title={ url.LongUrl }>{ url.LongUrl }</div>
+		<div class="col-span-3 font-bold text-sm tracking-tight flex items-center gap-2">
+			<a href={ templ.SafeURL("/" + url.ShortSlug) } target="_blank" class="hover:underline">{ url.ShortSlug }</a>
+		</div>
+		<div class="col-span-3 font-mono text-xs text-base-content/50 truncate" title={ url.UserId.String() }>{ url.UserId.String() }</div>
+		<div class="col-span-2 flex justify-end items-center relative min-h-10 w-full">
+			<div
+				x-show="!confirmingDelete"
+				class="absolute right-0 flex justify-end gap-3"
+			>
+				<button
+					@click="confirmingDelete = true"
+					type="button"
+					class="p-2 btn-action-3d"
+					title="Delete"
+				>
+					@icons.Trash("18")
+				</button>
+			</div>
+			<div
+				x-cloak
+				x-show="confirmingDelete"
+				style="display: none;"
+				class="absolute right-0 flex items-center justify-end gap-2 p-3 bg-base-200 border-2 border-base-content shadow-3d z-10"
+			>
+				<button
+					hx-delete={ "/admin/urls/" + url.ShortSlug }
+					hx-target="closest .group"
+					hx-swap="outerHTML swap:500ms"
+					class="px-2 py-1 btn-danger-3d text-xs font-bold"
+				>
+					YES
+				</button>
+				<button
+					@click="confirmingDelete = false"
+					type="button"
+					class="px-2 py-1 btn-action-3d text-xs font-bold"
+				>
+					NO
+				</button>
+			</div>
+		</div>
+	</div>
+}
+
+templ AdminPagination(endpoint, search string, page, limit, totalPages int) {
+	<div class="flex flex-col sm:flex-row justify-between items-center mt-8 gap-4 bg-base-200/50 p-4 border border-base-content/10">
+		<form hx-get={ endpoint } hx-target="body" hx-push-url="true" class="flex items-center gap-3">
+			<input type="hidden" name="search" value={ search }/>
+			<label class="text-xs font-bold text-base-content/50 tracking-widest">PER PAGE:</label>
+			<select name="limit" onchange="this.form.submit()" class="bg-base-100 border border-base-content/20 px-2 py-1 text-sm font-bold focus:outline-none focus:border-base-content cursor-pointer">
+				<option value="20" selected?={ limit == 20 }>20</option>
+				<option value="30" selected?={ limit == 30 }>30</option>
+				<option value="50" selected?={ limit == 50 }>50</option>
+				<option value="100" selected?={ limit == 100 }>100</option>
+			</select>
+		</form>
+		<div class="flex items-center gap-3">
+			if page > 1 {
+				<a href={ templ.SafeURL(fmt.Sprintf("%s?page=%d&limit=%d&search=%s", endpoint, page-1, limit, search)) } class="btn-action-3d px-3 py-1 text-xs">PREV</a>
+			}
+			<span class="px-4 py-1 text-xs font-bold tracking-widest border border-base-content/20 bg-base-100">PAGE { fmt.Sprint(page) } OF { fmt.Sprint(totalPages) }</span>
+			if page < totalPages {
+				<a href={ templ.SafeURL(fmt.Sprintf("%s?page=%d&limit=%d&search=%s", endpoint, page+1, limit, search)) } class="btn-action-3d px-3 py-1 text-xs">NEXT</a>
+			}
+		</div>
+	</div>
+}
