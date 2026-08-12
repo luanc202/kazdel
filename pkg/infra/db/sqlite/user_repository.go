@@ -216,10 +216,10 @@ func (ur *UserRepository) FindAllPaginated(search string, page, limit int) ([]*e
 
 	var args []interface{}
 	var countArgs []interface{}
-	
+
 	baseQuery := `SELECT id, name, username, role, email, email_verified, is_active, password_hash, created_at, updated_at FROM users`
 	countQuery := `SELECT COUNT(*) FROM users`
-	
+
 	if search != "" {
 		searchPattern := "%" + search + "%"
 		whereClause := ` WHERE username LIKE ? OR email LIKE ?`
@@ -228,7 +228,7 @@ func (ur *UserRepository) FindAllPaginated(search string, page, limit int) ([]*e
 		args = append(args, searchPattern, searchPattern)
 		countArgs = append(countArgs, searchPattern, searchPattern)
 	}
-	
+
 	baseQuery += ` ORDER BY created_at DESC LIMIT ? OFFSET ?`
 	args = append(args, limit, offset)
 
@@ -263,13 +263,13 @@ func (ur *UserRepository) FindAllPaginated(search string, page, limit int) ([]*e
 		if err != nil {
 			return nil, 0, fmt.Errorf("failed to scan user: %w", err)
 		}
-		
+
 		id, err := uniqueEntityId.ParseID(idStr)
 		if err != nil {
 			return nil, 0, fmt.Errorf("failed to parse user id: %w", err)
 		}
 		user.ID = id
-		
+
 		users = append(users, &user)
 	}
 

@@ -108,7 +108,7 @@ func (uc *AuthUseCase) Login(username, password string) (string, error) {
 
 	env := config.GetEnvConfig()
 	emailValidationSetting, _ := uc.SettingRepo.FindByKey(entity.SettingEmailValidationEnabled)
-	
+
 	emailValidationEnabled := env != nil && env.MAIL_ENABLED
 	if emailValidationSetting != nil && emailValidationSetting.Value == "true" {
 		emailValidationEnabled = true

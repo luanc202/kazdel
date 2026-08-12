@@ -65,8 +65,8 @@ func TestAuthUseCase_Signup(t *testing.T) {
 			mockSessionRepo := new(mocks.SessionRepository)
 			mockUserTokenRepo := new(mocks.UserTokenRepository)
 			mockEmailService := new(mocks.EmailService)
-	mockSettingRepo := new(mocks.MockSettingRepository)
-	mockSettingRepo.On("FindByKey", mock.Anything).Return(nil, nil).Maybe()
+			mockSettingRepo := new(mocks.MockSettingRepository)
+			mockSettingRepo.On("FindByKey", mock.Anything).Return(nil, nil).Maybe()
 
 			tt.setupMock(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
 
@@ -165,8 +165,8 @@ func TestAuthUseCase_Login(t *testing.T) {
 			mockSessionRepo := new(mocks.SessionRepository)
 			mockUserTokenRepo := new(mocks.UserTokenRepository)
 			mockEmailService := new(mocks.EmailService)
-	mockSettingRepo := new(mocks.MockSettingRepository)
-	mockSettingRepo.On("FindByKey", mock.Anything).Return(nil, nil).Maybe()
+			mockSettingRepo := new(mocks.MockSettingRepository)
+			mockSettingRepo.On("FindByKey", mock.Anything).Return(nil, nil).Maybe()
 
 			tt.setupMock(mockUserRepo, mockSessionRepo)
 
@@ -253,8 +253,8 @@ func TestAuthUseCase_ValidateSession(t *testing.T) {
 			mockSessionRepo := new(mocks.SessionRepository)
 			mockUserTokenRepo := new(mocks.UserTokenRepository)
 			mockEmailService := new(mocks.EmailService)
-	mockSettingRepo := new(mocks.MockSettingRepository)
-	mockSettingRepo.On("FindByKey", mock.Anything).Return(nil, nil).Maybe()
+			mockSettingRepo := new(mocks.MockSettingRepository)
+			mockSettingRepo.On("FindByKey", mock.Anything).Return(nil, nil).Maybe()
 
 			tt.setupMock(mockSessionRepo)
 
@@ -318,8 +318,8 @@ func TestAuthUseCase_ResendVerificationEmail(t *testing.T) {
 			mockSessionRepo := new(mocks.SessionRepository)
 			mockUserTokenRepo := new(mocks.UserTokenRepository)
 			mockEmailService := new(mocks.EmailService)
-	mockSettingRepo := new(mocks.MockSettingRepository)
-	mockSettingRepo.On("FindByKey", mock.Anything).Return(nil, nil).Maybe()
+			mockSettingRepo := new(mocks.MockSettingRepository)
+			mockSettingRepo.On("FindByKey", mock.Anything).Return(nil, nil).Maybe()
 
 			tt.setupMock(mockUserRepo, mockUserTokenRepo, mockEmailService)
 
