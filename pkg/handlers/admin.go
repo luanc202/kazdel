@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"strconv"
 
+	"kazdel/pkg/constants"
 	interfaces "kazdel/pkg/interface"
 	customMiddleware "kazdel/pkg/middleware"
-	"kazdel/pkg/infra/config"
 	"kazdel/pkg/ui/pages"
 	"kazdel/pkg/usecase"
 
@@ -37,8 +37,7 @@ func (h *AdminHandler) Routes(r chi.Router) {
 		r.Use(customMiddleware.RequireAdminMiddleware(h.userRepo))
 
 		r.Get("/", func(w http.ResponseWriter, req *http.Request) {
-			adminUsersPath := config.GetEnvConfig().BASE_PATH + "/admin/users"
-			http.Redirect(w, req, adminUsersPath, http.StatusSeeOther)
+			http.Redirect(w, req, constants.AdminUsersPath(), http.StatusSeeOther)
 		})
 
 		r.Get("/users", h.handleGetUsers)
