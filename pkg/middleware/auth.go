@@ -24,13 +24,13 @@ func AuthMiddleware(authUseCase *usecase.AuthUseCase) func(http.Handler) http.Ha
 			}
 
 			if tokenString == "" {
-				http.Redirect(w, r, "/login", http.StatusSeeOther)
+				http.Redirect(w, r, "login", http.StatusSeeOther)
 				return
 			}
 
 			userID, err := authUseCase.ValidateSession(tokenString)
 			if err != nil {
-				http.Redirect(w, r, "/login", http.StatusSeeOther)
+				http.Redirect(w, r, "login", http.StatusSeeOther)
 				return
 			}
 

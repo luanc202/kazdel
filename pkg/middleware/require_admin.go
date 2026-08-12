@@ -17,21 +17,21 @@ func RequireAdminMiddleware(userRepo interfaces.UserRepository) func(http.Handle
 			userID, ok := appctx.GetAuthUser(r)
 			if !ok || userID == "" {
 				// Not authenticated
-				http.Redirect(w, r, "/login", http.StatusSeeOther)
+				http.Redirect(w, r, "login", http.StatusSeeOther)
 				return
 			}
 
 			user, err := userRepo.FindById(userID)
 			if err != nil {
 				// User not found or db error
-				http.Redirect(w, r, "/login", http.StatusSeeOther)
+				http.Redirect(w, r, "login", http.StatusSeeOther)
 				return
 			}
 
 			if user.Role != entity.RoleAdmin {
 				// User is not an admin
 				// Redirect to dashboard
-				http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+				http.Redirect(w, r, "dashboard", http.StatusSeeOther)
 				return
 			}
 
