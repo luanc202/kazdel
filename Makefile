@@ -24,6 +24,10 @@ run: ui-build
 test:
 	go test -coverprofile=coverage.out ./...
 
+test-e2e-docker:
+	docker build -t e2e-test -f Dockerfile.e2e .
+	docker run --rm --network host -v /var/run/docker.sock:/var/run/docker.sock e2e-test
+
 coverage:
 	go tool cover -html=coverage.out
 	go test -cover ./...
