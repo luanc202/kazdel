@@ -99,7 +99,7 @@ func Base() templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<title>Kazdel - a url shortener</title><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"></head><body id=\"main-body\"><!-- Theme Controller Toggle --><label id=\"theme-toggler-label\" hx-preserve=\"true\" class=\"swap swap-rotate fixed top-4 right-4 z-100 btn btn-circle btn-ghost\"><input data-toggle-theme=\"kazdel-dark,kazdel-light\" data-act-class=\"ACTIVECLASS\" type=\"checkbox\" class=\"theme-controller\" id=\"theme-toggle\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<title>Kazdel - a url shortener</title><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><script>\n\t\t\tfunction handleCopyLink(event, slug) {\n\t\t\t\tconst url = window.location.origin + slug\n\t\t\t\tnavigator.clipboard.writeText(url);\n\t\t\t}\n\t\t\t\n\t\t\t</script></head><body id=\"main-body\"><!-- Theme Controller Toggle --><label id=\"theme-toggler-label\" hx-preserve=\"true\" class=\"swap swap-rotate fixed top-4 right-4 z-100 btn btn-circle btn-ghost\"><input data-toggle-theme=\"kazdel-dark,kazdel-light\" data-act-class=\"ACTIVECLASS\" type=\"checkbox\" class=\"theme-controller\" id=\"theme-toggle\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
