@@ -9,4 +9,5 @@ type UserRepository interface {
 	ExistsByEmail(email string) (bool, error)
 	ExistsByUsername(username string) (bool, error)
 	FindById(id string) (*entity.User, error)
+	FindAllPaginated(search string, page, limit int) ([]*entity.User, int, error)
 }

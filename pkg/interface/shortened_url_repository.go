@@ -11,6 +11,7 @@ type ShortenedUrlRepository interface {
 	FindBySlug(slug string) (*entity.ShortenedUrl, error)
 
 	FindByUserIdPaginated(userId uniqueEntityId.ID, search string, page, limit int) ([]*entity.ShortenedUrl, int, error)
+	FindAllPaginated(search string, page, limit int) ([]*entity.ShortenedUrl, int, error)
 
 	Save(shortenedUrl *entity.ShortenedUrl) error
 	Update(shortenedUrl *entity.ShortenedUrl) error

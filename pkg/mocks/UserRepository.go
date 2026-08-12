@@ -190,3 +190,40 @@ func NewUserRepository(t interface {
 
 	return mock
 }
+
+// FindAllPaginated provides a mock function with given fields: search, page, limit
+func (_m *UserRepository) FindAllPaginated(search string, page int, limit int) ([]*entity.User, int, error) {
+	ret := _m.Called(search, page, limit)
+
+	if len(ret) == 0 {
+		panic("no return value specified for FindAllPaginated")
+	}
+
+	var r0 []*entity.User
+	var r1 int
+	var r2 error
+	if rf, ok := ret.Get(0).(func(string, int, int) ([]*entity.User, int, error)); ok {
+		return rf(search, page, limit)
+	}
+	if rf, ok := ret.Get(0).(func(string, int, int) []*entity.User); ok {
+		r0 = rf(search, page, limit)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]*entity.User)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(string, int, int) int); ok {
+		r1 = rf(search, page, limit)
+	} else {
+		r1 = ret.Get(1).(int)
+	}
+
+	if rf, ok := ret.Get(2).(func(string, int, int) error); ok {
+		r2 = rf(search, page, limit)
+	} else {
+		r2 = ret.Error(2)
+	}
+
+	return r0, r1, r2
+}

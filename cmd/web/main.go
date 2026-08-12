@@ -57,13 +57,14 @@ func main() {
 	userRepo := db.NewUserRepository(dbConn)
 	sessionRepo := db.NewSessionRepository(dbConn)
 	userTokenRepo := db.NewUserTokenRepository(dbConn)
+	settingRepo := db.NewSettingRepository(dbConn)
 
 	// Create services
 	emailService := mail.NewSMTPMailService()
 
 	// Create use cases
 	shortenedURLUseCase := usecase.NewShortenedUrlUseCase(shortenedURLsRepo, urlVisitRepo, geoipDb, emailService)
-	authUseCase := usecase.NewAuthUseCase(userRepo, sessionRepo, userTokenRepo, emailService)
+	authUseCase := usecase.NewAuthUseCase(userRepo, sessionRepo, userTokenRepo, emailService, settingRepo)
 
 	go func() {
 		ticker := time.NewTicker(30 * time.Second)
@@ -75,10 +76,14 @@ func main() {
 		}
 	}()
 
+	adminUseCase := usecase.NewAdminUseCase(userRepo, settingRepo, shortenedURLsRepo)
+
 	// Create handler dependencies
 	deps := &handlers.Dependencies{
 		ShortenedUrlUseCase: shortenedURLUseCase,
 		AuthUseCase:         authUseCase,
+		AdminUseCase:        adminUseCase,
+		UserRepo:            userRepo,
 	}
 
 	// Build router (handlers auto-register via init())

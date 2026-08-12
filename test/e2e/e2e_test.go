@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	"kazdel/pkg/entity"
 	"kazdel/pkg/handlers"
 	"kazdel/pkg/infra/config"
 	"kazdel/pkg/infra/db"
@@ -97,15 +98,20 @@ func TestMain(m *testing.M) {
 	sessionRepo := db.NewSessionRepository(dbConn)
 
 	userTokenRepo := db.NewUserTokenRepository(dbConn)
+	settingRepo := db.NewSettingRepository(dbConn)
 	emailService := mail.NewSMTPMailService()
 
 	urlVisitRepo := db.NewUrlVisitRepository(dbConn)
 	shortenedURLUseCase := usecase.NewShortenedUrlUseCase(shortenedURLsRepo, urlVisitRepo, nil, emailService)
-	authUseCase := usecase.NewAuthUseCase(userRepo, sessionRepo, userTokenRepo, emailService)
+	authUseCase := usecase.NewAuthUseCase(userRepo, sessionRepo, userTokenRepo, emailService, settingRepo)
+
+	adminUseCase := usecase.NewAdminUseCase(userRepo, settingRepo, shortenedURLsRepo)
 
 	deps := &handlers.Dependencies{
 		ShortenedUrlUseCase: shortenedURLUseCase,
 		AuthUseCase:         authUseCase,
+		AdminUseCase:        adminUseCase,
+		UserRepo:            userRepo,
 	}
 
 	router, err := handlers.BuildRouter(deps)
@@ -336,6 +342,10 @@ func TestEmailVerificationFlow(t *testing.T) {
 		testEnv.MAIL_ENABLED = true
 		config.SetEnvConfigForTest(&testEnv)
 		defer config.SetEnvConfigForTest(origEnv)
+
+		settingRepo := db.NewSettingRepository(config.GetDbConnection())
+		settingRepo.Save(&entity.Setting{Key: "email_validation_enabled", Value: "true"})
+		defer settingRepo.Save(&entity.Setting{Key: "email_validation_enabled", Value: "false"})
 
 		err = page.Locator("form[hx-post='api/v1/auth/login']").WaitFor(playwright.LocatorWaitForOptions{
 			Timeout: playwright.Float(5000),

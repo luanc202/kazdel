@@ -22,8 +22,10 @@ func TestAuth_Logout(t *testing.T) {
 	mockSessionRepo := new(mocks.SessionRepository)
 	mockUserTokenRepo := new(mocks.UserTokenRepository)
 	mockEmailService := new(mocks.EmailService)
+	mockSettingRepo := new(mocks.MockSettingRepository)
+	mockSettingRepo.On("FindByKey", mock.Anything).Return(nil, nil).Maybe()
 
-	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
+	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService, mockSettingRepo)
 	authHandler := &Auth{authUseCase: authUseCase}
 
 	req := httptest.NewRequest(http.MethodGet, "/api/v1/auth/logout", nil)
@@ -76,8 +78,10 @@ func TestAuth_SignupSubmit(t *testing.T) {
 	mockSessionRepo := new(mocks.SessionRepository)
 	mockUserTokenRepo := new(mocks.UserTokenRepository)
 	mockEmailService := new(mocks.EmailService)
+	mockSettingRepo := new(mocks.MockSettingRepository)
+	mockSettingRepo.On("FindByKey", mock.Anything).Return(nil, nil).Maybe()
 
-	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
+	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService, mockSettingRepo)
 	authHandler := &Auth{authUseCase: authUseCase}
 
 	// Setup mock expectations
@@ -121,8 +125,10 @@ func TestAuth_LoginSubmit(t *testing.T) {
 	mockSessionRepo := new(mocks.SessionRepository)
 	mockUserTokenRepo := new(mocks.UserTokenRepository)
 	mockEmailService := new(mocks.EmailService)
+	mockSettingRepo := new(mocks.MockSettingRepository)
+	mockSettingRepo.On("FindByKey", mock.Anything).Return(nil, nil).Maybe()
 
-	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
+	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService, mockSettingRepo)
 	authHandler := &Auth{authUseCase: authUseCase}
 
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("Password1!"), bcrypt.DefaultCost)
@@ -160,8 +166,10 @@ func TestAuth_LoginSubmit_EmailNotVerified(t *testing.T) {
 	mockSessionRepo := new(mocks.SessionRepository)
 	mockUserTokenRepo := new(mocks.UserTokenRepository)
 	mockEmailService := new(mocks.EmailService)
+	mockSettingRepo := new(mocks.MockSettingRepository)
+	mockSettingRepo.On("FindByKey", mock.Anything).Return(nil, nil).Maybe()
 
-	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
+	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService, mockSettingRepo)
 	authHandler := &Auth{authUseCase: authUseCase}
 
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("Password1!"), bcrypt.DefaultCost)
@@ -201,8 +209,10 @@ func TestAuth_VerifyEmailPage(t *testing.T) {
 	mockSessionRepo := new(mocks.SessionRepository)
 	mockUserTokenRepo := new(mocks.UserTokenRepository)
 	mockEmailService := new(mocks.EmailService)
+	mockSettingRepo := new(mocks.MockSettingRepository)
+	mockSettingRepo.On("FindByKey", mock.Anything).Return(nil, nil).Maybe()
 
-	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
+	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService, mockSettingRepo)
 	authHandler := &Auth{authUseCase: authUseCase}
 
 	req := httptest.NewRequest(http.MethodGet, "/verify-email?email=test%40example.com", nil)
@@ -227,8 +237,10 @@ func TestAuth_ResendVerificationSubmit(t *testing.T) {
 	mockSessionRepo := new(mocks.SessionRepository)
 	mockUserTokenRepo := new(mocks.UserTokenRepository)
 	mockEmailService := new(mocks.EmailService)
+	mockSettingRepo := new(mocks.MockSettingRepository)
+	mockSettingRepo.On("FindByKey", mock.Anything).Return(nil, nil).Maybe()
 
-	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
+	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService, mockSettingRepo)
 	authHandler := &Auth{authUseCase: authUseCase}
 
 	testUser := entity.NewUser("Test User", "testuser", entity.RoleUser, "test@example.com", "hash")

@@ -3,7 +3,7 @@ trigger: always_on
 ---
 
 ---
-paths: pkg/api/**/*.go
+paths: pkg/**/*.go
 ---
 
 # API Endpoint Rules
