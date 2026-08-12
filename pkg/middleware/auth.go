@@ -5,6 +5,7 @@ import (
 
 	"kazdel/pkg/constants"
 	appctx "kazdel/pkg/context"
+	"kazdel/pkg/infra/config"
 	"kazdel/pkg/usecase"
 )
 
@@ -23,14 +24,16 @@ func AuthMiddleware(authUseCase *usecase.AuthUseCase) func(http.Handler) http.Ha
 				tokenString = cookie.Value
 			}
 
+			loginPath := config.GetEnvConfig().BASE_PATH + "/login"
+
 			if tokenString == "" {
-				http.Redirect(w, r, "login", http.StatusSeeOther)
+				http.Redirect(w, r, loginPath, http.StatusSeeOther)
 				return
 			}
 
 			userID, err := authUseCase.ValidateSession(tokenString)
 			if err != nil {
-				http.Redirect(w, r, "login", http.StatusSeeOther)
+				http.Redirect(w, r, loginPath, http.StatusSeeOther)
 				return
 			}
 

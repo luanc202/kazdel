@@ -7,6 +7,7 @@ import (
 
 	interfaces "kazdel/pkg/interface"
 	customMiddleware "kazdel/pkg/middleware"
+	"kazdel/pkg/infra/config"
 	"kazdel/pkg/ui/pages"
 	"kazdel/pkg/usecase"
 
@@ -36,7 +37,8 @@ func (h *AdminHandler) Routes(r chi.Router) {
 		r.Use(customMiddleware.RequireAdminMiddleware(h.userRepo))
 
 		r.Get("/", func(w http.ResponseWriter, req *http.Request) {
-			http.Redirect(w, req, "/admin/users", http.StatusSeeOther)
+			adminUsersPath := config.GetEnvConfig().BASE_PATH + "/admin/users"
+			http.Redirect(w, req, adminUsersPath, http.StatusSeeOther)
 		})
 
 		r.Get("/users", h.handleGetUsers)
@@ -81,23 +83,23 @@ func (h *AdminHandler) handleUpdateUserStatus(w http.ResponseWriter, r *http.Req
 		fail(w, err, "failed to parse form")
 		return
 	}
-	
+
 	isActive := r.FormValue("isActive") == "true"
-	
+
 	err := h.adminUseCase.UpdateUserStatus(id, isActive)
 	if err != nil {
 		fail(w, err, "failed to update user status")
 		return
 	}
-	
-	// Re-render the user row or just return success and let HX refresh? 
+
+	// Re-render the user row or just return success and let HX refresh?
 	// The simplest way to return the updated user row is to fetch it.
 	user, err := h.userRepo.FindById(id)
 	if err != nil {
 		fail(w, err, "failed to fetch updated user")
 		return
 	}
-	
+
 	pages.AdminUserRow(user).Render(r.Context(), w)
 }
 
@@ -128,13 +130,13 @@ func (h *AdminHandler) handleGetURLs(w http.ResponseWriter, r *http.Request) {
 
 func (h *AdminHandler) handleDeleteURL(w http.ResponseWriter, r *http.Request) {
 	slug := chi.URLParam(r, "slug")
-	
+
 	err := h.adminUseCase.DeleteURL(slug)
 	if err != nil {
 		fail(w, err, "failed to delete url")
 		return
 	}
-	
+
 	// HTMX will swap outerHTML with empty content if we just return 200 OK.
 	w.WriteHeader(http.StatusOK)
 }
@@ -154,16 +156,16 @@ func (h *AdminHandler) handleUpdateSetting(w http.ResponseWriter, r *http.Reques
 		fail(w, err, "failed to parse form")
 		return
 	}
-	
+
 	key := r.FormValue("key")
 	value := r.FormValue("value")
-	
+
 	err := h.adminUseCase.UpdateSetting(key, value)
 	if err != nil {
 		fail(w, err, "failed to update setting")
 		return
 	}
-	
+
 	// Return the updated setting row
 	setting, err := h.adminUseCase.GetSettings() // Ideally get just this setting, but for now we iterate to find it.
 	for _, s := range setting {
@@ -172,6 +174,6 @@ func (h *AdminHandler) handleUpdateSetting(w http.ResponseWriter, r *http.Reques
 			return
 		}
 	}
-	
+
 	w.WriteHeader(http.StatusOK)
 }
