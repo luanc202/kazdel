@@ -64,3 +64,14 @@ func NewUserTokenRepository(dbConn any) interfaces.UserTokenRepository {
 		panic(fmt.Sprintf("unsupported database connection type for UserTokenRepository: %T", dbConn))
 	}
 }
+
+func NewSettingRepository(dbConn any) interfaces.SettingRepository {
+	switch conn := dbConn.(type) {
+	case *sql.DB:
+		return sqlite.NewSettingRepository(conn)
+	case *pgxpool.Pool:
+		return postgres.NewSettingRepository(conn)
+	default:
+		panic(fmt.Sprintf("unsupported database connection type for SettingRepository: %T", dbConn))
+	}
+}
