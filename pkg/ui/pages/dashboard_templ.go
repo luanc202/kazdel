@@ -46,7 +46,7 @@ func CreateUrlForm(errMessage string, originalUrl string, defaultExpiresAt strin
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form id=\"shorten-form\" x-data=\"{ showOptional: false }\" hx-post=\"/dashboard/urls/shorten\" hx-swap=\"outerHTML\" class=\"flex flex-col gap-4 mb-12\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form id=\"shorten-form\" x-data=\"{ showOptional: false }\" hx-post=\"dashboard/urls/shorten\" hx-swap=\"outerHTML\" class=\"flex flex-col gap-4 mb-12\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -336,7 +336,7 @@ func NewUrlRow(url dto.ShortenedUrlView) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div><div class=\"col-span-2 flex justify-end items-center relative min-h-[40px] w-full\" x-data=\"{ confirmingDelete: false }\"><div x-show=\"!confirmingDelete\" x-transition:enter=\"transition-transform duration-150 ease-out delay-100\" x-transition:enter-start=\"-translate-x-4 -translate-y-4\" x-transition:enter-end=\"translate-x-0 translate-y-0\" x-transition:leave=\"transition-transform duration-100 ease-in\" x-transition:leave-start=\"translate-x-0 translate-y-0\" x-transition:leave-end=\"translate-x-4 translate-y-4\" class=\"absolute right-0 flex justify-end gap-3\"><a href=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div><div class=\"col-span-2 flex justify-end items-center relative min-h-10 w-full\" x-data=\"{ confirmingDelete: false }\"><div x-show=\"!confirmingDelete\" x-transition:enter=\"transition-transform duration-150 ease-out delay-100\" x-transition:enter-start=\"-translate-x-4 -translate-y-4\" x-transition:enter-end=\"translate-x-0 translate-y-0\" x-transition:leave=\"transition-transform duration-100 ease-in\" x-transition:leave-start=\"translate-x-0 translate-y-0\" x-transition:leave-end=\"translate-x-4 translate-y-4\" class=\"absolute right-0 flex justify-end gap-3\"><a href=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -412,9 +412,9 @@ func NewUrlRow(url dto.ShortenedUrlView) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var21 string
-		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs("/dashboard/urls/" + url.ShortSlug)
+		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs("dashboard/urls/" + url.ShortSlug)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 192, Col: 51}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/ui/pages/dashboard.templ`, Line: 192, Col: 50}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 		if templ_7745c5c3_Err != nil {
@@ -586,7 +586,7 @@ func UrlRow(url dto.ShortenedUrlView) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "</div><div class=\"col-span-2 flex justify-end items-center relative min-h-[40px] w-full\" x-data=\"{ confirmingDelete: false }\"><div x-show=\"!confirmingDelete\" x-transition:enter=\"transition-transform duration-150 ease-out delay-100\" x-transition:enter-start=\"-translate-x-4 -translate-y-4\" x-transition:enter-end=\"translate-x-0 translate-y-0\" x-transition:leave=\"transition-transform duration-100 ease-in\" x-transition:leave-start=\"translate-x-0 translate-y-0\" x-transition:leave-end=\"translate-x-4 translate-y-4\" class=\"absolute right-0 flex justify-end gap-3\"><a href=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "</div><div class=\"col-span-2 flex justify-end items-center relative min-h-10 w-full\" x-data=\"{ confirmingDelete: false }\"><div x-show=\"!confirmingDelete\" x-transition:enter=\"transition-transform duration-150 ease-out delay-100\" x-transition:enter-start=\"-translate-x-4 -translate-y-4\" x-transition:enter-end=\"translate-x-0 translate-y-0\" x-transition:leave=\"transition-transform duration-100 ease-in\" x-transition:leave-start=\"translate-x-0 translate-y-0\" x-transition:leave-end=\"translate-x-4 translate-y-4\" class=\"absolute right-0 flex justify-end gap-3\"><a href=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -846,7 +846,7 @@ func Dashboard(urls []dto.ShortenedUrlView, search string, page, limit, totalPag
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 64, "<div class=\"min-h-screen bg-base-100 text-base-content p-6 md:p-12 font-sans\"><div class=\"max-w-6xl mx-auto\"><header class=\"flex flex-col md:flex-row justify-between md:items-center gap-4 mb-12 border-b border-base-content/10 pb-8\"><div><h1 class=\"text-4xl font-bold tracking-tighter\">DASHBOARD</h1><p class=\"text-base-content/50 text-sm font-mono mt-1\">USER_SESSION: ACTIVE</p></div><div class=\"flex items-center gap-4\"><form hx-get=\"/dashboard\" hx-target=\"body\" hx-push-url=\"true\" class=\"flex gap-2\"><input type=\"hidden\" name=\"limit\" value=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 64, "<div class=\"min-h-screen bg-base-100 text-base-content p-6 md:p-12 font-sans\"><div class=\"max-w-6xl mx-auto\"><header class=\"flex flex-col md:flex-row justify-between md:items-center gap-4 mb-12 border-b border-base-content/10 pb-8\"><div><h1 class=\"text-4xl font-bold tracking-tighter\">DASHBOARD</h1><p class=\"text-base-content/50 text-sm font-mono mt-1\">USER_SESSION: ACTIVE</p></div><div class=\"flex items-center gap-4\"><form hx-get=\"dashboard\" hx-target=\"body\" hx-push-url=\"true\" class=\"flex gap-2\"><input type=\"hidden\" name=\"limit\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -872,7 +872,7 @@ func Dashboard(urls []dto.ShortenedUrlView, search string, page, limit, totalPag
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 66, "\" placeholder=\"SEARCH_URLS\" class=\"bg-base-200 border-2 border-base-content/10 px-4 py-2 font-bold focus:outline-none focus:border-base-content transition-colors\"> <button type=\"submit\" class=\"btn-action-3d px-4 py-2 text-sm\">SEARCH</button></form><a hx-post=\"/api/v1/auth/logout\" hx-target=\"body\" hx-swap=\"innerHTML\" class=\"text-base-content/50 hover:text-base-content transition-colors uppercase text-xs font-bold tracking-widest cursor-pointer\">Logout</a></div></header>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 66, "\" placeholder=\"SEARCH_URLS\" class=\"bg-base-200 border-2 border-base-content/10 px-4 py-2 font-bold focus:outline-none focus:border-base-content transition-colors\"> <button type=\"submit\" class=\"btn-action-3d px-4 py-2 text-sm\">SEARCH</button></form><a hx-post=\"api/v1/auth/logout\" hx-target=\"body\" hx-swap=\"innerHTML\" class=\"text-base-content/50 hover:text-base-content transition-colors uppercase text-xs font-bold tracking-widest cursor-pointer\">Logout</a></div></header>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
