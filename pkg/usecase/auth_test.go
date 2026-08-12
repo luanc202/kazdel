@@ -65,10 +65,12 @@ func TestAuthUseCase_Signup(t *testing.T) {
 			mockSessionRepo := new(mocks.SessionRepository)
 			mockUserTokenRepo := new(mocks.UserTokenRepository)
 			mockEmailService := new(mocks.EmailService)
+	mockSettingRepo := new(mocks.MockSettingRepository)
+	mockSettingRepo.On("FindByKey", mock.Anything).Return(nil, nil).Maybe()
 
 			tt.setupMock(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
 
-			uc := NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
+			uc := NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService, mockSettingRepo)
 			token, err := uc.Signup(tt.name, tt.username, tt.email, tt.password)
 
 			if tt.expectedError != "" {
@@ -93,6 +95,7 @@ func TestAuthUseCase_Login(t *testing.T) {
 		ID:           uniqueEntityId.NewID(),
 		Username:     "testuser",
 		PasswordHash: string(hashedPassword),
+		IsActive:     true,
 	}
 
 	verifiedUser := &entity.User{
@@ -100,6 +103,7 @@ func TestAuthUseCase_Login(t *testing.T) {
 		Username:      "verifieduser",
 		PasswordHash:  string(hashedPassword),
 		EmailVerified: true,
+		IsActive:      true,
 	}
 
 	tests := map[string]struct {
@@ -161,10 +165,12 @@ func TestAuthUseCase_Login(t *testing.T) {
 			mockSessionRepo := new(mocks.SessionRepository)
 			mockUserTokenRepo := new(mocks.UserTokenRepository)
 			mockEmailService := new(mocks.EmailService)
+	mockSettingRepo := new(mocks.MockSettingRepository)
+	mockSettingRepo.On("FindByKey", mock.Anything).Return(nil, nil).Maybe()
 
 			tt.setupMock(mockUserRepo, mockSessionRepo)
 
-			uc := NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
+			uc := NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService, mockSettingRepo)
 			token, err := uc.Login(tt.username, tt.password)
 
 			if tt.expectedError != "" {
@@ -186,10 +192,12 @@ func TestAuthUseCase_Logout(t *testing.T) {
 	mockSessionRepo := new(mocks.SessionRepository)
 	mockUserTokenRepo := new(mocks.UserTokenRepository)
 	mockEmailService := new(mocks.EmailService)
+	mockSettingRepo := new(mocks.MockSettingRepository)
+	mockSettingRepo.On("FindByKey", mock.Anything).Return(nil, nil).Maybe()
 
 	mockSessionRepo.On("DeleteByToken", "validtoken").Return(nil)
 
-	uc := NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
+	uc := NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService, mockSettingRepo)
 	err := uc.Logout("validtoken")
 
 	assert.NoError(t, err)
@@ -245,10 +253,12 @@ func TestAuthUseCase_ValidateSession(t *testing.T) {
 			mockSessionRepo := new(mocks.SessionRepository)
 			mockUserTokenRepo := new(mocks.UserTokenRepository)
 			mockEmailService := new(mocks.EmailService)
+	mockSettingRepo := new(mocks.MockSettingRepository)
+	mockSettingRepo.On("FindByKey", mock.Anything).Return(nil, nil).Maybe()
 
 			tt.setupMock(mockSessionRepo)
 
-			uc := NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
+			uc := NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService, mockSettingRepo)
 			returnedUserId, err := uc.ValidateSession(tt.token)
 
 			if tt.expectedError != "" {
@@ -308,10 +318,12 @@ func TestAuthUseCase_ResendVerificationEmail(t *testing.T) {
 			mockSessionRepo := new(mocks.SessionRepository)
 			mockUserTokenRepo := new(mocks.UserTokenRepository)
 			mockEmailService := new(mocks.EmailService)
+	mockSettingRepo := new(mocks.MockSettingRepository)
+	mockSettingRepo.On("FindByKey", mock.Anything).Return(nil, nil).Maybe()
 
 			tt.setupMock(mockUserRepo, mockUserTokenRepo, mockEmailService)
 
-			uc := NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
+			uc := NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService, mockSettingRepo)
 			err := uc.ResendVerificationEmail(tt.email)
 
 			if tt.expectedError != "" {

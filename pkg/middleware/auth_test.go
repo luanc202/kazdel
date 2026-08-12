@@ -35,8 +35,10 @@ func TestAuthMiddleware(t *testing.T) {
 
 	mockUserTokenRepo := new(mocks.UserTokenRepository)
 	mockEmailService := new(mocks.EmailService)
+	mockSettingRepo := new(mocks.MockSettingRepository)
+	mockSettingRepo.On("FindByKey", mock.Anything).Return(nil, nil).Maybe()
 
-	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService)
+	authUseCase := usecase.NewAuthUseCase(mockUserRepo, mockSessionRepo, mockUserTokenRepo, mockEmailService, mockSettingRepo)
 
 	// Create our middleware
 	mw := AuthMiddleware(authUseCase)
