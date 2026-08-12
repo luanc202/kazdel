@@ -1,5 +1,5 @@
 import "htmx.org";
-import { animate, hover, press } from "motion";
+import { animate } from "motion";
 import { themeChange } from 'theme-change'
 import Alpine from 'alpinejs';
 
